@@ -1,0 +1,24 @@
+# These are the average scattering probability values from figure 3 of
+# Burnett:1994:HER, as estimated, roughly, from the graph: by
+# "roughly," I mean that the Sherman functions are quantized in units
+# of 0.001, creating a standard deviation error of 0.00029.  This
+# uncertainty dominates over any systematic error due to the use of
+# Sherman functions for 20keV scattering energy, rather than the 21keV
+# electrons used in the PER experiments described here.  No errors are
+# quoted on the graph, so this quantization is assumed to be the
+# dominant source of error.
+# 1st column: energy loss window (eV)
+# 2nd column: Average scattering probability
+300	0.0025
+400	0.0035
+500	0.0035
+600	0.0045
+700	0.0055
+800	0.0055
+900	0.0065
+1000	0.0075
+1100	0.0075
+1200	0.0085
+1300	0.0085
+1400	0.0095
+1500	0.0095

@@ -1,0 +1,238 @@
+head	26.1;
+access;
+symbols;
+locks
+	dan:21.1.1.2; strict;
+comment	@% @;
+
+
+26.1
+date	2004.05.30.22.26.57;	author dan;	state Exp;
+branches;
+next	21.1;
+
+21.1
+date	2003.08.25.21.38.34;	author dan;	state Exp;
+branches
+	21.1.1.1;
+next	15.2;
+
+15.2
+date	2003.01.04.15.14.27;	author dan;	state Exp;
+branches;
+next	15.1;
+
+15.1
+date	2003.01.03.19.20.58;	author dan;	state Exp;
+branches;
+next	13.1;
+
+13.1
+date	2002.11.24.22.07.42;	author dan;	state Exp;
+branches;
+next	2.1;
+
+2.1
+date	2002.08.04.19.58.57;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+21.1.1.1
+date	2020.09.24.16.28.25;	author dan;	state Exp;
+branches;
+next	21.1.1.2;
+
+21.1.1.2
+date	2020.09.24.16.39.49;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Copyright notice for data
+@
+
+
+26.1
+log
+@Copyright notice changed, and history removed, in order to improve
+suitability for hard-copy submission.
+@
+text
+@\chapter*{Copyright Notice}
+\pagestyle{myheadings}
+\markboth{COPYRIGHT NOTICE}{COPYRIGHT NOTICE}
+
+Copyright \copyright\ 2002 D.\ {}C.\ {}Hatton.  D.~C.~Hatton has
+signed a declaration giving permission for the use of this thesis
+under the usual conditions of Cambridge University Library.  If you
+are reading this copyright notice, it probably means that you are in
+Cambridge University Library, and in a good position to consult the
+staff there on what these conditions are.
+
+This document can be found, under different copyright terms, which you
+may find more helpful, on the World-Wide Web, at
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/PER_CoCu/}$>$,
+and in transparent form at
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/PER_CoCu.tar.gz}$>$.
+
+\chapter*{Preface}
+\markboth{PREFACE}{PREFACE}
+
+This dissertation is the result of my own work and includes nothing
+which is the outcome of work done in collaboration except where
+specifically indicated in the text.
+
+\chapter*{Statement of Length}
+\markboth{STATEMENT OF LENGTH}{STATEMENT OF LENGTH}
+
+This dissertation does not exceed the word limit for the Physics and
+Chemistry Degree Committee.
+@
+
+
+21.1
+log
+@JACB's last-minute presentational amendments made.
+Some typographical errors corrected.
+Board of Graduate Studies statements added.
+History chapter added.
+Makefile adapted to allow compilation of usable transparent copy.
+@
+text
+@d2 2
+d5 6
+a10 7
+Copyright \copyright\ 2002 D.\ {}C.\ {}Hatton.  Permission is granted
+to copy, distribute and/or modify this document under the terms of the
+GNU Free Documentation License, Version 1.1 published by the Free
+Software Foundation; with no Invariant Sections, with no Front-Cover
+Texts, and with no Back-Cover Texts.  A copy of the license is
+included in the appendix entitled ``GNU Free Documentation License''
+(appendix \ref{copying.data}.)
+d12 2
+a13 1
+This document can be found at
+d19 1
+d26 1
+@
+
+
+21.1.1.1
+log
+@Dates updated to take account of recent non-substantive changes.
+@
+text
+@d3 7
+a9 11
+Copyright \copyright\ 2002--2004, 2020\footnote{Nothing substantive
+  changed in 2020: the changes made in that year consisted of updating
+  URLs to take account of changes in the locations where the author
+  stores such documents.} D.\ {}C.\ {}Hatton.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+published by the Free Software Foundation; with no Invariant Sections,
+with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of
+the license is included in the appendix entitled ``GNU Free
+Documentation License'' (appendix \ref{copying.data}), or in the file
+\verbatim{copying.data.tex}.
+d12 1
+a12 1
+$<$\urn{https://github.com/danielhatton/PER_CoCu/tree/master/web/}$>$,
+d14 1
+a14 1
+$<$\urn{https://github.com/danielhatton/PER_CoCu/}$>$.
+@
+
+
+21.1.1.2
+log
+@Typo in LaTeX markup corrected.
+@
+text
+@d6 8
+a13 7
+  stores such documents.} D.\ {}C.\ {}Hatton.  Permission is granted
+to copy, distribute and/or modify this document under the terms of the
+GNU Free Documentation License, Version 1.1 published by the Free
+Software Foundation; with no Invariant Sections, with no Front-Cover
+Texts, and with no Back-Cover Texts.  A copy of the license is
+included in the appendix entitled ``GNU Free Documentation License''
+(appendix \ref{copying.data}), or in the file \urn{copying.data.tex}.
+@
+
+
+15.2
+log
+@PER theory step diagram imported.
+Typographical errors corrected.
+@
+text
+@d16 10
+@
+
+
+15.1
+log
+@Conclusions chapter written.
+Motivation chapter written.
+Discussion of experimental results completed.
+Description of experimental method completed.
+Material on intermediate experiments added.
+Acknowledgements chapter added.
+Entire contents of Hatton:2002:SPI imported.
+Medium and long abstracts added.
+Typographical errors corrected.
+@
+text
+@d12 1
+a12 1
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/Physics/PER_CoCu/}$>$,
+d14 1
+a14 1
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/Physics/PER_CoCu.tar.gz}$>$.
+@
+
+
+13.1
+log
+@Writing of method continued.
+Whole content of Hatton:2002:CFT imported.
+Chapter on Mott polarimetry principles from Hatton:2000:MPC imported.
+@
+text
+@d8 1
+a8 1
+included in the section entitled ``GNU Free Documentation License''
+@
+
+
+2.1
+log
+@Results of 5th December 2001 experiment added.
+Typogrpahical errors corrected.
+@
+text
+@d1 1
+a1 1
+\section*{Copyright Notice}
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 1
+a12 1
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/Physics/PER_MnCoCu/}$>$,
+d14 1
+a14 1
+$<$\urn{http://www.bib.hatton.btinternet.co.uk/dan/Natural_Sciences/Physics/PER_MnCoCu.tar.gz}$>$.
+@

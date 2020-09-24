@@ -1,0 +1,35 @@
+head	24.1;
+access;
+symbols;
+locks
+	dan:24.1; strict;
+comment	@# @;
+
+
+24.1
+date	2004.05.30.14.07.41;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Calibration Data for Current in Helmoholtz Coils and Labview Card Voltage
+@
+
+
+24.1
+log
+@Examiners' verbal corrections from viva made
+Some typographical errors corrected.
+Important, previously omitted, step added to method.
+@
+text
+@# Magnet calibration data of 03/12/2002: column 1 is voltage at Labview
+# card, column 2 is current through Helmholtz coil in Amperes, column 3
+# is random error in that current, in Amperes
+#
+1.0	3.002	0.001
+0.5	1.478	0.002
+0.25	0.72	0.001
+1.5	4.505	0.015
+@

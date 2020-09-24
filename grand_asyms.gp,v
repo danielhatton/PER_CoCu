@@ -1,0 +1,134 @@
+head	23.3;
+access;
+symbols;
+locks
+	dan:23.3; strict;
+comment	@# @;
+
+
+23.3
+date	2020.09.24.14.56.54;	author dan;	state Exp;
+branches;
+next	23.2;
+
+23.2
+date	2020.09.23.15.25.32;	author dan;	state Exp;
+branches;
+next	23.1;
+
+23.1
+date	2004.05.16.18.58.28;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2004.03.18.22.44.58;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Plotter for All Traditional Asymmetry Estimates at Once
+@
+
+
+23.3
+log
+@Further work to adapt to new Gnuplot syntax.
+@
+text
+@# Copyright 2002-2004 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+# This plots the data from 19th September 2002
+
+reset
+
+set pointsize 2
+set style data linespoints
+set key below
+set size 1, 2
+
+set terminal pslatex
+set color
+set xlabel "$t/\\ut{nm}$"
+set ylabel "$E_b/\\ut{eV}$"
+set zlabel "$SP$"
+
+set output 'grand_asyms.tex'
+splot 'grand_asyms.dat' using (78.0*$1/1000.0):2:4 notitle
+
+set terminal png
+set color
+set xlabel "t/nm"
+set ylabel "Eb/eV"
+set zlabel "SP"
+
+set output 'grand_asyms.png'
+splot 'grand_asyms.dat' using (78.0*$1/1000.0):2:4 notitle
+@
+
+
+23.2
+log
+@Syntax updated for newer Gnuplot versions.
+@
+text
+@d28 2
+a29 1
+set terminal pslatex color
+d37 2
+a38 1
+set terminal png color
+@
+
+
+23.1
+log
+@Internal examiner's printed corrections made.
+Some typographical errors corrected.
+@
+text
+@d1 1
+a1 1
+# Copyright 2002 D. C. Hatton
+d21 2
+d24 1
+a24 1
+set data style linespoints
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d27 1
+a27 1
+set xlabel "$t/\\ut{\\mu{}A}\\ut{s}$"
+d32 1
+a32 1
+splot 'grand_asyms.dat' using 1:2:4 notitle
+d35 1
+a35 1
+set xlabel "t/muAs"
+d40 1
+a40 1
+splot 'grand_asyms.dat' using 1:2:4 notitle
+@

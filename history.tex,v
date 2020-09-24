@@ -1,0 +1,96 @@
+head	26.3;
+access;
+symbols;
+locks
+	dan:26.3; strict;
+comment	@% @;
+
+
+26.3
+date	2020.09.24.16.37.31;	author dan;	state Exp;
+branches;
+next	26.2;
+
+26.2
+date	2004.11.29.23.23.17;	author dan;	state Exp;
+branches;
+next	21.1;
+
+21.1
+date	2003.08.25.21.38.34;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@History
+@
+
+
+26.3
+log
+@Latest updates listed.
+@
+text
+@\chapter*{History}
+\markboth{HISTORY}{HISTORY}
+
+\begin{itemize}
+\item{}2020, September 24th: version 26.3 released.  This does not
+  differ in any substantive way from version 26.2: all that's changed
+  is that URLs have been updated to account for a change in where the
+  author stores documents like this, and Gnuplot scripts have been
+  edited (without changing their function) to account for
+  non-backwards-compatible changes in the syntax of Gnuplot's command
+  language.
+\item{}2004, November 30th: version 26.2 released.  This differs from the
+  post-viva version, which was approved for the Ph.D., only by virtue
+  of having this History chapter restored, the copyright terms rendered
+  more web-friendly, and an Endorsements chapter mentioning said
+  approval added.
+\item{}2003, August 25th: version 21.1 released, in transparent copy
+  only.  This differs from the version submitted to the University of
+  Cambridge, for the degree of Doctor of Philosophy, only by virtue of
+  having this History chapter added, and the Makefile altered to allow
+  the compilation of a usable transparent copy.
+\end{itemize}
+@
+
+
+26.2
+log
+@Copyright terms returned to FDL.
+History chapter re-inserted.
+Endorsements chapter added, noting that I've passed the Ph.D..
+@
+text
+@d5 7
+@
+
+
+21.1
+log
+@JACB's last-minute presentational amendments made.
+Some typographical errors corrected.
+Board of Graduate Studies statements added.
+History chapter added.
+Makefile adapted to allow compilation of usable transparent copy.
+@
+text
+@d2 1
+d5 5
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 9
+@

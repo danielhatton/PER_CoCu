@@ -1,0 +1,180 @@
+head	12.4;
+access;
+symbols;
+locks
+	dan:12.4; strict;
+comment	@# @;
+
+
+12.4
+date	2020.09.24.14.56.54;	author dan;	state Exp;
+branches;
+next	12.3;
+
+12.3
+date	2020.09.23.15.25.32;	author dan;	state Exp;
+branches;
+next	12.2;
+
+12.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	12.1;
+
+12.1
+date	2002.11.24.12.51.53;	author dan;	state Exp;
+branches;
+next	6.2;
+
+6.2
+date	2002.09.06.15.19.16;	author dan;	state Exp;
+branches;
+next	6.1;
+
+6.1
+date	2002.09.04.11.31.04;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Plotting script for Sherman function calibration data from Burnett:1994:HER
+@
+
+
+12.4
+log
+@Further work to adapt to new Gnuplot syntax.
+@
+text
+@# The Marquardt-Levenberg algorithm is used to estimate the
+# expectation and standard deviation of coefficients of a fifth-order
+# polynomial model of the Sherman function of the thorium foil, as a
+# function of the energy loss window, at a scattering energy of 20keV,
+# based on the data in Burnett:1994:HER.  In Bayesian terms, this is
+# equivalent to assuming a uniform prior probability distribution over
+# these coefficients, a Gaussian shape for the final posterior
+# probability distribution, a Gaussian shape for the likelihood
+# function associated with each data point, and a zero prior
+# probability for polynomial models of orders other than the fifth,
+# the fifth order having been chosen to provide a number of adjustable
+# parameters that is the largest integer less than or equal to half
+# the number of data points. While the first assumption is reasonable,
+# the second is \cite{MacKay:2002:ITI} the standard Laplace's method,
+# and the third is reasonable given the unknown shape of the
+# likelihood functions associated with the uncertainties quoted in
+# \cite{Burnett:1994:HER}, the fourth sacrifices
+# \cite{Jeffreys:1961:TP, MacKay:1992:BI, MacKay:1992:BMA}
+# completeness of the analysis.  The dubious assumption is made to
+# increase the computational simplicity, and can be defended on the
+# grounds that the results are used to provide rough estimates of the
+# Sherman function for use as a prior probability distribution in
+# inference from the experiments with which this work is really
+# concerned, and not to provide final conclusions.
+
+set nokey
+set size 1, 2
+set pointsize 0.01
+set style data errorbars
+
+set terminal pslatex
+set monochrome
+set output 'HER_Sherman.tex'
+
+set xlabel "$W/\\ut{fJ}$"
+set ylabel "$S$"
+
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0))
+
+set terminal png
+set monochrome
+set output 'HER_Sherman.png'
+
+set xlabel "W/fJ"
+set ylabel "S"
+
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0))
+@
+
+
+12.3
+log
+@Syntax updated for newer Gnuplot versions.
+@
+text
+@d31 2
+a32 1
+set terminal pslatex monochrome
+d40 2
+a41 1
+set terminal png monochrome
+@
+
+
+12.2
+log
+@Typographical errors corrected.
+@
+text
+@d29 1
+a29 1
+set data style errorbars
+@
+
+
+12.1
+log
+@Writing of experimental method, including some new diagrams, started.
+@
+text
+@a25 4
+load 'postautumn.gp'
+
+S(L) = S_0+S_1/L+S_2/L**2.0+S_3/L**3.0+S_4/L**4.0+S_5/L**5.0
+
+d37 1
+a37 1
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0)), S(x)
+d45 1
+a45 1
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0)), S(x)
+@
+
+
+6.2
+log
+@Graphs of autumn PER data, corrected for instrumental asymmetries and
+mis-positioning of sample, added.
+@
+text
+@d28 1
+a28 1
+S(L) = S_0+S_1*L+S_2*L**2.0+S_3*L**3.0+S_4*L**4.0+S_5*L**5.0
+d31 1
+a31 1
+set size 1, 1
+@
+
+
+6.1
+log
+@Burnett:1994:HER calibration data added.
+Clean copper data from 20011121 added.
+Inference script adapted to use all data sets.
+Typographical errors corrected.
+@
+text
+@d31 3
+d35 1
+a35 1
+set terminal pslatex
+d41 1
+a41 1
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0)) with errorbars, S(x)
+d43 1
+a43 1
+set terminal png
+d49 1
+a49 1
+plot 'HER_Sherman.dat' using ($1*1.6*10.0**(-4.0)):2:(sqrt(0.008**2.0+$3**2.0)) with errorbars, S(x)
+@

@@ -1,0 +1,8 @@
+# Magnet calibration data of 03/12/2002: column 1 is voltage at Labview
+# card, column 2 is current through Helmholtz coil in Amperes, column 3
+# is random error in that current, in Amperes
+#
+1.0	3.002	0.001
+0.5	1.478	0.002
+0.25	0.72	0.001
+1.5	4.505	0.015

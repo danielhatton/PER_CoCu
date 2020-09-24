@@ -1,0 +1,315 @@
+#!perl
+
+# Copyright 2002-2003 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+# This program calculates the traditional estimator of the Mott asymmetry
+# at every opportunity.
+
+use strict ;
+#use warnings ;
+use vars qw($pi $e $kB $hbar $me $numberpoints $adjusts $I @Mdir @Detectornumber @E @deltaE @F @deltaF @Detectionmeasured @shape @sigma @calibGammaW @calibGamma @calibSW @calibS @deltacalibS @moves %factorial ) ;
+srand() ;
+
+# Mathematical constants
+
+#our ($pi) = 3.1415927 ;         # pi taken from xcalc
+$pi = 3.1415927 ;
+
+# Universal physical constants, in SI units, from \cite{Gallagher::MFH}
+
+#our ($e) = 1.60217733*10**(-19) ;      # Charge on positron
+$e = 1.60217733*10**(-19) ;
+#our ($kB) = 1.380658*10**(-23) ;       # Boltzmann's constant
+$kB = 1.380658*10**(-23) ;
+#our ($hbar) = 1.05457266*10**(-34) ;   # Reduced Planck's constant
+$hbar = 1.05457266*10**(-34) ;
+#our ($me) = 9.1093897*10**(-31) ;      # Mass of electron
+$me = 9.1093897*10**(-31) ;
+
+# The data set
+
+#our (@Mdir) ;                  # Sample remanent magnetization directions
+#our (@Detectornumber) ;        # Detector numbers under consideration
+#our (@E) ;                     # Incident beam energies
+#our (@deltaE) ;                # and their uncertainties
+#our (@F) ;                     # Incident beam intensities
+#our (@deltaF) ;                # and their uncertainties
+#our (@Detectionmeasured) ;     # Measured electron detection rates,
+#our (@shape) ;                 # shapes of their likelihoods,
+#our (@sigma) ;                 # and their uncertainties
+
+#our (@calibGammaW) ;
+#our (@calibGamma) ;            # Calibration data from Burnett:1994:HER
+#our (@calibSW) ;
+#our (@calibS) ;
+#our (@deltacalibS) ;
+
+#our (@moves) ;                 # Places in data-set where sample is moved
+
+#our (%factorial) ;             # Cache of calculated factorials
+
+my (@inputfilename) = ("20020919_Polarimetry_1", "20020920_Polarimetry_1", "20020920_Polarimetry_2", "20020921_Polarimetry_1", "20020921_Polarimetry_2", "20020922_Polarimetry_1", "20020923_Polarimetry_1", "20020923_Polarimetry_2") ;
+
+#our ($numberpoints) = &Lookdatafile(\@inputfilename) ;
+$numberpoints = &Lookdatafile(\@inputfilename) ;
+
+my ($count) = 0 ;
+my (@thicknesses) = (0, 32.9145, 61.6641, 94.572625, 127.2907, 158.51996,
+		     189.17686, 218.81979) ;
+open (GRANDFILE, "> grand_asyms.dat") ;
+    print GRANDFILE "# This file contains the traditional Mott asymmetry estimators\n" ;
+    print GRANDFILE "# for all films.\n" ;
+    print GRANDFILE "# Column 1: Film thickness (muAs)\n" ;
+    print GRANDFILE "# Column 2: Incident beam energy (eV)\n" ;
+    print GRANDFILE "# Column 3: Uncertainty in incident beam energy (eV)\n" ;
+    print GRANDFILE "# Column 4: Traditional estimator of Mott asymmetry\n" ;
+    print GRANDFILE "# Column 5: Uncertainty in traditional estimator of Mott asymmetry\n" ;
+while (defined($Mdir[$count])) {
+    my ($filename) = $inputfilename[$count] . "_asyms.dat" ;
+    my (@Mdirthis) = @{$Mdir[$count]} ;
+    my (@Detectornumberthis) = @{$Detectornumber[$count]} ;
+    my (@Ethis) = @{$E[$count]} ;
+    my (@deltaEthis) = @{$deltaE[$count]} ;
+    my (@Fthis) = @{$F[$count]} ;
+    my (@deltaFthis) = @{$deltaF[$count]} ;
+    my (@Detectionmeasuredthis) = @{$Detectionmeasured[$count]} ;
+    my (@sigmathis) = @{$sigma[$count]} ;
+    my ($earl) = 0 ;
+    my (@groupE) ;
+    my (@deltagroupE) ;
+    my (@groupF) ;
+    my (@deltagroupF) ;
+    my (@groupu0) ;
+    my (@deltagroupu0) ;
+    my (@groupu1) ;
+    my (@deltagroupu1) ;
+    my (@groupd0) ;
+    my (@deltagroupd0) ;
+    my (@groupd1) ;
+    my (@deltagroupd1) ;
+    my (@asym) ;
+    my (@deltaasym) ;
+    while (defined ($Mdirthis[$earl])) {
+#	print STDOUT $earl . "\n" ;
+# Group results by beam energy and beam current.
+	my ($time) = $Detectionmeasuredthis[$earl]/(256*$sigmathis[$earl]**2) ;
+#	print STDOUT $time . "\n" ;
+# Works out dwell time
+	my ($energyindex) ;
+#	print STDOUT $Ethis[$earl] . "\n" ;
+	if ($Ethis[$earl] < 525 && $time >= 0.525) {
+# Long dwell-time experiment
+	    $energyindex = 1/3 ;
+	}
+	else {
+# Number the beam energies
+	    $energyindex = ($Ethis[$earl]-450)/50 ;
+	}
+#	print STDOUT $energyindex . "\n" ;
+	my ($currentindex) = $Fthis[$earl]/2000-1 ;
+#	print STDOUT $currentindex . "\n" ;
+# Number the beam currents
+	my ($index) = 3*$energyindex+$currentindex-2 ;
+#	print STDOUT $index . "\n" ;
+	$groupE[$index] = $Ethis[$earl] ;
+	$deltagroupE[$index] = $deltaEthis[$earl] ;
+	$groupF[$index] = $Fthis[$earl] ;
+	$deltagroupF[$index] = $deltaFthis[$earl] ;
+	if ($Mdirthis[$earl] > 0) {
+	    if ($Detectornumberthis[$earl] < 0.5) {
+		$groupu0[$index] = $Detectionmeasuredthis[$earl] ;
+		$deltagroupu0[$index] = $groupu0[$index]*sqrt(($sigmathis[$earl]/$groupu0[$index])**2+($deltagroupF[$index]/$groupF[$index])**2) ;
+# This way, account is taken of the uncertainty in the incident beam current.
+	    }
+	    else {
+		$groupu1[$index] = $Detectionmeasuredthis[$earl] ;
+		$deltagroupu1[$index] = $groupu1[$index]*sqrt(($sigmathis[$earl]/$groupu1[$index])**2+($deltagroupF[$index]/$groupF[$index])**2) ;
+	    }
+	}
+	else {
+	    if ($Detectornumberthis[$earl] < 0.5) {
+		$groupd0[$index] = $Detectionmeasuredthis[$earl] ;
+		$deltagroupu0[$index] = $groupd0[$index]*sqrt(($sigmathis[$earl]/$groupd0[$index])**2+($deltagroupF[$index]/$groupF[$index])**2) ;
+	    }
+	    else {
+		$groupd1[$index] = $Detectionmeasuredthis[$earl] ;
+		$deltagroupu1[$index] = $groupd1[$index]*sqrt(($sigmathis[$earl]/$groupd1[$index])**2+($deltagroupF[$index]/$groupF[$index])**2) ;
+	    }
+	}
+	$earl++ ;
+    }
+    open (OUTPUTFILE, "> " . $filename) ;
+    print OUTPUTFILE "# This file contains the traditional Mott asymmetry estimators\n" ;
+    print OUTPUTFILE "# for film " . $count . "\n" ;
+    print OUTPUTFILE "# Column 1: Incident beam energy (eV)\n" ;
+    print OUTPUTFILE "# Column 2: Uncertainty in incident beam energy (eV)\n" ;
+    print OUTPUTFILE "# Column 3: Traditional estimator of Mott asymmetry\n" ;
+    print OUTPUTFILE "# Column 4: Uncertainty in traditional estimator of Mott asymmetry\n" ;
+   $earl = 0 ;
+#   print STDOUT "Got here!\n" ;
+    while (defined ($groupE[$earl])) {
+	$asym[$earl] = (sqrt($groupu0[$earl]*$groupd1[$earl])-sqrt($groupu1[$earl]*$groupd0[$earl]))/(sqrt($groupu0[$earl]*$groupd1[$earl])+sqrt($groupu1[$earl]*$groupd0[$earl])) ;
+	$deltaasym[$earl] = sqrt((sqrt($groupu1[$earl]*$groupd0[$earl]*$groupd1[$earl]/$groupu0[$earl])/(sqrt($groupu0[$earl]*$groupd1[$earl])+sqrt($groupu1[$earl]*$groupd0[$earl]))**2)**2*$deltagroupu0[$earl]**2+(sqrt($groupu0[$earl]*$groupd0[$earl]*$groupd1[$earl]/$groupu1[$earl])/(sqrt($groupu0[$earl]*$groupd1[$earl])+sqrt($groupu1[$earl]*$groupd0[$earl]))**2)**2*$deltagroupu1[$earl]**2+(sqrt($groupu1[$earl]*$groupu0[$earl]*$groupd1[$earl]/$groupd0[$earl])/(sqrt($groupu0[$earl]*$groupd1[$earl])+sqrt($groupu1[$earl]*$groupd0[$earl]))**2)**2*$deltagroupd0[$earl]**2+(sqrt($groupu0[$earl]*$groupd0[$earl]*$groupu1[$earl]/$groupd1[$earl])/(sqrt($groupu0[$earl]*$groupd1[$earl])+sqrt($groupu1[$earl]*$groupd0[$earl]))**2)**2*$deltagroupd1[$earl]**2) ;
+# Errors due to the errors in the count rates are combined in quadrature
+	$earl++ ;
+    }
+#   print STDOUT "Got here!\n" ;
+    my (@gripeE) ;
+    my (@deltagripeE) ;
+    my (@avasym) ;
+    my (@deltaavasym) ;
+# Average over all the asymmetries at 500eV
+    $gripeE[0] = $groupE[0] ;
+    $deltagripeE[0] = $deltagroupE[0] ;
+    my ($Phi) = 1/$deltaasym[0]**2+1/$deltaasym[1]**2+1/$deltaasym[2]**2+1/$deltaasym[3]**2 ;
+    $avasym[0] = ($asym[0]/$deltaasym[0]**2+$asym[1]/$deltaasym[1]**2+$asym[2]/$deltaasym[2]**2+$asym[3]/$deltaasym[3]**2)/$Phi ;
+    $deltaavasym[0] = 1/sqrt($Phi) ;
+    print OUTPUTFILE $gripeE[0] . "\t" . $deltagripeE[0] . "\t" . $avasym[0] . "\t" . $deltaavasym[0] . "\n" ;
+    print GRANDFILE $thicknesses[$count] . "\t" . $gripeE[0] . "\t" . $deltagripeE[0] . "\t" . $avasym[0] . "\t" . $deltaavasym[0] . "\n" ;
+    $earl = 1 ;
+    while(defined ($groupE[3*$earl+1])) {
+# Average over all the asymmetries at a particular energy
+	$gripeE[$earl] = $groupE[3*$earl+1] ;
+	$deltagripeE[$earl] = $deltagroupE[3*$earl+1] ;
+	my ($Z) = 1/$deltaasym[3*$earl+1]**2+1/$deltaasym[3*$earl+2]**2+1/$deltaasym[3*$earl+3]**2 ;
+	$avasym[$earl] = ($asym[3*$earl+1]/$deltaasym[3*$earl+1]**2+$asym[3*$earl+2]/$deltaasym[3*$earl+2]**2+$asym[3*$earl+3]/$deltaasym[3*$earl+3]**2)/$Z ;
+	$deltaavasym[$earl] = 1/sqrt($Z) ;
+	print OUTPUTFILE $gripeE[$earl] . "\t" . $deltagripeE[$earl] . "\t" . $avasym[$earl] . "\t" . $deltaavasym[$earl] . "\n" ;
+	print GRANDFILE $thicknesses[$count] . "\t" . $gripeE[$earl] . "\t" . $deltagripeE[$earl] . "\t" . $avasym[$earl] . "\t" . $deltaavasym[$earl] . "\n" ;
+	$earl++ ;
+    }
+    close (OUTPUTFILE) ;
+    $count++ ;
+}
+
+close (GRANDFILE) ;
+
+sub Lookdatafile{
+# Looks at data file line by line.
+    my ($filenameref) = @_ ;
+    my (@filename) = @{$filenameref} ;
+    my ($totalpoints) = 0 ;
+    my ($count) = 0 ;
+    while (defined ($filename[$count])) {
+	my (@Mdirtemp) ;
+	my (@Detectornumbertemp) ;
+	my (@Etemp) ;
+	my (@deltaEtemp) ;
+	my (@Ftemp) ;
+	my (@deltaFtemp) ;
+	my (@shapetemp) ;
+	my (@Detectionmeasuredtemp) ;
+	my (@sigmatemp) ;
+	my ($filename) = $filename[$count] ;
+	my (@records) = &Readdatafile($filename) ;
+#	print STDOUT "Parsing data file ${filename}.\n" ;
+	my ($linenumber) = 1 ;
+	my ($recordnumber) = 0;
+	my (@move) ;
+	while (defined ($records[$linenumber-1])) {
+	    my ($record) = $records[$linenumber-1] ;
+# Look at line token by token
+	    $record =~ s/\#.*// ;
+# Ignore comments
+	    my (@fields) = split (/\s+/, $record) ;
+	    if ( $#fields >= 7.5) {
+# Record contains enough fields to be valid
+		if ($#fields >= 8.5){
+# Record contains extra fields
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains more fields than are" ; 
+		    print STDERR "necessary;\n" ;
+		    print STDERR "I am guessing that first fields are the" ;
+		    print STDERR " important ones.\n" ;
+		}
+		if ((($fields[0] eq "+1") || ($fields[0] eq "0") || ($fields[0] eq "-1")) && (($fields[1] eq "1") || ($fields[1] eq "2")) && (($fields[6] eq "G") || ($fields[6] eq "T") || ($fields[6] eq "P"))) {
+# Magnetization directions, channeltron numbers, and detector current shapes
+# are within valid domains
+		    $Mdirtemp[$recordnumber] = $fields[0] ;
+		    $Detectornumbertemp[$recordnumber] = $fields[1]-1 ;
+# Convert our channeltron numbers to perl array indices
+		    $Etemp[$recordnumber] = $fields[2] ;
+		    $deltaEtemp[$recordnumber] = $fields[3] ;
+# Do not convert beam energies from eV to Joules
+		    $Ftemp[$recordnumber] = $fields[4] ;
+		    $deltaFtemp[$recordnumber] = -$fields[5] ;
+# Do not convert beam currents in nanoamps into beam currents (into gun) in
+# picoamps
+		    $shapetemp[$recordnumber] = $fields[6] ;
+		    if ($shapetemp[$recordnumber] eq "P") {
+			$Detectionmeasuredtemp[$recordnumber] = $fields[7] ;
+			$sigmatemp[$recordnumber] = $fields[8] ;
+# Do not convert count rates in Hertz into measured currents (into chamber) in
+# picoamps
+		    }
+		    else {
+			$Detectionmeasuredtemp[$recordnumber] = $fields[7]/1000 ;
+			$sigmatemp[$recordnumber] = $fields[8]/1000 ;
+# Convert measured currents in femtoamps into measured currents (into chamber)
+# in picoamps
+		    }
+		    $linenumber++ ;
+		    $recordnumber++ ;
+		}
+		else{
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains invalid data, and is ignored.\n" ;
+		    $linenumber ++ ;
+		}
+	    }
+	    else{
+		print STDERR "Line $linenumber of file $filename" ;
+		print STDERR " does not contain enough fields, " ;
+		print STDERR "and is ignored.\n" ;
+		$linenumber ++ ;
+	    }
+	}
+	$moves[$count] = \@move ;
+	$Mdir[$count] = \@Mdirtemp ;
+	$Detectornumber[$count] = \@Detectornumbertemp ;
+	$E[$count] = \@Etemp ;
+	$deltaE[$count] = \@deltaEtemp ;
+	$F[$count] = \@Ftemp ;
+	$deltaF[$count] = \@deltaFtemp ;
+	$shape[$count] = \@shapetemp ;
+	$Detectionmeasured[$count] = \@Detectionmeasuredtemp ;
+	$sigma[$count] = \@sigmatemp ;
+	$totalpoints = $totalpoints+$#Etemp+1 ;
+	$count++ ;
+    }
+    return ($totalpoints) ;
+}
+
+sub Readdatafile{
+# Reads in data file line by line.
+    my ($filename) = @_ ;
+#   print STDOUT "Reading data file ${filename}.\n" ;
+    open (DATAFILE, "< ${filename}.dat") || die ("Can't open data file: ${filename}.\n") ;
+    my (@records) ;
+    my ($line) ;
+    my ($count) = 0 ;
+    while ($line = <DATAFILE>) {
+	$records[$count] = $line ;
+	$count++ ;
+    }
+    close (DATAFILE) ;
+    my ($numberlines) = $#records+1 ;
+#   print STDOUT "Data file ${filename} has ${numberlines} lines.\n" ;
+    return (@records) ;
+}

@@ -1,0 +1,24 @@
+# These are the Sherman function values from figure 3 of Burnett:1994:HER,
+# as estimated, roughly, from the graph: by "roughly," I mean that the Sherman
+# functions are quantized in units of 0.025, and creating a standard
+# deviation error of 0.008.  This uncertainty dominates over any systematic
+# error due to the use of Sherman functions for 20keV scattering energy, rather
+# than the 21keV electrons used in the PER experiments described here, but is
+# comparable with the errors quoted on the graph, and must therefore be
+# combined in quadrature with them.
+# 1st column: energy loss window (eV)
+# 2nd column: Sherman function
+# 3rd column: uncertainty of Sherman function quoted in Burnett:1994:HER
+300	-0.2125		0.012
+400	-0.1875 	0.012
+500	-0.1625		0.008
+600	-0.1625		0.008
+700	-0.1375		0.008
+800	-0.1375		0.008
+900	-0.1375		0.008
+1000	-0.1125		0.008
+1100	-0.1125		0.006
+1200	-0.1125		0.006
+1300	-0.1125		0.006
+1400	-0.1125		0.004
+1500	-0.0875		0.004

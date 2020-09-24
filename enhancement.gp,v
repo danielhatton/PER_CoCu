@@ -1,0 +1,120 @@
+head	15.3;
+access;
+symbols;
+locks
+	dan:15.3; strict;
+comment	@# @;
+
+
+15.3
+date	2020.09.24.14.56.54;	author dan;	state Exp;
+branches;
+next	15.2;
+
+15.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	15.1;
+
+15.1
+date	2003.01.03.19.20.58;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Graph showing how a theory can be self-confirming
+@
+
+
+15.3
+log
+@Further work to adapt to new Gnuplot syntax.
+@
+text
+@# Copyright 2002 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+set size 1,2
+set nokey
+
+set terminal pslatex
+set color
+set output 'enhancement.tex'
+
+f(x) =  x < 1.0/2.0 ?  x/(3.0-2.0*x) : 3.0*x/(1.0+2.0*x)
+
+set xrange [0.0:1.0]
+
+set xlabel '$P(T_1)$'
+set ylabel '$P(T_1|E_1)$ or $P(T_1|F_1)$'
+
+plot f(x) notitle
+
+set terminal png
+set color
+set output 'enhancement.png'
+
+f(x) =  x < 1.0/2.0 ?  x/(3.0-2.0*x) : 3.0*x/(1.0+2.0*x)
+
+set xrange [0.0:1.0]
+
+set xlabel 'P(T1)'
+set ylabel 'P(T1|E1) or P(T1|F1)'
+
+plot f(x) notitle
+
+set xrange [*:*]
+@
+
+
+15.2
+log
+@Typographical errors corrected.
+@
+text
+@d22 2
+a23 1
+set terminal pslatex color
+d35 2
+a36 1
+set terminal png color
+@
+
+
+15.1
+log
+@Conclusions chapter written.
+Motivation chapter written.
+Discussion of experimental results completed.
+Description of experimental method completed.
+Material on intermediate experiments added.
+Acknowledgements chapter added.
+Entire contents of Hatton:2002:SPI imported.
+Medium and long abstracts added.
+Typographical errors corrected.
+@
+text
+@d22 1
+a22 1
+set terminal pslatex monochrome
+d34 1
+a34 1
+set terminal png monochrome
+d45 2
+@
