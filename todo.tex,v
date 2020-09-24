@@ -1,0 +1,25 @@
+head	1.1;
+access;
+symbols;
+locks
+	dan:1.1; strict;
+comment	@% @;
+
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@To Do
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@@
