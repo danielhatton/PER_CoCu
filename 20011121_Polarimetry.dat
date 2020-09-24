@@ -1,0 +1,48 @@
+# This data file contains measurements of the currents on the front ends
+# of the two channeltrons of the Cavendish Mott polarimeter, used as Faraday
+# cups, with the input to the polarimeter being the reflected beam from a
+# magnetic sample, on 22nd November, 2001.  The data consist of:
+# Column 1: Magnetization direction
+# Column 2: Channeltron number
+# Column 3: Incident beam energy (eV)
+# Column 4: Standard deviation uncertainty in incident beam energy (eV)
+# Column 5: Incident beam current (nA)
+# Column 6: Standard deviation uncertainty in incident beam current (nA)
+# Column 7: Nature of uncertainty in channeltron front end current
+# (G Gaussian, T top-hat, P Poisson)
+# Column 8: Channeltron front end current (fA)
+# Column 9: Standard deviation uncertainty in channeltron front end current
+# (fA)
+-1	2	1000	0.29	 -99300		 29	G	 6300	200
+-1	1	1000	0.29	-100000		290	G	 9820	140
+-1	1	1000	0.29	-100000		290	G	 8930	140
+-1	2	1000	0.29	-100000		290	G	 8370	140
+-1	2	1000	0.29	-100000		290	G	 8310	140
+-1	2	1407	0.29	-100000		290	G	15710	140
+-1	2	1407	0.29	-100000		290	G	15410	140
+-1	1	1407	0.29	-100000		290	G	15850	140
+-1	1	1407	0.29	-100000		290	G	15990	140
+-1	1	1801	0.29	-100000		290	T	25400	290
+-1	1	1801	0.29	-100000		290	T	26320	290
+-1	2	1801	0.29	-100000		290	T	25540	290
+-1	2	1801	0.29	-100000		290	T	25530	290
+-1	2	2200	0.29	-100000		290	T	31370	290
+-1	2	2200	0.29	-100000		290	T	31480	290
+-1	1	2200	0.29	-100000		290	T	31230	290
+-1	1	2200	0.29	-100000		290	T	31320	290
++1	1	1000	0.29	-100000		290	G	18190	140
++1	1	1000	0.29	-100000		290	G	17870	140
++1	2	1000	0.29	-100000		290	G	16340	140
++1	2	1000	0.29	-100000		290	G	16440	140
++1	2	1400	0.29	-100000		290	T	22410	290
++1	2	1400	0.29	-100000		290	T	21420	290
++1	1	1400	0.29	-100000		290	T	23210	290
++1	1	1400	0.29	-100000		290	T	22250	290
++1	1	1799	0.29	-100000		290	T	27210	290
++1	1	1799	0.29	-100000		290	T	27230	290
++1	2	1799	0.29	-100000		290	T	25510	290
++1	2	1799	0.29	-100000		290	T	25560	290
++1	2	2200	0.29	-101000		290	T	28360	290
++1	2	2200	0.29	-101000		290	T	27320	290
++1	1	2200	0.29	-101000		290	T	30120	290
++1	1	2200	0.29	-101000		290	T	29280	290

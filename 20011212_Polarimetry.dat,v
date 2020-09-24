@@ -1,0 +1,63 @@
+head	5.1;
+access;
+symbols;
+locks
+	dan:5.1; strict;
+comment	@# @;
+
+
+5.1
+date	2002.08.06.18.19.19;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Data from 12th December 2001
+@
+
+
+5.1
+log
+@Graph of data from 11th December 2001 added.
+Graph of data from 12th December 2001 added.
+Typographical errors corrected.
+@
+text
+@# This data file contains measurements of the currents on the front ends
+# of the two channeltrons of the Cavendish Mott polarimeter, used as Faraday
+# cups, with the input to the polarimeter being the reflected beam from a
+# magnetic sample, on 12th December, 2001.  The data consist of:
+# Column 1: Magnetization direction
+# Column 2: Channeltron number
+# Column 3: Incident beam energy (eV)
+# Column 4: Standard deviation uncertainty in incident beam energy (eV)
+# Column 5: Incident beam current (nA)
+# Column 6: Standard deviation uncertainty in incident beam current (nA)
+# Column 7: Nature of uncertainty in channeltron front end current
+# (G Gaussian, T top-hat, P Poisson)
+# Column 8: Channeltron front end current (fA)
+# Column 9: Standard deviation uncertainty in channeltron front end current
+# (fA)
++1	1	1000	0.29	-108200		29	G	14000	1000
++1	2	1000	0.29	-108200		29	G	 7000	 500
+-1	1	1000	0.29	-108250		50	T	16000	 290
+-1	2	1000	0.29	-108250		50	G	12000	1000
++1	1	1000	0.29	-108300		29	T	15000	 290
++1	2	1000	0.29	-108300		29	G	16000	 700
+-1	1	1000	0.29	-108300		29	T	16000	 290
+-1	2	1000	0.29	-108300		29	G	11000	1000
++1	1	1000	0.29	-108300		29	G	16000	1000
++1	2	1000	0.29	-108300		29	G	17000	1000
+# Left overnight (and most of next day) at this point
++1	1	1000	0.29	-108200		29	G	14000	 500
++1	2	1000	0.29	-108200		29	G	14000	1400
+-1	1	1000	0.29	-108200		29	T	 6000	 290
+-1	2	1000	0.29	-108200		29	G	 6000	1400
++1	1	1000	0.29	-108200		29	G	13500	 580
++1	2	1000	0.29	-108200		29	G	13000	1000
+-1	1	1000	0.29	-108200		29	G	 9500	 500
+-1	2	1000	0.29	-108200		29	G	 9000	1000
++1	1	1000	0.29	-108200		29	T	 1800	 290
++1	2	1000	0.29	-108200		29	G	 2000	1400
+@

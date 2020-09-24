@@ -1,0 +1,276 @@
+head	12.4;
+access;
+symbols;
+locks
+	dan:12.4; strict;
+comment	@# @;
+
+
+12.4
+date	2020.09.24.14.56.54;	author dan;	state Exp;
+branches;
+next	12.3;
+
+12.3
+date	2020.09.23.15.25.32;	author dan;	state Exp;
+branches;
+next	12.2;
+
+12.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	12.1;
+
+12.1
+date	2002.11.24.12.51.53;	author dan;	state Exp;
+branches;
+next	6.2;
+
+6.2
+date	2002.09.06.15.19.16;	author dan;	state Exp;
+branches;
+next	6.1;
+
+6.1
+date	2002.09.04.11.31.04;	author dan;	state Exp;
+branches;
+next	5.1;
+
+5.1
+date	2002.08.06.18.19.19;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Plotting script for data from 12th December 2001
+@
+
+
+12.4
+log
+@Further work to adapt to new Gnuplot syntax.
+@
+text
+@# Copyright 2002 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+# This plots the data from 12th December 2001
+
+set pointsize 0.01
+set style data xyerrorbars
+set key below
+set size 1, 2
+
+pi = 3.1415927
+
+Gaussian(x, mu, sigma) = exp(-((x-mu)**2.0/sigma**2.0))/sqrt(2.0*pi*sigma**2.0)
+tophat(x, low, high) = x < low ? Gaussian(x, (high+low)/2.0, (high-low)/5.32) : x <= high ? 127.0/(128.0*(high-low)) : Gaussian(x, (high+low)/2.0, (high-low)/5.32)
+
+rhou1(I) = Gaussian(I, 14000.0, 1000.0)+tophat(I, 14500.0, 15500.0)+Gaussian(I, 16000.0, 1000.0)+Gaussian(I, 14000.0, 500.0)+Gaussian(I, 13500.0, 580.0)+tophat(I, 1300.0, 2300.0)
+rhou2(I) = Gaussian(I, 7000.0, 500.0)+Gaussian(I, 16000.0, 700.0)+Gaussian(I, 17000.0, 1000.0)+Gaussian(I, 14000.0, 1400.0)+Gaussian(I, 13000.0, 1000.0)+Gaussian(I, 2000.0, 1400.0)
+rhod1(I) = tophat(I, 15500.0, 16500.0)+tophat(I, 15500.0, 16500.0)+tophat(I, 5500.0, 6500.0)+Gaussian(I, 9500.0, 500.0)
+rhod2(I) = Gaussian(I, 12000.0, 1000.0)+Gaussian(I, 11000.0, 1000.0)+Gaussian(I, 6000.0, 1400.0)+Gaussian(I, 9000.0, 1000.0)
+
+set terminal pslatex
+set color
+set xrange [0:18800]
+set xlabel "$I_d/\\ut{fA}$"
+set ylabel "$\\rho\\ut{fA}$"
+
+set output '20011212_Polarimetry.tex'
+plot rhou1(x) title "Magnetization up, detector 1", rhou2(x) title "Magnetization up, detector 2", rhod1(x) title "Magnetization down, detector 1", rhod2(x) title "Magnetization down, detector 2"
+
+set terminal png
+set color
+set xlabel "Id/fA"
+set ylabel "rhofA"
+
+set output '20011212_Polarimetry.png'
+plot rhou1(x) title "Magnetization up, detector 1", rhou2(x) title "Magnetization up, detector 2", rhod1(x) title "Magnetization down, detector 1", rhod2(x) title "Magnetization down, detector 2"
+
+set xrange [*:*]
+@
+
+
+12.3
+log
+@Syntax updated for newer Gnuplot versions.
+@
+text
+@d36 2
+a37 1
+set terminal pslatex color
+d45 2
+a46 1
+set terminal png color
+@
+
+
+12.2
+log
+@Typographical errors corrected.
+@
+text
+@d22 1
+a22 1
+set data style xyerrorbars
+@
+
+
+12.1
+log
+@Writing of experimental method, including some new diagrams, started.
+@
+text
+@a20 2
+load 'postautumn.gp'
+
+d37 1
+d51 1
+a51 29
+# set size 1, 1.15
+
+# set terminal pslatex color
+# set xlabel "$I_b/\\ut{nA}$"
+# set ylabel "$I_p/\\ut{fA}$"
+
+# set output '20011212_positioned.tex'
+# plot '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):6:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):6:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):6:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):6:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 2'
+
+# set terminal png color
+# set xlabel "Ib/nA"
+# set ylabel "Ip/fA"
+
+# set output '20011212_positioned.png'
+# plot '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):6:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):6:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):6:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):6:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 2'
+
+# set terminal pslatex color
+# set xlabel "$I_b/\\ut{nA}$"
+# set ylabel "$I_a/\\ut{fA}$"
+
+# set output '20011212_perfect.tex'
+# plot '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_0) : $0 < 5.5 ? $8/(P_6_2*eta_0) : $0 < 9.5 ? $8/(P_6_4*eta_0) : $0 < 11.5 ? $8/(P_6_5*eta_0) : $0 < 15.5 ? $8/(P_6_7*eta_0) : $8/(P_6_9*eta_0) : 1/0):6:($0 < 1.5 ? $9/(P_6_0*eta_0) : $0 < 5.5 ? $9/(P_6_2*eta_0) : $0 < 9.5 ? $9/(P_6_4*eta_0) : $0 < 11.5 ? $9/(P_6_5*eta_0) : $0 < 15.5 ? $9/(P_6_7*eta_0) : $9/(P_6_9*eta_0)) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_1) : $0 < 5.5 ? $8/(P_6_2*eta_1) : $0 < 9.5 ? $8/(P_6_4*eta_1) : $0 < 11.5 ? $8/(P_6_5*eta_1) : $0 < 15.5 ? $8/(P_6_7*eta_1) : $8/(P_6_9*eta_1) : 1/0):6:($0 < 1.5 ? $9/(P_6_0*eta_1) : $0 < 5.5 ? $9/(P_6_2*eta_1) : $0 < 9.5 ? $9/(P_6_4*eta_1) : $0 < 11.5 ? $9/(P_6_5*eta_1) : $0 < 15.5 ? $9/(P_6_7*eta_1) : $9/(P_6_9*eta_1)) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_0) : $0 < 7.5 ? $8/(P_6_3*eta_0) : $0 < 13.5 ? $8/(P_6_6*eta_0) : $8/(P_6_8*eta_0) : 1/0):6:($0 < 3.5 ? $9/(P_6_1*eta_0) : $0 < 7.5 ? $9/(P_6_3*eta_0) : $0 < 13.5 ? $9/(P_6_6*eta_0) : $9/(P_6_8*eta_0)) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_1) : $0 < 7.5 ? $8/(P_6_3*eta_1) : $0 < 13.5 ? $8/(P_6_6*eta_1) : $8/(P_6_8*eta_1) : 1/0):6:($0 < 3.5 ? $9/(P_6_1*eta_1) : $0 < 7.5 ? $9/(P_6_3*eta_1) : $0 < 13.5 ? $9/(P_6_6*eta_1) : $9/(P_6_8*eta_1)) title 'Magnetization down, detector 2'
+
+# set terminal png color
+# set xlabel "Ib/nA"
+# set ylabel "Ia/fA"
+
+# set output '20011212_perfect.png'
+# plot '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_0) : $0 < 5.5 ? $8/(P_6_2*eta_0) : $0 < 9.5 ? $8/(P_6_4*eta_0) : $0 < 11.5 ? $8/(P_6_5*eta_0) : $0 < 15.5 ? $8/(P_6_7*eta_0) : $8/(P_6_9*eta_0) : 1/0):6:($0 < 1.5 ? $9/(P_6_0*eta_0) : $0 < 5.5 ? $9/(P_6_2*eta_0) : $0 < 9.5 ? $9/(P_6_4*eta_0) : $0 < 11.5 ? $9/(P_6_5*eta_0) : $0 < 15.5 ? $9/(P_6_7*eta_0) : $9/(P_6_9*eta_0)) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_1) : $0 < 5.5 ? $8/(P_6_2*eta_1) : $0 < 9.5 ? $8/(P_6_4*eta_1) : $0 < 11.5 ? $8/(P_6_5*eta_1) : $0 < 15.5 ? $8/(P_6_7*eta_1) : $8/(P_6_9*eta_1) : 1/0):6:($0 < 1.5 ? $9/(P_6_0*eta_1) : $0 < 5.5 ? $9/(P_6_2*eta_1) : $0 < 9.5 ? $9/(P_6_4*eta_1) : $0 < 11.5 ? $9/(P_6_5*eta_1) : $0 < 15.5 ? $9/(P_6_7*eta_1) : $9/(P_6_9*eta_1)) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_0) : $0 < 7.5 ? $8/(P_6_3*eta_0) : $0 < 13.5 ? $8/(P_6_6*eta_0) : $8/(P_6_8*eta_0) : 1/0):6:($0 < 3.5 ? $9/(P_6_1*eta_0) : $0 < 7.5 ? $9/(P_6_3*eta_0) : $0 < 13.5 ? $9/(P_6_6*eta_0) : $9/(P_6_8*eta_0)) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using (-$5):($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_1) : $0 < 7.5 ? $8/(P_6_3*eta_1) : $0 < 13.5 ? $8/(P_6_6*eta_1) : $8/(P_6_8*eta_1) : 1/0):6:($0 < 3.5 ? $9/(P_6_1*eta_1) : $0 < 7.5 ? $9/(P_6_3*eta_1) : $0 < 13.5 ? $9/(P_6_6*eta_1) : $9/(P_6_8*eta_1)) title 'Magnetization down, detector 2'
+@
+
+
+6.2
+log
+@Graphs of autumn PER data, corrected for instrumental asymmetries and
+mis-positioning of sample, added.
+@
+text
+@d28 10
+d39 2
+a40 2
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$I_d/\\ut{fA}$"
+d43 1
+a43 1
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 < 1.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 1, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 3.5 && $0 < 5.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 3, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 7.5 && $0 < 9.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 5, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 9.5 && $0 < 11.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 6, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 13.5 && $0 < 15.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 8, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 17.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 10, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 < 1.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 1, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 3.5 && $0 < 5.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 3, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 7.5 && $0 < 9.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 5, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 9.5 && $0 < 11.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 6, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 13.5 && $0 < 15.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 8, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 17.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 10, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 1.5 && $0 < 3.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 2, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 5.5 && $0 < 7.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 4, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 11.5 && $0 < 13.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 7, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 15.5 && $0 < 17.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 9, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 1.5 && $0 < 3.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 2, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 5.5 && $0 < 7.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 4, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 11.5 && $0 < 13.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 7, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 15.5 && $0 < 17.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 9, detector 2'
+d46 2
+a47 2
+set xlabel "Eb/eV"
+set ylabel "Id/fA"
+d50 1
+a50 1
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 < 1.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 1, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 3.5 && $0 < 5.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 3, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 7.5 && $0 < 9.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 5, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 9.5 && $0 < 11.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 6, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 13.5 && $0 < 15.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 8, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $0 >= 17.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 10, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 < 1.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 1, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 3.5 && $0 < 5.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 3, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 7.5 && $0 < 9.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 5, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 9.5 && $0 < 11.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 6, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 13.5 && $0 < 15.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 8, detector 2', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $0 >= 17.5 ? $8 : 1/0):4:9 title 'Magnetization up, placement 10, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 1.5 && $0 < 3.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 2, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 5.5 && $0 < 7.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 4, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 11.5 && $0 < 13.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 7, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $0 >= 15.5 && $0 < 17.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 9, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 1.5 && $0 < 3.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 2, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 5.5 && $0 < 7.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 4, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 11.5 && $0 < 13.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 7, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $0 >= 15.5 && $0 < 17.5 ? $8 : 1/0):4:9 title 'Magnetization down, placement 9, detector 2'
+d52 1
+a52 1
+set size 1, 1.15
+d54 3
+a56 3
+set terminal pslatex color
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$I_p/\\ut{fA}$"
+d58 2
+a59 2
+set output '20011212_positioned.tex'
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):4:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):4:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):4:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):4:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 2'
+d61 3
+a63 3
+set terminal png color
+set xlabel "Eb/eV"
+set ylabel "Ip/fA"
+d65 2
+a66 2
+set output '20011212_positioned.png'
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):4:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/P_6_0 : $0 < 5.5 ? $8/P_6_2 : $0 < 9.5 ? $8/P_6_4 : $0 < 11.5 ? $8/P_6_5 : $0 < 15.5 ? $8/P_6_7 : $8/P_6_9 : 1/0):4:($0 < 1.5 ? $9/P_6_0 : $0 < 5.5 ? $9/P_6_2 : $0 < 9.5 ? $9/P_6_4 : $0 < 11.5 ? $9/P_6_5 : $0 < 15.5 ? $9/P_6_7 : $9/P_6_9) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):4:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/P_6_1 : $0 < 7.5 ? $8/P_6_3 : $0 < 13.5 ? $8/P_6_6 : $8/P_6_8 : 1/0):4:($0 < 3.5 ? $9/P_6_1 : $0 < 7.5 ? $9/P_6_3 : $0 < 13.5 ? $9/P_6_6 : $9/P_6_8) title 'Magnetization down, detector 2'
+d68 3
+a70 3
+set terminal pslatex color
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$I_a/\\ut{fA}$"
+d72 2
+a73 2
+set output '20011212_perfect.tex'
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_0) : $0 < 5.5 ? $8/(P_6_2*eta_0) : $0 < 9.5 ? $8/(P_6_4*eta_0) : $0 < 11.5 ? $8/(P_6_5*eta_0) : $0 < 15.5 ? $8/(P_6_7*eta_0) : $8/(P_6_9*eta_0) : 1/0):4:($0 < 1.5 ? $9/(P_6_0*eta_0) : $0 < 5.5 ? $9/(P_6_2*eta_0) : $0 < 9.5 ? $9/(P_6_4*eta_0) : $0 < 11.5 ? $9/(P_6_5*eta_0) : $0 < 15.5 ? $9/(P_6_7*eta_0) : $9/(P_6_9*eta_0)) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_1) : $0 < 5.5 ? $8/(P_6_2*eta_1) : $0 < 9.5 ? $8/(P_6_4*eta_1) : $0 < 11.5 ? $8/(P_6_5*eta_1) : $0 < 15.5 ? $8/(P_6_7*eta_1) : $8/(P_6_9*eta_1) : 1/0):4:($0 < 1.5 ? $9/(P_6_0*eta_1) : $0 < 5.5 ? $9/(P_6_2*eta_1) : $0 < 9.5 ? $9/(P_6_4*eta_1) : $0 < 11.5 ? $9/(P_6_5*eta_1) : $0 < 15.5 ? $9/(P_6_7*eta_1) : $9/(P_6_9*eta_1)) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_0) : $0 < 7.5 ? $8/(P_6_3*eta_0) : $0 < 13.5 ? $8/(P_6_6*eta_0) : $8/(P_6_8*eta_0) : 1/0):4:($0 < 3.5 ? $9/(P_6_1*eta_0) : $0 < 7.5 ? $9/(P_6_3*eta_0) : $0 < 13.5 ? $9/(P_6_6*eta_0) : $9/(P_6_8*eta_0)) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_1) : $0 < 7.5 ? $8/(P_6_3*eta_1) : $0 < 13.5 ? $8/(P_6_6*eta_1) : $8/(P_6_8*eta_1) : 1/0):4:($0 < 3.5 ? $9/(P_6_1*eta_1) : $0 < 7.5 ? $9/(P_6_3*eta_1) : $0 < 13.5 ? $9/(P_6_6*eta_1) : $9/(P_6_8*eta_1)) title 'Magnetization down, detector 2'
+d75 3
+a77 3
+set terminal png color
+set xlabel "Eb/eV"
+set ylabel "Ia/fA"
+d79 2
+a80 2
+set output '20011212_perfect.png'
+plot '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_0) : $0 < 5.5 ? $8/(P_6_2*eta_0) : $0 < 9.5 ? $8/(P_6_4*eta_0) : $0 < 11.5 ? $8/(P_6_5*eta_0) : $0 < 15.5 ? $8/(P_6_7*eta_0) : $8/(P_6_9*eta_0) : 1/0):4:($0 < 1.5 ? $9/(P_6_0*eta_0) : $0 < 5.5 ? $9/(P_6_2*eta_0) : $0 < 9.5 ? $9/(P_6_4*eta_0) : $0 < 11.5 ? $9/(P_6_5*eta_0) : $0 < 15.5 ? $9/(P_6_7*eta_0) : $9/(P_6_9*eta_0)) title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 ? $0 < 1.5 ? $8/(P_6_0*eta_1) : $0 < 5.5 ? $8/(P_6_2*eta_1) : $0 < 9.5 ? $8/(P_6_4*eta_1) : $0 < 11.5 ? $8/(P_6_5*eta_1) : $0 < 15.5 ? $8/(P_6_7*eta_1) : $8/(P_6_9*eta_1) : 1/0):4:($0 < 1.5 ? $9/(P_6_0*eta_1) : $0 < 5.5 ? $9/(P_6_2*eta_1) : $0 < 9.5 ? $9/(P_6_4*eta_1) : $0 < 11.5 ? $9/(P_6_5*eta_1) : $0 < 15.5 ? $9/(P_6_7*eta_1) : $9/(P_6_9*eta_1)) title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_0) : $0 < 7.5 ? $8/(P_6_3*eta_0) : $0 < 13.5 ? $8/(P_6_6*eta_0) : $8/(P_6_8*eta_0) : 1/0):4:($0 < 3.5 ? $9/(P_6_1*eta_0) : $0 < 7.5 ? $9/(P_6_3*eta_0) : $0 < 13.5 ? $9/(P_6_6*eta_0) : $9/(P_6_8*eta_0)) title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 ? $0 < 3.5 ? $8/(P_6_1*eta_1) : $0 < 7.5 ? $8/(P_6_3*eta_1) : $0 < 13.5 ? $8/(P_6_6*eta_1) : $8/(P_6_8*eta_1) : 1/0):4:($0 < 3.5 ? $9/(P_6_1*eta_1) : $0 < 7.5 ? $9/(P_6_3*eta_1) : $0 < 13.5 ? $9/(P_6_6*eta_1) : $9/(P_6_8*eta_1)) title 'Magnetization down, detector 2'
+@
+
+
+6.1
+log
+@Burnett:1994:HER calibration data added.
+Clean copper data from 20011121 added.
+Inference script adapted to use all data sets.
+Typographical errors corrected.
+@
+text
+@d21 2
+d25 2
+d33 1
+a33 1
+plot '20011212_Polarimetry.dat' using 3:($1==+1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1==+1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1==-1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1==-1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2'
+d40 31
+a70 1
+plot '20011212_Polarimetry.dat' using 3:($1==+1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1', '20011212_Polarimetry.dat' using 3:($1==+1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2', '20011212_Polarimetry.dat' using 3:($1==-1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1', '20011212_Polarimetry.dat' using 3:($1==-1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2'
+@
+
+
+5.1
+log
+@Graph of data from 11th December 2001 added.
+Graph of data from 12th December 2001 added.
+Typographical errors corrected.
+@
+text
+@d28 2
+a29 2
+set output '20011211_Polarimetry.tex'
+plot '20011211_Polarimetry.dat' using 3:($1==+1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1', '20011211_Polarimetry.dat' using 3:($1==+1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2', '20011211_Polarimetry.dat' using 3:($1==-1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1', '20011211_Polarimetry.dat' using 3:($1==-1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2'
+d35 2
+a36 2
+set output '20011211_Polarimetry.png'
+plot '20011211_Polarimetry.dat' using 3:($1==+1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1', '20011211_Polarimetry.dat' using 3:($1==+1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2', '20011211_Polarimetry.dat' using 3:($1==-1 && $2==1 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1', '20011211_Polarimetry.dat' using 3:($1==-1 && $2==2 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2'
+@

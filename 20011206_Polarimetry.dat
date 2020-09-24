@@ -1,0 +1,55 @@
+# This data file contains measurements of the currents on the front ends
+# of the two channeltrons of the Cavendish Mott polarimeter, used as Faraday
+# cups, with the input to the polarimeter being the reflected beam from a
+# magnetic sample, on 6th December, 2001.  The data consist of:
+# Column 1: Magnetization direction
+# Column 2: Channeltron number
+# Column 3: Incident beam energy (eV)
+# Column 4: Standard deviation uncertainty in incident beam energy (eV)
+# Column 5: Incident beam current (nA)
+# Column 6: Standard deviation uncertainty in incident beam current (nA)
+# Column 7: Nature of uncertainty in channeltron front end current
+# (G Gaussian, T top-hat, P Poisson)
+# Column 8: Channeltron front end current (fA)
+# Column 9: Standard deviation uncertainty in channeltron front end current
+# (fA)
++1	1	1000	0.29	-108900		29	T	23000	 290
++1	2	1000	0.29	-108900		29	G	21500	 500
++1	1	1300	0.29	-109300		29	T	29000	 290
++1	2	1300	0.29	-109300		29	T	27000	 290
++1	1	1600	0.29	-109400		29	T	34000	 290
++1	2	1600	0.29	-109400		29	G	32500	 500
++1	1	1900	0.29	-109400		29	T	39000	 290
++1	2	1900	0.29	-109400		29	G	37500	 500
++1	1	2200	0.29	-109400		29	G	43500	 500
++1	2	2200	0.29	-109400		29	G	42000	1000
+-1	1	1000	0.29	-108900		29	G	27500	 500
+-1	2	1000	0.29	-108900		29	G	25500	 500
+-1	1	1300	0.29	-109200		29	T	36000	 290
+-1	2	1300	0.29	-109200		29	G	34000	1000
+-1	1	1600	0.29	-109400		29	G	43500	 500
+-1	2	1600	0.29	-109400		29	G	42000	1000
+-1	1	1900	0.29	-109400		29	T	50000	 290
+-1	2	1900	0.29	-109400		29	T	48000	 290
+-1	1	2200	0.29	-109400		29	T	56000	 290
+-1	2	2200	0.29	-109400		29	T	54000	 290
++1	1	1000	0.29	-108900		29	T	24000	 290
++1	2	1000	0.29	-108900		29	G	22500	 500
++1	1	1300	0.29	-109200		29	G	27500	 500
++1	2	1300	0.29	-109200		29	G	25500	 500
++1	1	1600	0.29	-109300		29	G	31500	 500
++1	2	1600	0.29	-109300		29	G	29500	 500
++1	1	1900	0.29	-109400		29	G	35500	 500
++1	2	1900	0.29	-109400		29	G	33500	 500
++1	1	2200	0.29	-109400		29	G	39500	 500
++1	2	2200	0.29	-109400		29	G	37500	 500
+-1	1	1000	0.29	-108800		29	T	26000	 290
+-1	2	1000	0.29	-108800		29	G	23500	 500
+-1	1	1300	0.29	-109000		29	T	35000	 290
+-1	2	1300	0.29	-109000		29	G	39500	 500
+-1	1	1600	0.29	-109100		29	G	42500	 500
+-1	2	1600	0.29	-109100		29	G	47500	 500
+-1	1	1900	0.29	-109100		29	G	48500	 500
+-1	2	1900	0.29	-109100		29	G	47500	 500
+-1	1	2200	0.29	-109100		29	T	54000	 290
+-1	2	2200	0.29	-109100		29	G	53500	 500

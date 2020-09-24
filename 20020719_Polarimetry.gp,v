@@ -1,0 +1,227 @@
+head	11.4;
+access;
+symbols;
+locks
+	dan:11.4; strict;
+comment	@# @;
+
+
+11.4
+date	2020.09.24.14.56.54;	author dan;	state Exp;
+branches;
+next	11.3;
+
+11.3
+date	2020.09.23.15.25.32;	author dan;	state Exp;
+branches;
+next	11.2;
+
+11.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	11.1;
+
+11.1
+date	2002.11.16.11.55.20;	author dan;	state Exp;
+branches;
+next	9.1;
+
+9.1
+date	2002.09.28.19.29.04;	author dan;	state Exp;
+branches;
+next	8.1;
+
+8.1
+date	2002.09.28.11.25.13;	author dan;	state Exp;
+branches;
+next	7.1;
+
+7.1
+date	2002.09.27.16.43.11;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Plotting script for data from 19th July 2002
+/
+@
+
+
+11.4
+log
+@Further work to adapt to new Gnuplot syntax.
+@
+text
+@# Copyright 2002 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+# This plots the data from 19th July 2002
+
+set pointsize 0.01
+set style data xyerrorbars
+set key below
+set size 1, 2
+
+set terminal pslatex
+set color
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$f_d/\\ut{Hz}$"
+
+set output '20020719_Polarimetry_2.tex'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+
+set output '20020719_Polarimetry_4.tex'
+plot '20020719_Polarimetry.dat' using 3:(1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+
+set output '20020719_Polarimetry_6.tex'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+
+set terminal png
+set color
+set xlabel "Eb/eV"
+set ylabel "fd/Hz"
+
+set output '20020719_Polarimetry_2.png'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+
+set output '20020719_Polarimetry_4.png'
+plot '20020719_Polarimetry.dat' using 3:(1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+
+set output '20020719_Polarimetry_6.png'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2"
+@
+
+
+11.3
+log
+@Syntax updated for newer Gnuplot versions.
+@
+text
+@d26 2
+a27 1
+set terminal pslatex color
+d40 2
+a41 1
+set terminal png color
+@
+
+
+11.2
+log
+@Typographical errors corrected.
+@
+text
+@d22 1
+a22 1
+set data style xyerrorbars
+@
+
+
+11.1
+log
+@Graphs of results from last-minute experiments added.
+Typographical errors corrected.
+@
+text
+@a20 2
+#load 'postsummer.gp'
+
+a50 14
+
+set terminal pslatex color
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$I_a/\\ut{fA}$"
+
+set output '20020719_perfect.tex'
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_1_0*eta_0) :  1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$"
+
+set terminal png color
+set xlabel "Eb/eV"
+set ylabel "Ia/fA"
+
+set output '20020719_perfect.png'
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_1_0*eta_0) :  1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, Ib = (6+/-0.029)muA"
+@
+
+
+9.1
+log
+@Early summer inference script changed to reflect differences
+between this experiment and the autumn one.
+More summer data graphs added.
+@
+text
+@d30 1
+a30 1
+set ylabel "$I_d/\\ut{fA}$"
+d32 8
+a39 2
+set output '20020719_Polarimetry.tex'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, $I_b = (2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, $I_b = (4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, $I_b = (6\\pm{}0.029)\\ut{\\mu{}A}$"
+d43 7
+a49 1
+set ylabel "Id/fA"
+d51 2
+a52 2
+set output '20020719_Polarimetry.png'
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, Ib = (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, Ib = (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, Ib = (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, Ib = (6+/-0.029)muA"
+@
+
+
+8.1
+log
+@Adjustments made to inference script 20020708_Polarimetry, to allow for
+different nature of summer data.
+@
+text
+@d33 1
+a33 1
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$"
+d40 1
+a40 1
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 1, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization up, detector 2, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 1, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title "Magnetization down, detector 2, beam current (6+/-0.029)muA"
+d47 1
+a47 1
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_1_0*eta_0) :  1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$"
+d54 1
+a54 1
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_1_0*eta_0) :  1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_1_0*eta_0) : 1/0):4:($9/(P_0_1_0*eta_0)) title "Magnetization up, detector 1, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_1_1*eta_1) : 1/0):4:($9/(P_0_1_1*eta_1)) title "Magnetization up, detector 2, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_0_0_0*eta_0) : 1/0):4:($9/(P_0_0_0*eta_0)) title "Magnetization down, detector 1, beam current (6+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current (2+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current (4+/-0.029)muA", '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_0_0_1*eta_1) : 1/0):4:($9/(P_0_0_1*eta_1)) title "Magnetization down, detector 2, beam current (6+/-0.029)muA"
+@
+
+
+7.1
+log
+@Graphs improved.
+Number of iterations used in obtianing posterior parameters increased.
+Graph of 19th July 2002 data added.
+@
+text
+@d33 1
+a33 1
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$'
+d40 1
+a40 1
+plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 1, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization up, detector 2, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 1, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8 : 1/0):4:9 title 'Magnetization down, detector 2, beam current (6+/-0.029)muA'
+d47 1
+a47 1
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_2_1_0*eta_0) :  1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_1_0*eta_0) : 1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_2_1_0*eta_0) : 1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current $(2\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current $(4\\pm{}0.029)\\ut{\\mu{}A}$', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current $(6\\pm{}0.029)\\ut{\\mu{}A}$'
+d54 1
+a54 1
+#plot '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_2_1_0*eta_0) :  1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_1_0*eta_0) : 1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_2_1_0*eta_0) : 1/0):4:($9/(P_2_1_0*eta_0)) title 'Magnetization up, detector 1, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 >= 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_2_1_1*eta_1) : 1/0):4:($9/(P_2_1_1*eta_1)) title 'Magnetization up, detector 2, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 < 3000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 < 1.5 && $5 >= 5000 ? $8/(P_2_0_0*eta_0) : 1/0):4:($9/(P_2_0_0*eta_0)) title 'Magnetization down, detector 1, beam current (6+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 < 3000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current (2+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 3000 && $5 < 5000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current (4+/-0.029)muA', '20020719_Polarimetry.dat' using 3:($1 < 0 && $2 >= 1.5 && $5 >= 5000 ? $8/(P_2_0_1*eta_1) : 1/0):4:($9/(P_2_0_1*eta_1)) title 'Magnetization down, detector 2, beam current (6+/-0.029)muA'
+@

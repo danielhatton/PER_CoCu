@@ -1,0 +1,35 @@
+# This data file contains measurements of the currents on the front ends
+# of the two channeltrons of the Cavendish Mott polarimeter, used as Faraday
+# cups, with the input to the polarimeter being the reflected beam from a
+# non-magnetic sample, on 5th December, 2001.  The data consist of:
+# Column 1: Magnetization direction
+# Column 2: Channeltron number
+# Column 3: Incident beam energy (eV)
+# Column 4: Standard deviation uncertainty in incident beam energy (eV)
+# Column 5: Incident beam current (nA)
+# Column 6: Standard deviation uncertainty in incident beam current (nA)
+# Column 7: Nature of uncertainty in channeltron front end current
+# (G Gaussian, T top-hat, P Poisson)
+# Column 8: Channeltron front end current (fA)
+# Column 9: Standard deviation uncertainty in channeltron front end current
+# (fA)
+0	1	1001	0.29	-108700		29	T	25120	290
+0	1	1001	0.29	-108700		29	T	25050	290
+0	2	1001	0.29	-108700		29	T	22080	290
+0	2	1001	0.29	-108700		29	T	22040	290
+0	1	2200	0.29	-109200		29	T	44040	290
+0	1	2200	0.29	-109200		29	T	43980	290
+0	2	2200	0.29	-109200		29	T	40020	290
+0	2	2200	0.29	-109200		29	T	39970	290
+0	1	1600	0.29	-109100		29	G	36470	500
+0	1	1600	0.29	-109100		29	G	36520	500
+0	2	1600	0.29	-109100		29	G	34400	500
+0	2	1600	0.29	-109100		29	G	34430	500
+0	1	1900	0.29	-109100		29	G	40400	500
+0	1	1900	0.29	-109100		29	T	40950	290
+0	2	1900	0.29	-109100		29	G	38450	500
+0	2	1900	0.29	-109100		29	G	38420	500
+0	1	1300	0.29	-109000		29	T	30990	290
+0	1	1300	0.29	-109000		29	T	30970	290
+0	2	1300	0.29	-109000		29	G	29450	500
+0	2	1300	0.29	-109000		29	G	29450	500
