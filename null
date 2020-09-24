@@ -1,0 +1,2182 @@
+#!perl
+
+# Copyright 2002 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+use strict ;
+#use warnings ;
+use vars qw($pi $e $kB $hbar $me $numberpoints $adjusts $I @Mdir @Detectornumber @E @deltaE @F @deltaF @Detectionmeasured @shape @sigma @calibGammaW @calibGamma @calibSW @calibS @deltacalibS @moves %factorial ) ;
+srand() ;
+
+# Mathematical constants
+
+#our ($pi) = 3.1415927 ;         # pi taken from xcalc
+$pi = 3.1415927 ;
+
+# Universal physical constants, in SI units, from \cite{Gallagher::MFH}
+
+#our ($e) = 1.60217733*10**(-19) ;      # Charge on positron
+$e = 1.60217733*10**(-19) ;
+#our ($kB) = 1.380658*10**(-23) ;       # Boltzmann's constant
+$kB = 1.380658*10**(-23) ;
+#our ($hbar) = 1.05457266*10**(-34) ;   # Reduced Planck's constant
+$hbar = 1.05457266*10**(-34) ;
+#our ($me) = 9.1093897*10**(-31) ;      # Mass of electron
+$me = 9.1093897*10**(-31) ;
+
+# The data set
+
+#our (@Mdir) ;                  # Sample remanent magnetization directions
+#our (@Detectornumber) ;        # Detector numbers under consideration
+#our (@E) ;                     # Incident beam energies
+#our (@deltaE) ;                # and their uncertainties
+#our (@F) ;                     # Incident beam intensities
+#our (@deltaF) ;                # and their uncertainties
+#our (@Detectionmeasured) ;     # Measured electron detection rates,
+#our (@shape) ;                 # shapes of their likelihoods,
+#our (@sigma) ;                 # and their uncertainties
+
+#our (@calibGammaW) ;
+#our (@calibGamma) ;            # Calibration data from Burnett:1994:HER
+#our (@calibSW) ;
+#our (@calibS) ;
+#our (@deltacalibS) ;
+
+#our (@moves) ;                 # Places in data-set where sample is moved
+
+#our (%factorial) ;             # Cache of calculated factorials
+
+my (@inputfilename) = ("20020919_Polarimetry_1", "20020920_Polarimetry_1", "20020920_Polarimetry_2", "20020921_Polarimetry_1", "20020921_Polarimetry_2", "20020922_Polarimetry_1", "20020923_Polarimetry_1", "20020923_Polarimetry_2") ;
+
+#our ($numberpoints) = &Lookdatafile(\@inputfilename) ;
+$numberpoints = &Lookdatafile(\@inputfilename) ;
+my (@calibfilename) = ("HER_Average", "HER_Sherman") ;
+$numberpoints = $numberpoints+&Lookcalibfile(\@calibfilename) ;
+#our ($adjusts) ;
+
+print STDOUT "numberpoints=" . $numberpoints . "\n" ;
+
+#our ($Elistref) = &Distill(\@E) ; # Arrays containing each of the incident beam
+#our (@Elist) = @{$Elistref} ;     # energies etc. used exactly once 
+#our ($Flistref) = &Distill(\@F) ;
+#our (@Flist) = @{$Flistref} ;
+#our ($detlistref) = &Distill(\@Detectornumber) ;
+#our (@detlist) = @{$detlistref} ;
+#our ($Mdirlistref) = &Distill(\@Mdir) ;
+#our (@Mdirlist) = @{$Mdirlistref} ;
+
+# Fixed characteristics of experimental setup
+
+#our ($I) = $pi/4 ;             # Angle of incidence of electron beam
+$I = $pi/4 ;
+
+my ($priaref, $deltapriaref, $marginal, $marginalsq, $postref, $deltapostref) = &Integratebulk() ;
+my ($end) = &output($priaref, $deltapriaref, $marginal, $marginalsq, $postref, $deltapostref) ;
+
+sub output{
+# Creates gnuplot scripts containing the results
+    my ($priaref, $deltapriaref, $marginal, $marginalsq, $postref, $deltapostref) = @_ ;
+    open (SCRIPT, "> null-priorasummer.gp") ;
+    my (@pria) = @{$priaref} ;
+    my (@deltapria) = @{$deltapriaref} ;
+    my (@marginal) = @{$marginal} ;
+    my ($marginale) = $marginal[0] . "e" . $marginal[1] ;
+    my (@marginalsq) = @{$marginalsq} ;
+    my ($marginalesq) = $marginalsq[0] . "e" . $marginalsq[1] ; 
+    print SCRIPT "A=" . $pria[0] ."\n" ;
+    my ($count) = 0 ;
+    my ($suppresses) = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "P_" . $count . "_" . $duke . "_0=" . $pria[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "P_" . $count . "_" . $duke . "_1=" . $pria[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "Gamma_" . $count . "=" . $pria[$suppresses+1+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "S_" . $count . "=" . $pria[$suppresses+7+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 1.5) {
+	print SCRIPT "eta_" . $count . "=" . $pria[$suppresses+13+$count] . "\n" ;
+    $count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "V_" . $count . "=" . $pria[$suppresses+15+$count] . "\n" ;
+	$count++ ;
+    }
+     $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "B_" . $count . "=" . $pria[$suppresses+16+$#moves+$count] . "\n" ;
+	$count++ ;
+    }
+    print SCRIPT "deltaA=" . $deltapria[0] ."\n" ;
+    $count = 0 ;
+    $suppresses = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "deltaP_" . $count . "_" . $duke . "_0=" . $deltapria[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "deltaP_" . $count . "_" . $duke . "_1=" . $deltapria[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "deltaGamma_" . $count . "=" . $deltapria[$suppresses+1+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "deltaS_" . $count . "=" . $deltapria[$suppresses+7+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 1.5) {
+	print SCRIPT "deltaeta_" . $count . "=" . $deltapria[$suppresses+13+$count] . "\n" ;
+    $count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "deltaV_" . $count . "=" . $deltapria[$suppresses+15+$count] . "\n" ;
+	$count++ ;
+    }
+     $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "deltaB_" . $count . "=" . $deltapria[$suppresses+16+$#moves+$count] . "\n" ;
+	$count++ ;
+    }
+    print SCRIPT "marginal=${marginale}\n" ;
+    print SCRIPT "marginalerr=${marginalesq}\n" ;
+    print SCRIPT "numberpoints=" . $numberpoints . "\n" ;
+    print SCRIPT "adjusts=" . $adjusts . "\n" ;
+    close (SCRIPT) ;
+    open (SCRIPT, "> null-postsummer.gp") ;
+    my (@post) = @{$postref} ;
+    my (@deltapost) = @{$deltapostref} ;
+    print SCRIPT "A=" . $post[0] ."\n" ;
+    $count = 0 ;
+    $suppresses = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "P_" . $count . "_" . $duke . "_0=" . $post[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "P_" . $count . "_" . $duke . "_1=" . $post[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "Gamma_" . $count . "=" . $post[$suppresses+1+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "S_" . $count . "=" . $post[$suppresses+7+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 1.5) {
+	print SCRIPT "eta_" . $count . "=" . $post[$suppresses+13+$count] . "\n" ;
+    $count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "V_" . $count . "=" . $post[$suppresses+15+$count] . "\n" ;
+	$count++ ;
+    }
+     $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "B_" . $count . "=" . $post[$suppresses+16+$#moves+$count] . "\n" ;
+	$count++ ;
+    }
+    print SCRIPT "deltaA=" . $deltapost[0] ."\n" ;
+    $count = 0 ;
+    $suppresses = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "deltaP_" . $count . "_" . $duke . "_0=" . $deltapost[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5){
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+		while ($duke < $#move+1.5) {
+	    print SCRIPT "deltaP_" . $count . "_" . $duke . "_1=" . $deltapost[$duke+1+$suppresses] . "\n" ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "deltaGamma_" . $count . "=" . $deltapost[$suppresses+1+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 5.5) {
+	print SCRIPT "deltaS_" . $count . "=" . $deltapost[$suppresses+7+$count] . "\n" ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < 1.5) {
+	print SCRIPT "deltaeta_" . $count . "=" . $deltapost[$suppresses+13+$count] . "\n" ;
+    $count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "deltaV_" . $count . "=" . $deltapost[$suppresses+15+$count] . "\n" ;
+	$count++ ;
+    }
+     $count = 0 ;
+    while ($count < $#moves+0.5) {
+	print SCRIPT "deltaB_" . $count . "=" . $deltapost[$suppresses+16+$#moves+$count] . "\n" ;
+	$count++ ;
+    }
+    print SCRIPT "marginal=${marginale}\n" ;
+    print SCRIPT "marginalerr=${marginalesq}\n" ; 
+    print SCRIPT "numberpoints=" . $numberpoints . "\n" ;
+    print SCRIPT "adjusts=" . $adjusts . "\n" ;
+    close (SCRIPT) ;
+    return ("end") ;
+}
+
+sub Lookdatafile{
+# Looks at data file line by line.
+    my ($filenameref) = @_ ;
+    my (@filename) = @{$filenameref} ;
+    my ($totalpoints) = 0 ;
+    my ($count) = 0 ;
+    while (defined ($filename[$count])) {
+	my (@Mdirtemp) ;
+	my (@Detectornumbertemp) ;
+	my (@Etemp) ;
+	my (@deltaEtemp) ;
+	my (@Ftemp) ;
+	my (@deltaFtemp) ;
+	my (@shapetemp) ;
+	my (@Detectionmeasuredtemp) ;
+	my (@sigmatemp) ;
+	my ($filename) = $filename[$count] ;
+	my (@records) = &Readdatafile($filename) ;
+#	print STDOUT "Parsing data file ${filename}.\n" ;
+	my ($linenumber) = 1 ;
+	my ($recordnumber) = 0;
+	my (@move) ;
+	while (defined ($records[$linenumber-1])) {
+	    my ($record) = $records[$linenumber-1] ;
+# Look at line token by token
+	    $record =~ s/\#.*// ;
+# Ignore comments
+	    my (@fields) = split (/\s+/, $record) ;
+	    if ( $#fields >= 7.5) {
+# Record contains enough fields to be valid
+		if ($#fields >= 8.5){
+# Record contains extra fields
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains more fields than are" ; 
+		    print STDERR "necessary;\n" ;
+		    print STDERR "I am guessing that first fields are the" ;
+		    print STDERR " important ones.\n" ;
+		}
+		if ((($fields[0] eq "+1") || ($fields[0] eq "0") || ($fields[0] eq "-1")) && (($fields[1] eq "1") || ($fields[1] eq "2")) && (($fields[6] eq "G") || ($fields[6] eq "T") || ($fields[6] eq "P"))) {
+# Magnetization directions, channeltron numbers, and detector current shapes
+# are within valid domains
+		    $Mdirtemp[$recordnumber] = $fields[0] ;
+		    $Detectornumbertemp[$recordnumber] = $fields[1]-1 ;
+# Convert our channeltron numbers to perl array indices
+		    $Etemp[$recordnumber] = $fields[2]*$e ;
+		    $deltaEtemp[$recordnumber] = $fields[3]*$e ;
+# Convert beam energies from eV to Joules
+		    $Ftemp[$recordnumber] = $fields[4]*1000 ;
+		    $deltaFtemp[$recordnumber] = -$fields[5]*1000 ;
+# Convert beam currents in nanoamps into beam currents (into gun) in picoamps
+		    $shapetemp[$recordnumber] = $fields[6] ;
+		    if ($shapetemp[$recordnumber] eq "P") {
+			$Detectionmeasuredtemp[$recordnumber] = $fields[7]*$e*10**12 ;
+			$sigmatemp[$recordnumber] = $fields[8]*$e*10**12 ;
+# Convert count rates in Hertz into measured currents (into chamber) in
+# picoamps
+		    }
+		    else {
+			$Detectionmeasuredtemp[$recordnumber] = $fields[7]/1000 ;
+			$sigmatemp[$recordnumber] = $fields[8]/1000 ;
+# Convert measured currents in femtoamps into measured currents (into chamber)
+# in picoamps
+		    }
+		    $linenumber++ ;
+		    $recordnumber++ ;
+		}
+		else{
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains invalid data, and is ignored.\n" ;
+		    $linenumber ++ ;
+		}
+	    }
+	    else{
+		print STDERR "Line $linenumber of file $filename" ;
+		print STDERR " does not contain enough fields, " ;
+		print STDERR "and is ignored.\n" ;
+		$linenumber ++ ;
+	    }
+	}
+	$moves[$count] = \@move ;
+	$Mdir[$count] = \@Mdirtemp ;
+	$Detectornumber[$count] = \@Detectornumbertemp ;
+	$E[$count] = \@Etemp ;
+	$deltaE[$count] = \@deltaEtemp ;
+	$F[$count] = \@Ftemp ;
+	$deltaF[$count] = \@deltaFtemp ;
+	$shape[$count] = \@shapetemp ;
+	$Detectionmeasured[$count] = \@Detectionmeasuredtemp ;
+	$sigma[$count] = \@sigmatemp ;
+	$totalpoints = $totalpoints+$#Etemp+1 ;
+	$count++ ;
+    }
+    return ($totalpoints) ;
+}
+
+sub Lookcalibfile{
+# Looks at the data in the calibration file line by line.
+    my ($filenameref) = @_ ;
+    my (@filename) = @{$filenameref} ;
+    my (@records) = &Readdatafile($filename[0]) ;
+    {
+	my ($filename) = $filename[0] ;
+#	print STDOUT "Parsing data file ${filename}.\n" ;
+	my ($linenumber) = 1 ;
+	my ($recordnumber) = 0;
+	while (defined ($records[$linenumber-1])) {
+	    my ($record) = $records[$linenumber-1] ;
+# Look at line token by token
+	    $record =~ s/\#.*// ;
+# Ignore comments
+	    my (@fields) = split (/\s+/, $record) ;
+	    if ( $#fields >= 0.5) {
+# Record contains enough fields to be valid
+		if ($#fields >= 1.5){
+# Record contains extra fields
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains more fields than are" ; 
+		    print STDERR "necessary;\n" ;
+		    print STDERR "I am guessing that first fields are the" ;
+		    print STDERR " important ones.\n" ;
+		}
+		{
+		    $calibGammaW[$recordnumber] = $fields[0]*$e*10**15 ;
+# Convert energy loss window from eV to fJ
+		    $calibGamma[$recordnumber] = $fields[1] ;
+		    $recordnumber++ ;
+		}
+	    }
+	    else{
+		print STDERR "Line $linenumber of file $filename" ;
+		print STDERR " does not contain enough fields, " ;
+		print STDERR "and is ignored.\n" ;
+	    }
+	    $linenumber++ ;
+	}
+    }
+    my (@morerecords) = &Readdatafile($filename[1]) ;
+    {
+	my ($filename) = $filename[1] ;
+#	print STDOUT "Parsing data file ${filename}.\n" ;
+	my ($linenumber) = 1 ;
+	my ($recordnumber) = 0;
+	while (defined ($records[$linenumber-1])) {
+	    my ($record) = $morerecords[$linenumber-1] ;
+# Look at line token by token
+	    $record =~ s/\#.*// ;
+# Ignore comments
+	    my (@fields) = split (/\s+/, $record) ;
+	    if ( $#fields >= 1.5) {
+# Record contains enough fields to be valid
+		if ($#fields >= 2.5){
+# Record contains extra fields
+		    print STDERR "Line ${linenumber} of file ${filename}" ;
+		    print STDERR " contains more fields than are" ; 
+		    print STDERR "necessary;\n" ;
+		    print STDERR "I am guessing that first fields are the" ;
+		    print STDERR " important ones.\n" ;
+		}
+		{
+		    $calibSW[$recordnumber] = $fields[0]*$e*10**15 ;
+# Convert energy loss window from eV to fJ
+		    $calibS[$recordnumber] = $fields[1] ;
+		    $deltacalibS[$recordnumber] = $fields[2] ;
+		    $recordnumber++ ;
+		}
+	    }
+	    else{
+		print STDERR "Line $linenumber of file $filename" ;
+		print STDERR " does not contain enough fields, " ;
+		print STDERR "and is ignored.\n" ;
+	    }
+	    $linenumber++ ;
+	}
+    }
+    my ($totalpoints) = $#calibGammaW+$#calibSW+2 ;
+    return ($totalpoints) ;
+}    
+
+sub Readdatafile{
+# Reads in data file line by line.
+    my ($filename) = @_ ;
+#   print STDOUT "Reading data file ${filename}.\n" ;
+    open (DATAFILE, "< ${filename}.dat") || die ("Can't open data file: ${filename}.\n") ;
+    my (@records) ;
+    my ($line) ;
+    my ($count) = 0 ;
+    while ($line = <DATAFILE>) {
+	$records[$count] = $line ;
+	$count++ ;
+    }
+    close (DATAFILE) ;
+    my ($numberlines) = $#records+1 ;
+#   print STDOUT "Data file ${filename} has ${numberlines} lines.\n" ;
+    return (@records) ;
+}
+
+sub Integratebulk{
+# Does Monte-Carlo integration to find marginal likelihood (MacKay:1992:BI,
+# MacKay:1992:BMA "evidence") for models with bulk sample, and posterior means
+# and standard deviations of sample parameters in this model.
+
+# Energy-independent adjustable parameters of experimental setup
+
+    my ($accept) ;        # Acceptance probability at front of polarimeter
+    my ($deltaaccept) ;
+    my (@suppress) ;      # Suppression factor of the acceptance probability
+    my (@deltasuppress) ; # due to mis-positioned sample.
+    my (@eta) ;           # Detection efficiencies of channeltron-ammeter
+    my (@deltaeta) ;      # systems
+
+# Energy-dependent adjustable parameters of experimental setup
+
+    my (@Gamma) ;         # Average scattering probability at Th foil;
+    my (@deltaGamma) ;    # for experiments with -ve retarding grid supply
+                          # available, where retarding grid voltage
+                          # is adjusted with incident electron energy
+                          # to keep energy window constant, this will
+                          # be energy-independent.
+    my (@S) ;             # Sherman function; for experiments with -ve
+    my (@deltaS) ;        # retarding grid supply
+                          # available, where retarding grid voltage
+                          # is adjusted with incident electron energy
+                          # to keep energy window constant, this will
+                          # be energy-independent.
+
+# Energy-independent adjustable parameters of sample
+
+    my (@B) ;           # Magnetic flux densities in the several layers
+    my (@deltaB) ;
+    my (@V) ;           # Electrostatic potentials in the several layers
+    my (@deltaV) ;
+    my (@t) ;           # Thicknesses of the several layers, not really
+    my (@deltat) ;      # applicable in bulk model
+    my ($priaref, $deltapriaref) = &analytic() ;
+# Gets analytic values of prior means and standard deviations of parameters
+    my ($marginal, $marginalsq, $postref, $deltapostref) = &Integratebulkall($priaref, $deltapriaref) ;
+    return ($priaref, $deltapriaref, $marginal, $marginalsq, $postref, $deltapostref) ;
+}
+
+sub analytic{
+# The expectations and standard deviations of the prior distributions can be
+# derived analytically, and are as follows:
+    my ($acceptpria) = 0.5 ;
+    my ($deltaacceptpria) = 1/sqrt(12) ;
+    my ($count) = 0 ;
+    my ($suppresses) = 0 ;
+    my (@suppresspria0) ;
+    my (@deltasuppresspria0) ;
+#   print STDOUT "Moves: " . $#moves . "\n" ;
+    while ($count < $#moves+0.5){
+#	print STDOUT $count . "\n" ;
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+	while ($duke < $#move+1.5) {
+#	    print STDOUT $duke . "\n" ;
+#	    print STDOUT $count . "\n" ;
+#	    print STDOUT $suppresses . "\n" ;
+#	    print STDOUT $#move . "\n" ;
+	    $suppresspria0[$suppresses+$duke] = 1 ;
+	    $deltasuppresspria0[$suppresses+$duke] = 0.1 ;
+	    $duke++ ;
+	}
+	$suppresses = $suppresses+$#move+2 ;
+	$count++ ;
+    }
+    $count = 0 ;
+#   print STDOUT $#suppresspria0 . "\n" ;
+    my (@suppresspria1) ;
+    my (@deltasuppresspria1) ;
+    my ($suppresses2) = 0 ;
+#   print STDOUT "Moves: " . $#moves . "\n" ;
+    while ($count < $#moves+0.5){
+#	print STDOUT $count . "\n" ;
+	my ($duke) = 0 ;
+	my (@move) = @{$moves[$count]} ;
+	while ($duke < $#move+1.5) {
+#	    print STDOUT $duke . "\n" ;
+#	    print STDOUT $count . "\n" ;
+#	    print STDOUT $suppresses . "\n" ;
+#	    print STDOUT $#move . "\n" ;
+	    $suppresspria1[$suppresses2+$duke] = 1 ;
+	    $deltasuppresspria1[$suppresses2+$duke] = 0.1 ;
+	    $duke++ ;
+	}
+	$suppresses2 = $suppresses2+$#move+2 ;
+	$count++ ;
+    }
+    $suppresses = $suppresses+$suppresses2 ;
+#   print STDOUT $#suppresspria1 . "\n" ;
+    my (@etapria) = ((0.78+0.89)/2, (0.78+0.89)/2) ;
+    my (@deltaetapria) = ((0.89-0.78)/sqrt(12), (0.89-0.78)/sqrt(12)) ;
+    my ($scale) = 1000*$e*10**15 ;
+    my (@Gammapria) = (0.5, 0, 0, 0, 0, 0) ;
+#   my (@Gammapria) = (0.000472028, 0.0533628, -0.324383, 3.24927, -13.3381, 17.9803) ;
+    my (@deltaGammapria) = (1/sqrt(12), 1/$scale, 1/$scale**2, 1/$scale**3, 1/$scale**4, 1/$scale**5) ;
+#   my (@deltaGammapria) = (0.00828*sqrt(2), 0.3744*sqrt(2), 6.232*sqrt(2), 48.31*sqrt(2), 176.2*sqrt(2), 244.2*sqrt(2)) ;
+    my (@Spria) = (0, 0, 0, 0, 0, 0) ;
+#   my (@Spria) = (-0.631619, 17.7957, -274.095, 2106.38, -7773.32, 10965.7) ;
+    my (@deltaSpria) = (2/sqrt(12), 2/$scale, 2/$scale**2, 2/$scale**3, 2/$scale**4, 2/$scale**5) ;
+#   my (@deltaSpria) = (0.176*sqrt(2), 7.789*sqrt(2), 127.1*sqrt(2), 967.9*sqrt(2), 3474.0*sqrt(2), 4746.0*sqrt(2)) ;
+    $count = 0 ;
+    my (@Vpria) ;
+    my (@deltaVpria) ;
+    my (@Bpria) ;
+    my (@deltaBpria) ;
+    while ($count < $#moves+0.5) {
+	if ($count < 0.5) {
+	    $Vpria[$count] = 4.65-5 ;
+	    $deltaVpria[$count] = sqrt((0.05*4.65)**2+(0.05*5)**2) ;
+	    $deltaBpria[$count] = 0 ;
+	}
+	else {
+	    $Vpria[$count] = 4.1-5 ;
+	    $deltaVpria[$count] = sqrt((0.05*4.1)**2+(0.05*5)**2) ;
+	    $deltaBpria[$count] = 0 ;
+	}
+	$Bpria[$count] = 0 ;
+	$count++ ;
+    }
+#     print STDOUT "Parameters from prior probability distribution, " ;
+#     print STDOUT "derived analytically:\n" ;
+#     print STDOUT "Acceptance probability at front of polarimeter: " ;
+#     print STDOUT "${acceptpria} +/- ${deltaacceptpria}\n" ;
+#     $count = 0 ;
+#     while (defined ($suppresspria0[$count])) {
+# 	print STDOUT "Time-dependent adjustment of detection efficiency of " ;
+# 	print STDOUT "channeltron 1 " . $count . ": " ;
+# 	print STDOUT $suppresspria0[$count] . "+/-" . $deltasuppresspria0[$count]. "\n" ;
+# 	print STDOUT "Time-dependent adjustment of detection efficiency of " ;
+# 	print STDOUT "channeltron 2 " . $count . ": " ;
+# 	print STDOUT $suppresspria1[$count] . "+/-" . $deltasuppresspria1[$count]. "\n" ;
+# 	$count++ ;
+#     }
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 0: " ;
+#     print STDOUT "${Gammapria[0]} +/- ${deltaGammapria[0]}\n" ;
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 1: " ;
+#     print STDOUT "(${Gammapria[1]} +/- ${deltaGammapria[1]})/fJ\n" ;
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 2: " ;
+#     print STDOUT "(${Gammapria[2]} +/- ${deltaGammapria[2]})/fJ^2\n" ;
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 3: " ;
+#     print STDOUT "(${Gammapria[3]} +/- ${deltaGammapria[3]})/fJ^3\n" ;
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 4: " ;
+#     print STDOUT "(${Gammapria[4]} +/- ${deltaGammapria[4]})/fJ^4\n" ;
+#     print STDOUT "Spin-averaged scattering " ;
+#     print STDOUT "probability at Th foil 5: " ;
+#     print STDOUT "(${Gammapria[5]} +/- ${deltaGammapria[5]})/fJ^5\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 0: " ;
+#     print STDOUT "${Spria[0]} +/- ${deltaSpria[0]}\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 1: " ;
+#     print STDOUT "(${Spria[1]} +/- ${deltaSpria[1]})/fJ\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 2: " ;
+#     print STDOUT "(${Spria[2]} +/- ${deltaSpria[2]})/fJ^2\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 3: " ;
+#     print STDOUT "(${Spria[3]} +/- ${deltaSpria[3]})/fJ^3\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 4: " ;
+#     print STDOUT "(${Spria[4]} +/- ${deltaSpria[4]})/fJ^4\n" ;
+#     print STDOUT "Sherman " ;
+#     print STDOUT "function at Th foil 5: " ;
+#     print STDOUT "(${Spria[5]} +/- ${deltaSpria[5]})/fJ^5\n" ;
+#     print STDOUT "Detection efficiency of detector 1: " ;
+#     print STDOUT "${etapria[0]} +/- ${deltaetapria[0]}\n" ;
+#     print STDOUT "Detection efficiency of detector 2: " ;
+#     print STDOUT "${etapria[1]} +/- ${deltaetapria[1]}\n" ;
+#     $count = 0 ;
+#     while (defined ($Vpria[$count])) {
+# 	print STDOUT "Electrostatic potential " . $count . ": " ;
+# 	print STDOUT "(" . $Vpria[$count] . "+/-" . $deltaVpria[$count] . ")V\n" ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while (defined ($Vpria[$count])) {
+# 	print STDOUT "Magnetic flux density " . $count . ": " ;
+# 	print STDOUT "(" . $Bpria[$count] . "+/-" . $deltaBpria[$count] . ")T\n" ;
+# 	$count++ ;
+#     }
+    my (@params) = ($acceptpria, @suppresspria0, @suppresspria1, @Gammapria, @Spria, @etapria, @Vpria, @Bpria) ;
+    my (@deltaparams) = ($deltaacceptpria, @deltasuppresspria0, @deltasuppresspria1, @deltaGammapria, @deltaSpria, @deltaetapria, @deltaVpria, @deltaBpria) ;
+    return (\@params, \@deltaparams) ;
+}
+
+sub Integratebulkall{
+# Monte-Carlo integration over the prior probability distribution is performed,
+# to calculate the marginal likelihood, and to generate mean and standard
+# deviation values of the parameters, which can be checked against those
+# derived analytically, to confirm that the Monte Carlo algorithm works.
+    my ($priaref, $deltapriaref) = @_ ;
+    my ($currentref_pri) = &Initialvectorset($priaref, $deltapriaref, "pri") ;
+    my ($currentref) = &Initialvectorset($priaref, $deltapriaref, "post") ;
+#   my (@current) = @{$currentref} ;
+    my ($numberiterations) = 2**256 ; # Effectively infinite
+    my (@sum) ;
+    my (@sumsquare) ;
+    my ($sumlikelihood) = &large(0) ;
+    my ($sumlikelihoodsq) = &large(0) ;
+    my ($count) = 0 ;
+#   print STDOUT "Choosing samples from the prior distribution.\n" ;
+    open (MARGINALS, "> null_marginals") ;
+    print MARGINALS "# Each line contains the mean, over the parameter vectors\n" ;
+    print MARGINALS "# in a single iteration of the leapfrog algorithm, with\n" ;
+    print MARGINALS "# Metropolis decisions made using the prior probability\n" ;
+    print MARGINALS "# distribution, of\n" ;
+    print MARGINALS "# Column 1: The likelihood\n" ;
+    print MARGINALS "# Column 2: The square likelihood\n" ;
+    open (PARAMS, "> null_params") ;
+    print PARAMS "# Each line contains the mean, over the parameter vectors\n" ;
+    print PARAMS "# in a single iteration of the leapfrog algorithm, with\n" ;
+    print PARAMS "# Metropolis decisions made using the posterior probability\n" ;
+    print PARAMS "# distribution, of\n" ;
+    print PARAMS "# Column 1 : Acceptance probability at the front of the polarimeter\n" ;
+    print PARAMS "# Column 2 : Suppression factor of channeltron 1 sensitivity for no film\n" ;
+    print PARAMS "# Column 3 : Suppression factor of channeltron 1 sensitivity for thickness 1\n" ;
+    print PARAMS "# Column 4 : Suppression factor of channeltron 1 sensitivity for thickness 2\n" ;
+    print PARAMS "# Column 5 : Suppression factor of channeltron 1 sensitivity for thickness 3\n" ;
+    print PARAMS "# Column 6 : Suppression factor of channeltron 1 sensitivity for thickness 4\n" ;
+    print PARAMS "# Column 7 : Suppression factor of channeltron 1 sensitivity for thickness 5\n" ;
+    print PARAMS "# Column 8 : Suppression factor of channeltron 1 sensitivity for thickness 6\n" ;
+    print PARAMS "# Column 9 : Suppression factor of channeltron 1 sensitivity for thickness 7\n" ;
+    print PARAMS "# Column 10 : Suppression factor of channeltron 2 sensitivity for no film\n" ;
+    print PARAMS "# Column 11 : Suppression factor of channeltron 2 sensitivity for thickness 1\n" ;
+    print PARAMS "# Column 12 : Suppression factor of channeltron 2 sensitivity for thickness 2\n" ;
+    print PARAMS "# Column 13 : Suppression factor of channeltron 2 sensitivity for thickness 3\n" ;
+    print PARAMS "# Column 14 : Suppression factor of channeltron 2 sensitivity for thickness 4\n" ;
+    print PARAMS "# Column 15 : Suppression factor of channeltron 2 sensitivity for thickness 5\n" ;
+    print PARAMS "# Column 16 : Suppression factor of channeltron 2 sensitivity for thickness 6\n" ;
+    print PARAMS "# Column 17 : Suppression factor of channeltron 2 sensitivity for thickness 7\n" ;
+    print PARAMS "# Column 18 : Coefficient 0 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 19 : Coefficient 1 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 20 : Coefficient 2 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 21 : Coefficient 3 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 22 : Coefficient 4 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 23 : Coefficient 5 of spin-averaged scattering probability at thorium foil\n" ;
+    print PARAMS "# Column 24 : Coefficient 0 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 25 : Coefficient 1 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 26 : Coefficient 2 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 27 : Coefficient 3 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 28 : Coefficient 4 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 29 : Coefficient 5 of Sherman function at thorium foil\n" ;
+    print PARAMS "# Column 30 : Channeltron 1 sensitivity\n" ;
+    print PARAMS "# Column 31 : Channeltron 2 sensitivity\n" ;
+    print PARAMS "# Column 32 : Electrostatic potential with no film\n" ;
+    print PARAMS "# Column 33 : Electrostatic potential with thickness 1\n" ;
+    print PARAMS "# Column 34 : Electrostatic potential with thickness 2\n" ;
+    print PARAMS "# Column 35 : Electrostatic potential with thickness 3\n" ;
+    print PARAMS "# Column 36 : Electrostatic potential with thickness 4\n" ;
+    print PARAMS "# Column 37 : Electrostatic potential with thickness 5\n" ;
+    print PARAMS "# Column 38 : Electrostatic potential with thickness 6\n" ;
+    print PARAMS "# Column 39 : Electrostatic potential with thickness 7\n" ;
+    print PARAMS "# Column 40 : Magnetic flux density with no film\n" ;
+    print PARAMS "# Column 41 : Magnetic flux density with thickness 1\n" ;
+    print PARAMS "# Column 42 : Magnetic flux density with thickness 2\n" ;
+    print PARAMS "# Column 43 : Magnetic flux density with thickness 3\n" ;
+    print PARAMS "# Column 44 : Magnetic flux density with thickness 4\n" ;
+    print PARAMS "# Column 45 : Magnetic flux density with thickness 5\n" ;
+    print PARAMS "# Column 46 : Magnetic flux density with thickness 6\n" ;
+    print PARAMS "# Column 47 : Magnetic flux density with thickness 7\n" ;
+    open (SPARAMS, "> null_sparams") ;
+    print SPARAMS "# Each line contains the mean square, over the parameter vectors\n" ;
+    print SPARAMS "# in a single iteration of the leapfrog algorithm, with\n" ;
+    print SPARAMS "# Metropolis decisions made using the posterior probability\n" ;
+    print SPARAMS "# distribution, of\n" ;
+    print SPARAMS "# Column 1 : Acceptance probability at the front of the polarimeter\n" ;
+    print SPARAMS "# Column 2 : Suppression factor of channeltron 1 sensitivity for no film\n" ;
+    print SPARAMS "# Column 3 : Suppression factor of channeltron 1 sensitivity for thickness 1\n" ;
+    print SPARAMS "# Column 4 : Suppression factor of channeltron 1 sensitivity for thickness 2\n" ;
+    print SPARAMS "# Column 5 : Suppression factor of channeltron 1 sensitivity for thickness 3\n" ;
+    print SPARAMS "# Column 6 : Suppression factor of channeltron 1 sensitivity for thickness 4\n" ;
+    print SPARAMS "# Column 7 : Suppression factor of channeltron 1 sensitivity for thickness 5\n" ;
+    print SPARAMS "# Column 8 : Suppression factor of channeltron 1 sensitivity for thickness 6\n" ;
+    print SPARAMS "# Column 9 : Suppression factor of channeltron 1 sensitivity for thickness 7\n" ;
+    print SPARAMS "# Column 10 : Suppression factor of channeltron 2 sensitivity for no film\n" ;
+    print SPARAMS "# Column 11 : Suppression factor of channeltron 2 sensitivity for thickness 1\n" ;
+    print SPARAMS "# Column 12 : Suppression factor of channeltron 2 sensitivity for thickness 2\n" ;
+    print SPARAMS "# Column 13 : Suppression factor of channeltron 2 sensitivity for thickness 3\n" ;
+    print SPARAMS "# Column 14 : Suppression factor of channeltron 2 sensitivity for thickness 4\n" ;
+    print SPARAMS "# Column 15 : Suppression factor of channeltron 2 sensitivity for thickness 5\n" ;
+    print SPARAMS "# Column 16 : Suppression factor of channeltron 2 sensitivity for thickness 6\n" ;
+    print SPARAMS "# Column 17 : Suppression factor of channeltron 2 sensitivity for thickness 7\n" ;
+    print SPARAMS "# Column 18 : Coefficient 0 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 19 : Coefficient 1 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 20 : Coefficient 2 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 21 : Coefficient 3 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 22 : Coefficient 4 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 23 : Coefficient 5 of spin-averaged scattering probability at thorium foil\n" ;
+    print SPARAMS "# Column 24 : Coefficient 0 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 25 : Coefficient 1 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 26 : Coefficient 2 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 27 : Coefficient 3 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 28 : Coefficient 4 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 29 : Coefficient 5 of Sherman function at thorium foil\n" ;
+    print SPARAMS "# Column 30 : Channeltron 1 sensitivity\n" ;
+    print SPARAMS "# Column 31 : Channeltron 2 sensitivity\n" ;
+    print SPARAMS "# Column 32 : Electrostatic potential with no film\n" ;
+    print SPARAMS "# Column 33 : Electrostatic potential with thickness 1\n" ;
+    print SPARAMS "# Column 34 : Electrostatic potential with thickness 2\n" ;
+    print SPARAMS "# Column 35 : Electrostatic potential with thickness 3\n" ;
+    print SPARAMS "# Column 36 : Electrostatic potential with thickness 4\n" ;
+    print SPARAMS "# Column 37 : Electrostatic potential with thickness 5\n" ;
+    print SPARAMS "# Column 38 : Electrostatic potential with thickness 6\n" ;
+    print SPARAMS "# Column 39 : Electrostatic potential with thickness 7\n" ;
+    print SPARAMS "# Column 40 : Magnetic flux density with no film\n" ;
+    print SPARAMS "# Column 41 : Magnetic flux density with thickness 1\n" ;
+    print SPARAMS "# Column 42 : Magnetic flux density with thickness 2\n" ;
+    print SPARAMS "# Column 43 : Magnetic flux density with thickness 3\n" ;
+    print SPARAMS "# Column 44 : Magnetic flux density with thickness 4\n" ;
+    print SPARAMS "# Column 45 : Magnetic flux density with thickness 5\n" ;
+    print SPARAMS "# Column 46 : Magnetic flux density with thickness 6\n" ;
+    print SPARAMS "# Column 47 : Magnetic flux density with thickness 7\n" ;
+    while ($count < $numberiterations-0.5) {
+#	print STDERR "${count}\n" ;
+	my ($proposedref_pri) = &leapfrog($currentref_pri) ;
+	$currentref_pri = &decisionpri($currentref_pri, $proposedref_pri) ;
+	my ($proposedref) = &leapfrog($currentref) ;
+	$currentref = &decisionpost($currentref, $proposedref) ;
+        my (@current) = @{$currentref_pri} ;
+	my ($earl) = 0 ;
+	my ($littlesumlikelihood) = &large(0) ;
+	my ($littlesumlikelihoodsq) = &large(0) ;
+	while (defined $current[$earl]) {
+#	    print STDERR "${earl}\n" ;
+	    my (@sample) = @{$current[$earl]} ;
+	    my ($lkh) = &Likelihoodbulk(\@sample) ; 
+# 	    my (@checkit) = @{$lkh} ;
+# 	    print STDOUT $checkit[0] . "e" . $checkit[1] . "\t" ;
+#	    print STDERR "About to calculate contribution to marginal likelihood\n" ;
+	    $littlesumlikelihood = &add($littlesumlikelihood, $lkh) ;
+	    $littlesumlikelihoodsq = &add($littlesumlikelihoodsq, &multiply($lkh, $lkh)) ;
+# 	    my (@checkitsum) = @{$littlesumlikelihood} ;
+# 	    print STDOUT $checkitsum[0] . "e" . $checkitsum[1] . "\n" ;
+	    $earl++ ;
+	}
+	my ($marglik) = &divide($littlesumlikelihood, &large($#{$currentref_pri}+1)) ;
+	my ($margliksq) = &divide($littlesumlikelihoodsq, &large($#{$currentref_pri}+1)) ;
+	my (@marglik) = @{$marglik} ;
+	my (@margliksq) = @{$margliksq} ;
+	print MARGINALS $marglik[0] . "e" . $marglik[1] . "\t" . $margliksq[0] . "e" . $margliksq[1] . "\n" ;
+	$sumlikelihood = &add($sumlikelihood, $littlesumlikelihood) ;
+	$sumlikelihoodsq = &add($sumlikelihoodsq, $littlesumlikelihoodsq) ;
+        my (@current_post) = @{$currentref} ;
+	my (@littlesum) ;
+	my (@littlesumsquare) ;
+	$earl = 0 ;
+	while (defined $current_post[$earl]) {
+	    my (@sample) = @{$current_post[$earl]} ;
+	    if (defined ($littlesum[1])) {
+		my ($duke) = 0 ;
+		while (defined ($sample[$duke])) {
+		    $littlesum[$duke] = $littlesum[$duke]+$sample[$duke] ;
+		    $littlesumsquare[$duke] = $littlesumsquare[$duke]+$sample[$duke]**2 ;
+		    $duke++ ;
+		}
+	    }
+	    else {
+		my ($duke) = 0 ;
+		while (defined ($sample[$duke])) {
+		    $littlesum[$duke] = $sample[$duke] ;
+		    $littlesumsquare[$duke] = $sample[$duke]**2 ;
+		    $duke++ ;
+		}
+	    }
+	    $earl++ ;
+	}
+	$earl = 0 ;
+	while (defined ($littlesum[$earl])) {
+	    my ($mean) = $littlesum[$earl]/($#{$currentref}+1) ;
+	    my ($meansquare) = $littlesumsquare[$earl]/($#{$currentref}+1) ;
+	    print PARAMS $mean ;
+	    print SPARAMS $meansquare ;
+	    if (defined ($littlesum[$earl+1])) {
+		print PARAMS "\t" ;
+		print SPARAMS "\t" ;
+	    }
+	    else {
+		print PARAMS "\n" ;
+		print SPARAMS "\n" ;
+	    }
+	    if (defined ($sum[$earl])) {
+		$sum[$earl] = $sum[$earl]+$littlesum[$earl] ;
+		$sumsquare[$earl] = $sumsquare[$earl]+$littlesumsquare[$earl] ;
+	    }
+	    else {
+		$sum[$earl] = $littlesum[$earl] ;
+		$sumsquare[$earl] = $littlesumsquare[$earl] ;
+	    }
+	    $earl++ ;
+	}
+	$count++ ;
+    }
+    my (@mean) ;
+    my (@meansquare) ;
+    my (@variance) ;
+    my (@sd) ;
+    $count = 0 ;
+    my ($numbersamples) = $numberiterations*($#{$currentref}+1) ;
+    print STDOUT "numbersamples=" . $numbersamples . "\n" ;
+#   print STDOUT "Calculating parameter means and standard deviations.\n" ;
+    while (defined ($sum[$count])) {
+	$mean[$count] = $sum[$count]/$numbersamples ;
+	$meansquare[$count] = $sumsquare[$count]/$numbersamples ;
+	$variance[$count] = $meansquare[$count]-$mean[$count]**2 ;
+	if ($variance[$count] >= 0) {
+	    $sd[$count] = sqrt($variance[$count]) ;
+	}
+	else {
+	    $sd[$count] = -sqrt(-$variance[$count]) ;
+# Under these circumstances, the computer's rounding errors have obliterated
+# the uncertainty.
+	}
+	$count++ ;
+    }
+#   print STDOUT "Parameters from prior probability distribution, " ;
+#   print STDOUT "derived using Monte Carlo algortihm:\n" ;
+#   print STDOUT "A=" . $mean[0] ."\n" ;
+#     $count = 0 ;
+#     my ($suppresses) = 0 ;
+#     while ($count < $#moves+0.5){
+# 	my ($duke) = 0 ;
+# 	my (@move) = @{$moves[$count]} ;
+# 		while ($duke < $#move+1.5) {
+# 	    print STDOUT "P_" . $count . "_" . $duke . "_0=" . $mean[$duke+1+$suppresses] . "\n" ;
+# 	    $duke++ ;
+# 	}
+# 	$suppresses = $suppresses+$#move+2 ;
+# 	$count++ ;
+#     }
+#      $count = 0 ;
+#     while ($count < $#moves+0.5){
+# 	my ($duke) = 0 ;
+# 	my (@move) = @{$moves[$count]} ;
+# 		while ($duke < $#move+1.5) {
+# 	    print STDOUT "P_" . $count . "_" . $duke . "_1=" . $mean[$duke+1+$suppresses] . "\n" ;
+# 	    $duke++ ;
+# 	}
+# 	$suppresses = $suppresses+$#move+2 ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 5.5) {
+# 	print STDOUT "Gamma_" . $count . "=" . $mean[$suppresses+1+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 5.5) {
+# 	print STDOUT "S_" . $count . "=" . $mean[$suppresses+7+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 1.5) {
+# 	print STDOUT "eta_" . $count . "=" . $mean[$suppresses+13+$count] . "\n" ;
+#     $count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < $#moves+0.5) {
+# 	print STDOUT "V_" . $count . "=" . $mean[$suppresses+15+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#      $count = 0 ;
+#     while ($count < $#moves+0.5) {
+# 	print STDOUT "B_" . $count . "=" . $mean[$suppresses+16+$#moves+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#     print STDOUT "deltaA=" . $sd[0] ."\n" ;
+#     $count = 0 ;
+#     $suppresses = 0 ;
+#     while ($count < $#moves+0.5){
+# 	my ($duke) = 0 ;
+# 	my (@move) = @{$moves[$count]} ;
+# 		while ($duke < $#move+1.5) {
+# 	    print STDOUT "deltaP_" . $count . "_" . $duke . "_0=" . $sd[$duke+1+$suppresses] . "\n" ;
+# 	    $duke++ ;
+# 	}
+# 	$suppresses = $suppresses+$#move+2 ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < $#moves+0.5){
+# 	my ($duke) = 0 ;
+# 	my (@move) = @{$moves[$count]} ;
+# 		while ($duke < $#move+1.5) {
+# 	    print STDOUT "deltaP_" . $count . "_" . $duke . "_1=" . $sd[$duke+1+$suppresses] . "\n" ;
+# 	    $duke++ ;
+# 	}
+# 	$suppresses = $suppresses+$#move+2 ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 5.5) {
+# 	print STDOUT "deltaGamma_" . $count . "=" . $sd[$suppresses+1+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 5.5) {
+# 	print STDOUT "deltaS_" . $count . "=" . $sd[$suppresses+7+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < 1.5) {
+# 	print STDOUT "deltaeta_" . $count . "=" . $sd[$suppresses+13+$count] . "\n" ;
+#     $count++ ;
+#     }
+#     $count = 0 ;
+#     while ($count < $#moves+0.5) {
+# 	print STDOUT "deltaV_" . $count . "=" . $sd[$suppresses+15+$count] . "\n" ;
+# 	$count++ ;
+#     }
+#      $count = 0 ;
+#     while ($count < $#moves+0.5) {
+# 	print STDOUT "deltaB_" . $count . "=" . $sd[$suppresses+16+$#moves+$count] . "\n" ;
+# 	$count++ ;
+#       }
+      my ($numbersamplesref) = &large($numbersamples) ;
+      my ($likelihood) = &divide($sumlikelihood, $numbersamplesref) ;
+      my ($likelihoodsq) = &divide($sumlikelihoodsq, $numbersamplesref) ;
+      my ($sqlikelihood) = &multiply($likelihood, $likelihood) ;
+      my ($likelihoodvar) = &subtract($likelihoodsq, $sqlikelihood) ;
+      my ($likelihooderr) = &root($likelihoodvar) ;
+#     my (@likelihood) = @{$likelihood} ;
+#     my (@likelihooderr) = @{$likelihooderr} ;
+#     print STDOUT "The marginal likelihood is (" . $likelihood[0]. "e" . $likelihood[1] . ")/pA^" . $numberpoints . ".\n" ;
+#     print STDOUT "The error in the marginal likelihood is (" .$likelihooderr[0]. "e" . $likelihooderr[1] . ")/pA^" . $numberpoints . ".\n" ; 
+      return ($likelihood, $likelihooderr, \@mean, \@sd) ;
+}
+
+sub decisionpri{
+# Proposed state vectors are accepted or rejected, according to the
+# Metropolis-Hastings algorithm \cite{MacKay:2002:ITI}.
+    my ($currentref, $proposedref) = @_ ;
+    my (@current) = @{$currentref} ;
+    my (@proposed) = @{$proposedref} ;
+    my ($count) = 0 ;
+    while (defined ($current[$count])) {
+#	print STDERR "${count}\n" ;
+	my ($originref) = $current[$count] ;
+	my ($trialref) = $proposed[$count] ;
+	my ($originprob) = &Priorbulk($originref) ;
+#	print STDOUT "Origin probability: ${originprob}\n" ;
+	my ($trialprob) = &Priorbulk($trialref) ;
+#	print STDOUT "Trial probability: ${trialprob}\n" ;
+#	print STDOUT "Prior ratio divide\n" ;
+	my ($ratioref) = &divide($trialprob, $originprob) ;
+	my ($ratio) = &small($ratioref) ;
+#	print STDERR "Ratio" . $ratio . "\n" ;
+	if (($ratio >= 1)) {
+	    $current[$count] = $trialref ;
+#	    print STDOUT "accept for sure\n" ;
+	}
+	else {
+	    my ($random) = rand() ;
+	    if ($random <= $ratio) {
+		$current[$count] = $trialref ;
+#	    print STDOUT "accept by chance\n" ;
+	    }
+	    else {
+		$current[$count] = $originref ;
+#	    print STDOUT "reject\n" ;
+	    }
+	}
+	$count++ ;
+    }
+    return (\@current) ;
+}
+
+sub decisionpost{
+# Proposed state vectors are accepted or rejected, according to the
+# Metropolis-Hastings algorithm \cite{MacKay:2002:ITI}.
+    my ($currentref, $proposedref) = @_ ;
+    my (@current) = @{$currentref} ;
+    my (@proposed) = @{$proposedref} ;
+    my ($count) = 0 ;
+    while (defined ($current[$count])) {
+	my ($originref) = $current[$count] ;
+	my ($trialref) = $proposed[$count] ;
+	my ($originprob) = &Posteriorbulk($originref) ;
+#	print STDOUT "Origin probability: ${originprob}\n" ;
+	my ($trialprob) = &Posteriorbulk($trialref) ;
+#	print STDOUT "Posterior ratio divide\n" ;
+	my ($ratioref) = &divide($trialprob, $originprob) ;
+	my ($ratio) = &small($ratioref) ;
+#	print STDOUT "Ratio: " . $ratio . "\n" ;
+#	print STDOUT "Trial probability: ${trialprob}\n" ;
+	if (($ratio >= 1)) {
+	    $current[$count] = $trialref ;
+#	    print STDOUT "accept for sure\n" ;
+	}
+	else {
+	    my ($random) = rand() ;
+	    if ($random <= $ratio) {
+		$current[$count] = $trialref ;
+#	    print STDOUT "accept by chance\n" ;
+	    }
+	    else {
+		$current[$count] = $originref ;
+#	    print STDOUT "reject\n" ;
+	    }
+	}
+	$count++ ;
+    }
+    return (\@current) ;
+}
+
+sub leapfrog{
+# Proposals for new state vectors are made according to the leapfrog proposal
+# density atttributed \cite{MacKay:2002:ITI} to Skilling.
+    my ($currentref) = @_ ;
+    my (@current) = @{$currentref} ;
+    my (@proposed) ;
+    my ($count) = 0 ;
+    while (defined ($current[$count])) {
+#	print STDERR "${count}\n" ;
+	my ($originref) = $current[$count] ;
+	my (@origin) = @{$originref} ;
+	my ($random) = int(rand()*$#current) ;
+	my ($choice) ;
+	if ($random < $count-0.5) {
+	    $choice = $random ;
+	}
+	else {
+	    $choice = $random+1 ;
+	}
+	my ($pivotref) = $current[$choice] ;
+	my (@pivot) = @{$pivotref} ;
+	my (@endpoint) ;
+	my ($duke) = 0 ;
+	while (defined ($origin[$duke])) {
+	    $endpoint[$duke] = 2*$pivot[$duke]-$origin[$duke] ;
+	    $duke++ ;
+	}
+	$proposed[$count] = \@endpoint ;
+	$count++ ;
+    }
+    return (\@proposed) ;
+}
+
+sub Initialvectorset{
+# An initial vector set is chosen, centred around the analytically-derived
+# prior expectation values of the parameters.  The displacements of the $nv 
+# initial vectors from the prior expectation are picked randomly from a top-hat
+# distribution out to a maximum size of each displacement component, which is
+# the product of a constant factor and the prior standard deviation of the
+# relevant parameter.  The constant factor includes a factor of $\exp{}(-5)$,
+# intended to render the width of the initial vector set very small, compared
+# with the width of the probability distribution, in an attempt to allow for
+# the fact that, while the leapfrog algorithm adapts \cite{MacKay:2002:ITI}
+# rapidly to an initial vector set that is too narrow, the author knows of
+# no mechanism, by which it can adapt to an initial vector set that is too
+# broad.  It also includes a factor of $\exp{}($adjusts-$numberpoints)$,
+# intended to ensure that the initial vector set is narrow, even relative
+# to a posterior probability distribution, which is itself expected to be
+# narrower than the prior probability distribution.
+    my ($priaref, $deltapriaref, $type) = @_ ;
+    my (@pria) = @{$priaref} ;
+    my (@deltapria) = @{$deltapriaref} ;
+    $adjusts = $#pria+1-8 ;
+# The -1 is present because eight of the parameters, relating to the magnetic
+# flux densities in the samples, are not truly adjustable in this "null
+# hypothesis," being fixed at zero.
+    my ($scaleexp) ;
+    if ($type eq "pri") {
+	$scaleexp = 1 ;
+    }
+    elsif ($type eq "post") {
+	$scaleexp = $numberpoints-$adjusts ;
+    }
+# It has \cite{MacKay:2002:ITI} been shown that the leapfrog algorithm rapidly
+# grows an initial vector set that is narrower than the distribution, from
+# which one wishes to sample.  However, the author does
+# not know of any analogous proof that the algorithm can shrink an initial
+# vector set that is broader than the distribution, from which one wishes to
+# sample.  Therefore, the intial vector set, for sampling from the prior
+# probability distribution is made a factor of $e$, in each dimension,
+# narrower than the prior
+# probability distribution.  An attempt is made to achieve the same for the
+# posterior probability distribution, using a guess at the width of the
+# posterior probability distribution.
+    print STDOUT "adjusts=" . $adjusts . "\n" ;
+    my ($nv) = $adjusts*2 ;
+# The author believes that the number $nv of state vectors maintained
+# simultaneously, in the Monte Carlo algorithm, must be at least the number
+# $adjusts of adjustable parameters.  This is because every state vector ever
+# obtained will be some linear combination of the $nv initial state vectors,
+# and to obtain a representative sample, the $nv initial state vectors must,
+# therefore, span the parameter space.  The author also believes that having
+# a large value of $nv will ameliorate the problem, noted by MacKay
+# \cite{MacKay:2002:ITI}, of the state vectors in the leapfrog algorithm
+# becoming stuck at single points, becuase if the number of state vectors is
+# large, there will be a reasonable sampling of the distribution even if all
+# the individual state vectors are stationary.
+#   print STDOUT "Generating initial vector set\n" ;
+    my (@initial) ;
+    my ($count) = 0 ;
+    while ($count <= $nv-0.5) {
+	my (@params) ;
+	my ($duke) = 0 ;
+	while(defined ($pria[$duke])) {
+	    my ($centre) = $pria[$duke] ;
+	    my ($width) = sqrt(($deltapria[$duke]*sqrt(3)/($scaleexp*2.7182818))**2) ;
+	    my ($modcentre) = sqrt($centre**2) ;
+	    if ($width < $modcentre*2**(-48)) {
+		$width = $modcentre*2**(-48) ;
+# It is necessary to ensure that, in each direction, the width of the initial
+# vector set is comfortably greater than the quantum of floating point numbers
+# in the appropriate region.  Mantissae have 53 bits `on typical hardware'
+# \cite{Ramirez:2002:PD}.  One bit is assumed to be taken up by the sign, and
+# four bits are left, to provide 16 possible starting ordinates.
+	    }
+#	    if ($centre+$width/16 == $centre-$width/16) {
+#	        print STDOUT "Emergency!!!" . $duke . "\n" ;
+#	    }
+	    $params[$duke] = $centre+(2*rand()-1)*$width ;
+	    $duke++ ;
+	}	
+	$initial[$count] = \@params ;
+	$count++ ;
+    }
+    return (\@initial) ;
+}
+
+sub Posteriorbulk{
+# Calculates un-normalized joint posterior density over parameters
+# for bulk sample
+    my ($paramsref) = @_ ;
+    my ($Prior) = &Priorbulk($paramsref) ;
+    my ($Likelihood) = &Likelihoodbulk($paramsref) ;
+    my ($Posterior) = &multiply($Prior, $Likelihood) ;
+    return ($Posterior) ;
+}
+
+sub Priorbulk{
+# Calculates joint prior density over parameters for bulk sample
+    my ($paramsref) = @_ ;
+    my (@params) = @{$paramsref} ;
+    my ($accept) = $params[0] ;
+    my (@suppress0) ;
+    my (@suppress1) ;
+    my ($suppresses) = 0 ;
+    my ($count) = 0 ;
+    while ($count < $#moves+0.5){
+	my (@move) = @{$moves[$count]} ;
+	my ($duke) = 0 ;
+	while ($duke < $#move+1.5) {
+	    $suppress0[$suppresses] = $params[1+$suppresses] ;
+	    $suppresses++ ;
+	    $duke++ ;
+	}
+	$count++ ;
+    }
+    $count = 0 ;
+    my ($sparesuppresses) = 0 ;
+    while ($count < $#moves+0.5){
+	my (@move) = @{$moves[$count]} ;
+	my ($duke) = 0 ;
+	while ($duke < $#move+1.5) {
+	    $suppress1[$sparesuppresses] = $params[1+$suppresses] ;
+	    $sparesuppresses++ ;
+	    $suppresses++ ;
+	    $duke++ ;
+	}
+	$count++ ;
+    }
+    my ($suppressref0) = \@suppress0 ;
+    my ($suppressref1) = \@suppress1 ;
+   my (@Gamma) = ($params[$suppresses+1], $params[$suppresses+2], $params[$suppresses+3], $params[$suppresses+4], $params[$suppresses+5], $params[$suppresses+6]) ;
+    my ($Gammaref) = \@Gamma ;
+    my (@S) = ($params[$suppresses+7], $params[$suppresses+8], $params[$suppresses+9], $params[$suppresses+10], $params[$suppresses+11], $params[$suppresses+12]) ;
+    my ($Sref) = \@S ;
+    my (@eta) = ($params[$suppresses+13], $params[$suppresses+14]) ;
+    my ($etaref) = \@eta ;
+    $count = 0 ;
+    my (@V) ;
+    my (@B) ;
+    while ($count < $#moves+0.5) {
+	$V[$count] = $params[$suppresses+15+$count] ;
+	$B[$count] = $params[$suppresses+16+$#moves+$count] ;
+	$count++ ;
+    }
+    my ($Vref) = \@V ;
+    my ($Bref) = \@B ;
+    my ($Prioreta) = &Prioreta($etaref) ;
+    my ($Prioraccept) = &Prioraccept($accept) ;
+    my ($Priorsuppress) = &Priorsuppress($suppressref0, $suppressref1) ;
+    my ($PriorGamma) = &PriorGamma($Gammaref) ;
+    my ($PriorS) = &PriorS($Sref) ;
+    my ($PriorB) = &PriorBbulk($Bref) ;
+    my ($PriorV) = &PriorVbulk($Vref) ;
+    my ($Prior) = &multiply($PriorV, &multiply($PriorB, &multiply($PriorGamma, &multiply($PriorS, &multiply($Prioreta, &multiply($Prioraccept, $Priorsuppress)))))) ;
+    return ($Prior) ;
+}
+
+sub Prioreta{
+# Calculates prior distribution over channeltron/ammeter detection
+# efficiencies, including effects of acceptance angles at channeltrons
+    my ($etaref) = @_ ;
+    my (@eta) = @{$etaref} ;
+    my ($eta) ;
+    my ($Prior) = &large(1) ;
+    foreach $eta (@eta) {
+	my ($CondPrior) = &tophat($eta, 0.78, 0.89) ;
+# Because the front ends of the channeltrons are earthed, the electrons reach
+# them with the same kinetic energy that they have at the sample.  This means
+# that the energies of the electrons, on arrival at the channeltrons, will
+# range from $250\ut{eV}$ to $1500\ut{eV}$.  The detection efficiencies of
+# channeltrons of the type used, in this energy range, are \cite{::CEM}
+# between $0.78$ and $0.89$.  Therefore, a top-hat probability distribution,
+# with these as its limits, is used.  The author does not believe that it is
+# worthwhile to create an energy-dependent model, since the uncertainty in
+# the efficiency, at a particular energy, is \cite{Bordoni:1971:CEM, ::CEM}
+# comparable with its variation with energy, over this range.
+	$Prior = &multiply($Prior, $CondPrior) ;
+	}
+    return ($Prior) ;
+}
+
+sub Prioraccept {
+# Calculates prior distribution over acceptance probability at front of
+# polarimeter.
+    my ($accept) = @_ ;
+    my ($Prior) = &tophat($accept, 0, 1) ;
+# Uniform distribution over range 0 to 1 seems sensible, given that we know
+# very little about the properties of this system.
+    return ($Prior) ;
+}
+
+sub Priorsuppress{
+# Calculates the prior probability distribution over the suppression
+# factors.
+# The author and collaborators performed experiments, before those described
+# here, to obtain a rough estimate of the extent of the drift in the
+# channeltron detection efficiencies.  The magnitude of the drift was found
+# to be $\sim{}10\%$ peak-to-peak , on a typical timescale of the order of
+# a few hours.
+# The timescale is represented in the division of the data set into
+# chronologically contiguous subsets, and the magnitude in the standard
+# deviation of this prior probability distribution.
+    my ($suppressref0, $suppressref1) = @_ ;
+    my (@suppress0) = @{$suppressref0} ;
+    my (@suppress1) = @{$suppressref1} ;
+    my ($Prior) = &large(1) ;
+    my ($count) = 0 ;
+    while (defined ($suppress0[$count])) {
+	my ($littlePrior) = &Gaussian($suppress0[$count], 1, 0.05) ;
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while (defined ($suppress1[$count])) {
+	my ($littlePrior) = &Gaussian($suppress1[$count], 1, 0.05) ;
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+    return ($Prior) ;
+}
+
+sub PriorGamma{
+# Calculates the prior probability distribution over the coefficients in the
+# polynomial model of the spin-averaged scattering probability.
+    my ($Gammaref) = @_ ;
+    my (@Gamma) = @{$Gammaref} ;
+#   my (@Prior) ;
+    my ($Prior) = &large(1) ;
+    my ($scale) = 1000*$e*10**15 ;
+    my ($count) = 0 ;
+    while (defined ($Gamma[$count])) {
+	my ($littlePrior) ;
+	my ($Gamma) = $Gamma[$count] ;
+	if ($count < 0.5) {
+	    $littlePrior = &tophat($Gamma, 0, 1) ;
+# The scattering probability must be in the range between zero and one.
+	}
+	else {
+	    my ($sd) = 1/$scale**$count ;
+#	    print STDERR "$sd\n" ;
+	    $littlePrior = &Gaussian($Gamma, 0, $sd) ;
+# The typical range of variation of the scattering probability over the energy
+# scale of the experiments, due to any one term in the Taylor expansion, is
+# asserted to be one.
+	}
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+#   my (@expGamma) = (0.000472028, 0.0533628, -0.324383, 3.24927, -13.3381, 17.9803) ;
+#   my (@deltaGamma) = (0.00828*sqrt(2), 0.3744*sqrt(2), 6.232*sqrt(2), 48.31*sqrt(2), 176.2*sqrt(2), 244.2*sqrt(2)) ;
+# The uncertainties have been incresed by a factor of sqrt(2), from those
+# produced by the fitting algorithm, to allow from the fact that the fitting
+# algorithm does not produce the standard deviations of true marginal
+# posterior probability distributions, but rather the standard deviations of
+# the standard deviations of conditional posterior probability distributions,
+# given the maximum-posterior values of the other parameters, which tends
+# \cite{MacKay:2002:ITI} to underestimate the uncertainties.
+#   while (defined ($Gamma[$count])) {
+#	$Prior[$count] = &Gaussian($Gamma[$count], $expGamma[$count], $deltaGamma[$count]) ;
+#	$Prior = &multiply($Prior, $Prior[$count]) ;
+#	$count++ ;
+#   }
+    return ($Prior) ;
+}
+
+sub PriorS{
+# Calculates the prior probability distribution over the coefficients in the
+# polynomial model of the Sherman function, as inferred, roughly, from the data
+# set in Burnett:1994:HER.
+    my ($Sref) = @_ ;
+    my (@S) = @{$Sref} ;
+#   my (@Prior) ;
+    my ($Prior) = &large(1) ;
+    my ($scale) = 1000*$e*10**15 ;
+    my ($count) = 0 ;
+    while (defined ($S[$count])) {
+	my ($littlePrior) ;
+	my ($S) = $S[$count] ;
+	if ($count < 0.5) {
+	    $littlePrior = &tophat($S, -1, 1) ;
+# The Sherman function must be in the range between -1 and one.
+	}
+	else {
+	    my ($sd) = 2/$scale**$count ;
+#	    print STDERR "${sd}\n" ;
+	    $littlePrior = &Gaussian($S, 0, $sd) ;
+# The typical range of variation of the Sherman function over the energy
+# scale of the experiments, due to any one term in the Taylor expansion, is
+# asserted to be two.
+	}
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+#   my (@expS) = (-0.631619, 17.7957, -274.095, 2106.38, -7773.32, 10965.7) ;
+#   my (@deltaS) = (0.176*sqrt(2), 7.789*sqrt(2), 127.1*sqrt(2), 967.9*sqrt(2), 3474.0*sqrt(2), 4746.0*sqrt(2)) ;
+# The uncertainties have been incresed by a factor of sqrt(2), from those
+# produced by the fitting algorithm, to allow from the fact that the fitting
+# algorithm does not produce the standard deviations of true marginal
+# posterior probability distributions, but rather the standard deviations of
+# the standard deviations of conditional posterior probability distributions,
+# given the maximum-posterior values of the other parameters, which tends
+# \cite{MacKay:2002:ITI} to underestimate the uncertainties.
+#   while (defined ($S[$count])) {
+#	$Prior[$count] = &Gaussian($S[$count], $expS[$count], $deltaS[$count]) ;
+#	$Prior = &multiply($Prior, $Prior[$count]) ;
+#	$count++ ;
+#   }
+    return ($Prior) ;
+}
+
+sub PriorVbulk{
+# It can be assumed that, in as much as the sample is believed to be bulk, the
+# bulk material in question is cobalt, or, in the case of the clean sample,
+# copper, because the meaning of "bulk" is 
+# "topmost layer too thick for the electron beam to penetrate," i.e. of a
+# thickness that is large compared with 1nm (Childs:1995:HAE, and some other
+# source I don't recall.)  Therefore, the electric potential used will be
+# based on the difference in work function between stainless steel, which is
+# the material from which the front end of the electron gun, which sets the
+# zero of potential for the electrons, is constructed, and cobalt.
+    my ($Vref) = @_ ;
+    my (@V) = @{$Vref} ;
+    my ($Cowork) = 5 ;
+# Work function of cobalt in eV (:2001:PTE)
+    my ($deltaCowork) = 0.05*$Cowork ;
+# Work functions are subject to an uncertainty of about 5% (Ashcroft:1976:SSP.)
+    my ($Cuwork) = 4.65 ;
+# Work function of copper in eV (:2001:PTE)
+    my ($deltaCuwork) = 0.05*$Cuwork ;
+# Work functions are subject to an uncertainty of about 5% (Ashcroft:1976:SSP.)
+    my ($SSwork) = 4.1 ;
+# Work function of stainless steel in eV (:2001:KPF)
+    my ($deltaSSwork) = 0.05*$SSwork ;
+# Work functions are subject to an uncertainty of about 5% (Ashcroft:1976:SSP.)
+    my ($expectationCo) = $SSwork-$Cowork ;
+    my ($sdCo) = sqrt($deltaSSwork**2+$deltaCowork**2) ;
+    my ($expectationCu) = $SSwork-$Cuwork ;
+    my ($sdCu) = sqrt($deltaSSwork**2+$deltaCuwork**2) ;
+    my ($Prior) = &large(1) ;
+    my ($count) = 0 ;
+    while (defined ($V[$count])) {
+	my ($littlePrior) ;
+	if ($count < 0.5) {
+	    $littlePrior = &Gaussian($V[$count], $expectationCu, $sdCu) ;
+	}
+	else {
+	    $littlePrior = &Gaussian($V[$count], $expectationCo, $sdCo) ;
+# The details of the shape of the literature probability distribution are
+# unknown.  Therefore, a Gaussian shape is used.
+	}
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+    return ($Prior) ;
+}
+
+sub PriorBbulk{
+# It can be assumed that, in as much as the sample is believed to be bulk, the
+# bulk material in question is cobalt, because the meaning of "bulk" is 
+# "topmost layer too thick for the electron beam to penetrate," i.e. of a
+# thickness that is large compared with 1nm (Childs:1995:HAE, and some other
+# source I don't recall,) and the top layer in this sample is cobalt or, in
+# the case of the clean sample, copper.
+# The magnetic flux density that affects the electrons
+# is expected to be the same effective field, originating in the exchange
+# interaction, which creates ferromagnetism.  A prior expectation of zero will
+# be used, with the width of the prior probability distribution, i.e. the
+# typical size of the flux density, being given by the order-of-magnitude
+# estimate of the strength of this Weiss field that can (Ashcroft:1976:SSP)
+# be obtained from the Curie temperature.
+    my ($Bref) = @_ ;
+    my (@B) = @{$Bref} ;
+    my ($Curie) = 1392 ;
+# Curie temperature of bulk cobalt, averaged over the three literature values
+# cited in Wijn:1991:MPM.
+    my ($interaction) = $kB*$Curie ;
+# Interaction energy associated (Ashcroft:1976:SSP) with the Curie temperature.
+    my ($flux) = $interaction*$me/($e*$hbar) ;
+# The magnetic flux density needed to produce an interaction energy of
+# $interaction with an electron's spin magnetic moment (Rae:1992:QM.)
+    my ($Prior) = &large(1) ;
+    my ($count) = 0 ;
+    while (defined ($B[$count])){
+	my ($littlePrior) ;
+	if ($count < 0.5) {
+	    $littlePrior = &large(1) ;
+# This parameter is not truly adjustable: copper is known to have no remanent
+# magnetization.
+	}
+	else {
+	    $littlePrior = &large(1) ;
+	}
+	$Prior = &multiply($Prior, $littlePrior) ;
+	$count++ ;
+    }
+    return ($Prior) ;
+}
+
+sub Likelihoodbulk{
+# Calculates joint likelihood value for all data points for bulk sample.
+    my ($paramsref) = @_ ;
+    my (@params) = @{$paramsref} ;
+    my ($accept) = $params[0] ;
+    my (@suppress0) ;
+    my (@suppress1) ;
+    my ($count) = 0 ;
+    my ($suppresses) = 0 ;
+    while ($count < $#moves+0.5) {
+	my (@move) = @{$moves[$count]} ;
+	my (@bit) ;
+	my ($duke) = 0 ;
+	while ($duke < $#move + 1.5) {
+	    $bit[$duke] = $params[1+$suppresses] ;
+	    $suppresses++ ;
+	    $duke++ ;
+	}
+	$suppress0[$count] = \@bit ;
+	$count++ ;
+    }
+    $count = 0 ;
+    while ($count < $#moves+0.5) {
+	my (@move) = @{$moves[$count]} ;
+	my (@bit) ;
+	my ($duke) = 0 ;
+	while ($duke < $#move + 1.5) {
+	    $bit[$duke] = $params[1+$suppresses] ;
+	    $suppresses++ ;
+	    $duke++ ;
+	}
+	$suppress1[$count] = \@bit ;
+	$count++ ;
+    }
+    my (@Gamma) = ($params[$suppresses+1], $params[$suppresses+2], $params[$suppresses+3], $params[$suppresses+4], $params[$suppresses+5], $params[$suppresses+6]) ;
+    my ($Gammaref) = \@Gamma ;
+    my (@S) = ($params[$suppresses+7], $params[$suppresses+8], $params[$suppresses+9], $params[$suppresses+10], $params[$suppresses+11], $params[$suppresses+12]) ;
+    my ($Sref) = \@S ;
+    my (@eta) = ($params[$suppresses+13], $params[$suppresses+14]) ;
+    my ($etaref) = \@eta ;
+    my ($bigLikelihoodref) = &large(1) ;
+    $count = 0 ;
+    while (defined ($calibGammaW[$count])) {
+#	print STDERR "${count}\n" ;
+	my ($window) = $calibGammaW[$count]*$e*10**15 ;
+	my ($measuredGamma) = $calibGamma[$count] ;
+	my ($predictedGamma) = &Gamma($window, $Gammaref) ;
+	my ($quant) = 0.001 ;
+	my ($min) = $predictedGamma-$quant/2 ;
+	my ($max) = $predictedGamma+$quant/2 ;
+#	print STDERR "${measuredGamma} ${min} ${max}\n" ;
+	my ($Likelihood) = &tophat($measuredGamma, $min, $max) ;
+	$bigLikelihoodref = &multiply($bigLikelihoodref, $Likelihood) ;
+# The top-hat shape is chosen because the main error is the quantization error
+# of my readings from the graph in Burnett:1994:HER
+	$count++ ;
+    }
+    $count = 0 ;
+    while (defined ($calibSW[$count])) {
+	my ($window) = $calibSW[$count]*$e*10**15 ;
+	my ($measuredS) = $calibS[$count] ;
+	my ($deltacalibS) = $deltacalibS[$count] ;
+	my ($predictedS) = &S($window, $Sref) ;
+	my ($quant) = 0.025 ;
+#	print STDERR "1:${deltacalibS}\n" ;
+	$deltacalibS = sqrt($deltacalibS**2+$quant**2/12) ;
+# The standard error quoted in Burnett:1994:HER is combined in quadrature with
+# the error due to the quantization of my readings from the graph therein.
+#	print STDERR "2:${deltacalibS}\n" ;
+	my ($Likelihood) = &Gaussian($measuredS, $predictedS, $deltacalibS) ;
+	$bigLikelihoodref = &multiply($bigLikelihoodref, $Likelihood) ;
+# The Gaussian shape is chosen because the nature of the errors quoted in
+# Burnett:1994:HER is unknown, and the Gaussian is a standard default.
+	$count++ ;
+    }
+    $count = 0 ;
+    while (defined ($E[$count])) {
+	my (@Mdirthis) = @{$Mdir[$count]} ;
+	my (@Detectornumberthis) = @{$Detectornumber[$count]} ;
+	my (@Ethis) = @{$E[$count]} ;
+	my (@Fthis) = @{$F[$count]} ;
+	my (@deltaFthis) = @{$deltaF[$count]} ;
+	my (@shapethis) = @{$shape[$count]} ;
+	my (@Detectionmeasuredthis) = @{$Detectionmeasured[$count]} ;
+	my (@sigmathis) = @{$sigma[$count]} ;
+#	print STDOUT $count . "\n" ;
+	my (@suppressthis0) = @{$suppress0[$count]} ;
+	my (@suppressthis1) = @{$suppress1[$count]} ;
+	my (@V) = ($params[$suppresses+15+$count]) ;
+	my ($Vref) = \@V ;
+	my (@B) = ($params[$suppresses+$#E+16+$count]) ;
+	my (@move) = @{$moves[$count]} ;
+	my ($Pointcount) = 0 ;
+	my ($Likelihoodref) = &large(1) ;
+	while (defined ($Ethis[$Pointcount])) {
+	    my ($E) = $Ethis[$Pointcount] ;
+	    my ($window) = &window($E) ;
+	    my ($F) = $Fthis[$Pointcount] ;
+	    my ($deltaF) = $deltaFthis[$Pointcount] ;
+	    my ($Mdir) = $Mdirthis[$Pointcount] ;
+	    my (@Breal) ;
+	    my ($Layercount) = 0 ;
+	    while (defined ($B[$Layercount])) {
+		$Breal[$Layercount] = $B[$Layercount]*$Mdir ;
+		$Layercount++ ;
+	    }
+	    my ($Detectornumber) = $Detectornumberthis[$Pointcount] ;
+	    my (@suppressthis) ;
+	    if ($Detectornumber < 0.5) {
+		@suppressthis = @suppressthis0 ;
+	    }
+	    else {
+		@suppressthis = @suppressthis1 ;
+	    }
+	    my ($acceptreal) ;
+	    if (!(defined ($move[0]))) {
+		$acceptreal  = $accept*$suppressthis[0] ;
+	    }
+	    elsif ($Pointcount <= $move[0]+0.5) {
+		$acceptreal  = $accept*$suppressthis[0] ;
+	    }
+	    elsif (!(defined ($move[1]))) {
+		$acceptreal  = $accept*$suppressthis[1] ;
+	    }
+	    elsif ($Pointcount <= $move[1]+0.5) {
+		$acceptreal  = $accept*$suppressthis[1] ;
+	    }
+	    elsif (!(defined ($move[2]))) {
+		$acceptreal  = $accept*$suppressthis[2] ;
+	    }
+	    elsif ($Pointcount <= $move[2]+0.5) {
+		$acceptreal  = $accept*$suppressthis[2] ;
+	    }
+	    elsif (!(defined ($move[3]))) {
+		$acceptreal  = $accept*$suppressthis[3] ;
+	    }
+	    elsif ($Pointcount <= $move[3]+0.5) {
+		$acceptreal  = $accept*$suppressthis[3] ;
+	    }
+	    elsif (!(defined ($move[4]))) {
+		$acceptreal  = $accept*$suppressthis[4] ;
+	    }
+	    elsif ($Pointcount <= $move[4]+0.5) {
+		$acceptreal  = $accept*$suppressthis[4] ;
+	    }
+	    elsif (!(defined ($move[5]))) {
+		$acceptreal  = $accept*$suppressthis[5] ;
+	    }
+	    elsif ($Pointcount <= $move[5]+0.5) {
+		$acceptreal  = $accept*$suppressthis[5] ;
+	    }
+	    elsif (!(defined ($move[6]))) {
+		$acceptreal  = $accept*$suppressthis[6] ;
+	    }
+	    elsif ($Pointcount <= $move[6]+0.5) {
+		$acceptreal  = $accept*$suppressthis[6] ;
+	    }
+	    elsif (!(defined ($move[7]))) {
+		$acceptreal  = $accept*$suppressthis[7] ;
+	    }
+	    elsif ($Pointcount <= $move[7]+0.5) {
+		$acceptreal  = $accept*$suppressthis[7] ;
+	    }
+	    elsif (!(defined ($move[8]))) {
+		$acceptreal  = $accept*$suppressthis[8] ;
+	    }
+	    elsif ($Pointcount <= $move[8]+0.5) {
+		$acceptreal  = $accept*$suppressthis[8] ;
+	    }
+	    else {
+		$acceptreal  = $accept*$suppressthis[9] ;
+	    }
+	    my ($shape) = $shapethis[$Pointcount] ;
+	    my ($Detectionmeasured) = $Detectionmeasuredthis[$Pointcount] ;
+	    my ($sigma) = $sigmathis[$Pointcount] ;
+	    my ($Gamma) = &Gamma($window, $Gammaref) ;
+	    my ($S) = &S($window, $Sref) ;
+	    my ($Likelihoodpointref) = &Likelihoodpointbulk($etaref, $acceptreal, $Gamma, $S, \@Breal, $Vref, $E, $F, $deltaF, $Detectornumber, $shape, $Detectionmeasured, $sigma) ;
+#	print STDOUT "Likelihood for point " . ($Pointcount+1) . ": " . $Likelihoodpoint . "\n" ;
+	    $Likelihoodref = &multiply($Likelihoodref, $Likelihoodpointref) ;
+# 	    my (@checkitpoint) = @{$Likelihoodpointref} ;
+# 	    my (@checkit) = @{$Likelihoodref} ;
+# 	    print STDOUT $checkitpoint[0] . "e" . $checkitpoint[1] . "\t" ;
+# 	    print STDOUT $checkit[0] . "e" . $checkit[1] . "\n" ;
+	    $Pointcount++ ;
+	}
+	$bigLikelihoodref = &multiply($bigLikelihoodref, $Likelihoodref) ;
+# 	    my (@checkitpoint) = @{$Likelihoodref} ;
+# 	    my (@checkit) = @{$bigLikelihoodref} ;
+# 	    print STDOUT $checkitpoint[0] . "e" . $checkitpoint[1] . "\t" ;
+# 	    print STDOUT $checkit[0] . "e" . $checkit[1] . "\n" ;
+	$count++ ;
+    }
+    return ($bigLikelihoodref) ;
+}
+
+sub Likelihoodpointbulk{
+# Calculates likelihood value for single data point for bulk sample
+    my ($etaref, $accept, $Gamma, $S, $Bref, $Vref, $E, $F, $deltaF, $Detectornumber, $shape, $Detectionmeasured, $sigma) = @_ ;
+# Errors in incident intensity and in beam energy can safely be neglected
+# with respect to those in detection rate, and all other errors are absorbed
+# in parameter adjustment, so can just use sigma from lab book directly.
+# I love Bayesian statistics.
+    my ($Detectionbulkref) = &Detectionbulk($etaref, $accept, $Gamma, $S, $Bref, $Vref, $E, $F) ;
+    my (@Detectionbulk) = @{$Detectionbulkref} ;
+    my ($Detectionbulk) = $Detectionbulk[$Detectornumber] ;
+    my ($count) = 0 ;
+    my ($Deviation) = $Detectionmeasured-$Detectionbulk ;
+    my ($Likelihoodref) ;
+# The shape of the likelihood function, for each point, is given in the data
+# file as Gaussian, top-hat or Poisson
+    if ($shape eq "G") {
+	$Likelihoodref = &Gaussian($Detectionmeasured, $Detectionbulk, $sigma) ;
+    }
+    elsif ($shape eq "T") {
+        my ($quant) = $sigma/0.29 ;
+	my ($min) = $Detectionbulk-$quant/2 ;
+ 	my ($max) = $Detectionbulk+$quant/2 ;
+	$Likelihoodref = &tophat($Detectionmeasured, $min, $max) ;
+    }
+    elsif ($shape eq "P") {
+#	my ($time) = $Detectionmeasured/$sigma**2 ;
+#	my ($number) = $Detectionmeasured*$time ;
+#	$Likelihoodref = &Poisson($number, $Detectionbulk, $time) ;
+# Unfortunately, using the channeltrons in electron-counting mode, without
+# saturating them, involved reducing the beam current, to the point where the
+# uncertainty therein made a significant contribution to the uncertainty in
+# the predicted electron detection rate.  Therefore, it is necessary to
+# combine the Poissonian counting error from the data file, in quadrature,
+# with the error due to the uncertain beam current.  The shape of the resulting
+# likelihood function is unknown, so a Gaussian, being a standard default, is
+# used.
+	my ($extra) = $deltaF*$Detectionmeasured/$F ;
+	my ($sd) = sqrt($sigma**2+$extra**2) ;
+	$Likelihoodref = &Gaussian($Detectionmeasured, $Detectionbulk, $sd) ;
+    }
+#   my (@checkit) = @{$Likelihoodref} ;
+#   print STDOUT $checkit[0] . "e" . $checkit[1] . "\n" ;
+    return ($Likelihoodref) ;
+}
+
+sub Detectionbulk{
+# Predicts electron detection rate at channeltrons for bulk sample
+    my ($etaref, $accept, $Gamma, $S, $Bref, $Vref, $E, $F) = @_ ;
+    my $G = &Gbulk($Bref, $Vref, $E, $F) ;
+    my $P = &Pbulk($Bref, $Vref) ;
+    return (&Detection($etaref, $accept, $Gamma, $S, $G, $P)) ;
+}
+
+sub Detection{
+# Predicts electron detection rate at channeltrons
+    my ($etaref, $accept, $Gamma, $S, $G, $P) = @_ ;
+    my (@eta) = @{$etaref} ;
+    my ($Href) = &Arrival($accept, $Gamma, $S, $G, $P) ;
+    my (@H) = @{$Href} ;
+    my (@Detection) = ($eta[0]*$H[0], $eta[1]*$H[1]) ;
+    return (\@Detection) ;
+}
+
+sub Arrival{
+# Predicts electron arrival rate at channeltrons
+    my ($accept, $Gamma, $S, $G, $P) = @_ ;
+    my (@Arrival) = ($G*$accept*$Gamma*(1+$S*$P), $G*$accept*$Gamma*(1-$S*$P)) ;
+    return (\@Arrival) ;
+}
+
+sub Gbulk{
+# Predicts bulk reflected intensity as per (indirectly) Hatton:2002:CFT
+    my ($Bref, $Vref, $E, $F) = @_ ;
+    my (@B) = @{$Bref} ;
+    my (@V) = @{$Vref} ;
+    return ((($e**2*$V[0]**2/(16*$E**2*(cos($I))**4)+$e**2*$hbar**2*$B[0]**2/(48*4*$me**2*$E**2*(cos($I))**4)))*$F) ;
+}
+
+sub Pbulk{
+# Predicts bulk reflected polarization as per Hatton:2002:CFT
+    my ($Bref, $Vref) = @_ ;
+    my (@B) = @{$Bref} ;
+    my (@V) = @{$Vref} ;
+#   print STDOUT $V[0] . "\n" ;
+#   print STDOUT $B[0] . "\n" ;
+    return (-(4*$e**2*$hbar*$me*$V[0]*$B[0]/(12*$e**2*$me**2*$V[0]**2+$e**2*$hbar**2*$B[0]**2))) ;
+}
+
+sub Distill{
+# Creates a list of distinct items in a list
+    my ($Eref) = @_ ;
+    my (@longlist) = @{$Eref} ;
+    my (@Ed) ;
+    my ($E) ;
+    foreach $E (@longlist) {
+	my ($Dejavu) = 0 ;
+	my ($Ed) ;
+	foreach $Ed (@Ed) {
+	    if ($E == $Ed) {
+		$Dejavu++ ;
+	    }
+	}
+	if ($Dejavu == 0) {
+	    $Ed[$#Ed+1] = $E ;
+	}
+    }
+    return (\@Ed) ;
+}
+
+sub tophat{
+# Calculates top-hat probability density of $x, given a minimum at $min and
+# a maximum at $max.  This is not quite a perfect top-hat: it has a
+# probability $\frac{127}{128}$ of being in the top-hat region, and a
+# probability denisty outside this region equal to a Gaussian of appropriate
+# width \cite{Manura:2002:M, ::ESH} for the probability integrated over
+# this region to be $\frac{1}{128}$.
+# Not only is this a more realistic belief density than a perfect top-hat,
+# it provides a probability density gradient, which will help the leapfrog
+# proposal density to reduce the random walk behaviour of the metropolis
+# method.
+    my($x, $min, $max) = @_ ;
+    my ($tophat) ;
+    my ($centre) = ($min+$max)/2 ;
+    my ($width) = $max-$min ;
+    my ($modcentre) = sqrt($centre**2) ;
+    if (($width) == 0) {
+      if ($x == $centre) {
+	my (@tophat) = (1.7976931, 308) ;
+	$tophat = \@tophat ;
+      }
+      else {
+	my (@tophat) = (0, 1) ;
+        $tophat = \@tophat ; 
+      }
+# Where the width is too small for the resolution of floating-point arithmetic,
+# a delta-function is approximated.
+    }
+    elsif ( ($x >= $min) && ($x <= $max)) {
+	$tophat = &large(127/(128*($max-$min))) ;
+    }
+    else {
+	$tophat = &Gaussian($x, $centre, $width/5.32) ;
+    }
+    return ($tophat) ;
+}
+
+sub Gaussian{
+# Calculates Gaussian probability density of $x, given an expectation
+# $expectation and a standard deviation $sd
+    my ($x, $expectation, $sd) = @_ ;
+    my ($Gaussian) ;
+    if (sqrt(2*$pi*$sd**2) == 0 || 2*$sd**2 == 0) {
+      if ($x == $expectation) {
+        my (@Gaussian) = (1.7976931, 308) ;
+	$Gaussian = \@Gaussian ;	
+      }
+      else {
+	my (@Gaussian) = (0, 1) ;
+	$Gaussian = \@Gaussian ;         
+      }
+# Where the standard deviation is too small for the resolution of
+# floating point arithmetic, a delta function is approximated.
+    }
+    else {
+        my ($deviation) = $x-$expectation ;
+        my ($chisquared) = $deviation**2/(2*$sd**2) ;
+#       print STDOUT "Chi-squared: ${chisquared}\n" ;
+        my ($exponential) = &exponential(-$chisquared) ;
+#       print STDOUT "Exponential factor: ${exponential}\n" ;
+#	print STDOUT "Gaussian divide\n" ;
+        $Gaussian = &divide($exponential, &large(sqrt(2*$pi*$sd**2))) ;
+    }
+    return ($Gaussian) ;
+}
+
+sub Poisson{
+# Calculates Poisson probability of a number of events $x, given an expected
+# count rate $expectedrate and a counting time $time.  Poisson formula taken
+# from Boas:1983:MMP.
+    my ($x, $expectedrate, $time) = @_ ;
+    my ($expref) = &exponential(-$expectedrate*$time) ;
+    my ($factorref) = &raise($expectedrate*$time, $x) ;
+    my ($topref) = &multiply($factorref, $expref) ;
+    my ($bottomref) = &factorial($x) ;
+    my ($Poissonref) = &divide ($topref, $bottomref) ;
+    return ($Poissonref) ;
+}
+
+sub factorial{
+# Calculates the factorial of $n
+# The interpolation between integers and the extrapolation to negative
+# numbers are not done by the standard (Boas:1983:MMP) Gamma-function
+# method, but I expect the inputs to this routine to be very, very close to
+# non-negative integers anyway.  The answers are returned in my own
+# large number format.
+# This routine uses a similar algorithm to Jerrod G. Newberry's factorial
+# program
+# <http://www.students.stedwards.edu/~gnewber/4247/Scripts/factorial.htm>.
+    my ($n) = @_ ;
+    my ($factorialref) ;
+    if (defined ($factorial{$n})) {
+	$factorialref = $factorial{$n} ;
+# This recursive algorithm is likely to consume a lot of CPU time, so it's
+# sensible to cache the results.
+    }
+    elsif ($n < 0.5) {
+	my (@factorial) = (1, 0) ;
+	$factorialref = \@factorial ;
+	$factorial{$n} = $factorialref ;
+    }
+    else {
+	my ($nref) = &large($n) ;
+	$factorialref = &multiply($nref, &factorial($n-1)) ;
+	$factorial{$n} = $factorialref ;
+    }
+    return ($factorialref) ;
+}
+
+sub large{
+# Converts ordinary numbers to my own large number format.
+    my ($x) = @_ ;
+    my ($exponent) ;
+    my ($mantissa) ;
+    if ($x == 0) {
+      $exponent = 1 ;
+      $mantissa = 0 ;
+    }
+    elsif ($x < 0) {
+      $exponent = int(log(-$x)/log(10)) ; 
+      $mantissa = $x/10**$exponent ; 
+    }
+    else {
+      $exponent = int(log($x)/log(10)) ;
+      $mantissa = $x/10**$exponent ;
+    }
+    my (@x) = ($mantissa, $exponent) ;
+    return (\@x) ;
+}
+
+sub Gamma {
+# This calculates the spin-averaged scattering probability at the thorium foil,
+# from the ad hoc model that I fitted to the Burnett:1994:HER data.
+    my ($window, $Gammaref) = @_ ;
+    my (@Gamma) = @{$Gammaref} ;
+    my ($Gamma) = $Gamma[0]+$Gamma[1]*$window+$Gamma[2]*$window**2+$Gamma[3]*$window**3+$Gamma[4]*$window**4+$Gamma[5]*$window**5 ;
+    return ($Gamma) ;
+}
+
+sub S {
+# This calculates the spin-averaged scattering probability at the thorium foil,
+# from the ad hoc model that I fitted to the Burnett:1994:HER data.
+    my ($window, $Sref) = @_ ;
+    my (@S) = @{$Sref} ;
+    my ($S) = $S[0]+$S[1]*$window+$S[2]*$window**2+$S[3]*$window**3+$S[4]*$window**4+$S[5]*$window**5 ;
+    return ($S) ;
+}
+
+sub multiply{
+# Multiplies together numbers in my own large number format, with output in
+# the same format
+    my ($xref, $yref) = @_ ;
+    my (@x) = @{$xref} ;
+    my (@y) = @{$yref} ;
+    my ($mantissa) = $x[0]*$y[0] ;
+    my ($exponent) ;
+    if ($mantissa == 0) {
+      $exponent = 1 ;
+    }
+    elsif ($mantissa < 0) { 
+      my ($extraexp) = int(log(-$mantissa)/log(10)) ; 
+      $mantissa = $mantissa/10**$extraexp ; 
+      $exponent = $x[1]+$y[1]+$extraexp ; 
+    } 
+    else {
+      my ($extraexp) = int(log($mantissa)/log(10)) ;
+      $mantissa = $mantissa/10**$extraexp ;
+      $exponent = $x[1]+$y[1]+$extraexp ;
+    }
+    my (@product) = ($mantissa, $exponent) ;
+    return (\@product) ;
+}
+
+sub divide{
+# Divides numbers in my own large number format, with output in
+# the same format
+    my ($xref, $yref) = @_ ;
+#   print STDOUT "Divide\n" ;
+    my (@x) = @{$xref} ;
+    my (@y) = @{$yref} ;
+    my ($mantissa) = $x[0]/$y[0] ;
+    my ($exponent) ;
+    if ($mantissa == 0) {
+      $exponent = 1 ;
+    }
+    elsif ($mantissa < 0) { 
+      my ($extraexp) = int(log(-$mantissa)/log(10)) ; 
+      $mantissa = $mantissa/10**$extraexp ; 
+      $exponent = $x[1]-$y[1]+$extraexp ; 
+    } 
+     else {
+      my ($extraexp) = int(log($mantissa)/log(10)) ;
+      $mantissa = $mantissa/10**$extraexp ;
+      $exponent = $x[1]-$y[1]+$extraexp ;
+    }
+    my (@product) = ($mantissa, $exponent) ;
+    return (\@product) ;
+}
+
+sub raise{
+# Raises $A to the power of $x, with output in my own large number
+# format; I think I can do this more efficiently than Math::BigFloat.
+    my ($A, $x) = @_ ;
+    my ($mantissa) ;
+    my ($exponent) ;
+    if ($A == 0) {
+      $mantissa = 0 ;
+      $exponent = 1 ;
+    }
+    else { 
+    my ($base) = log($A)/log(10) ; 
+    $exponent = int($x*$base) ; 
+    $mantissa = 10**($x*$base-$exponent) ;  
+    } 
+#   print STDOUT "Mantissa: ${mantissa}\n" ;
+#   print STDOUT "Exponent: ${exponent}\n" ;
+    my (@exponential) = ($mantissa, $exponent) ;
+#   $exponential = $mantissa*10**$exponent ;
+#   print STDOUT "Exponential factor: ${exponential}\n" ;
+    return (\@exponential) ;
+}
+
+sub exponential{
+# Does exponentials of large numbers, with output in my own large number
+# format; I think I can do this more efficiently than Math::BigFloat.
+    my ($x) = @_ ;
+    my ($A) = 2.7182818 ;
+    my ($exponential) = &raise($A, $x) ;
+#   my ($base) = 1/log(10) ;
+#   my ($exponent) = int($x*$base) ;
+#   my ($mantissa) = 10**($x*$base-$exponent) ;
+#   print STDOUT "Mantissa: ${mantissa}\n" ;
+#   print STDOUT "Exponent: ${exponent}\n" ;
+#   my (@exponential) = ($mantissa, $exponent) ;
+#   $exponential = $mantissa*10**$exponent ;
+#   print STDOUT "Exponential factor: ${exponential}\n" ;
+    return ($exponential) ;
+}
+
+sub small{
+# Converts from my own large number format to normal numbers
+    my ($xref) = @_ ;
+    my (@x) = @{$xref} ;
+    my ($x) = $x[0]*10**$x[1] ;
+    return ($x) ;
+}
+
+sub add{
+# Adds together numbers in my own large number format, with output in the
+# same format.
+    my ($xref, $yref) = @_ ;
+    my (@x) = @{$xref} ;
+    my (@y) = @{$yref} ;
+    my ($exponent) ;
+    my ($mantissa) ;
+    if ($x[0] == 0) {
+	$mantissa = $y[0] ;
+	$exponent = $y[1] ;
+    }
+    elsif ($y[0] == 0) {
+	$mantissa = $x[0] ;
+	$exponent = $x[1] ;
+    }
+    else {
+	if ($x[1] >= $y[1]) {
+	    $y[0] = $y[0]*10**($y[1]-$x[1]) ;
+	    $y[1] = $x[1] ;
+	}
+	else {
+	    $x[0] = $x[0]*10**($x[1]-$y[1]) ;
+	    $x[1] = $y[1] ;
+	}
+	$mantissa = $x[0]+$y[0] ;
+	if ($mantissa == 0) {
+	    $exponent = 1 ;
+	}
+	else {
+	    my ($extraexp) = int(log($mantissa)/log(10)) ;
+	    $mantissa = $mantissa/10**$extraexp ;
+	    $exponent = $x[1]+$extraexp ;
+	}
+    }
+    my (@sum) = ($mantissa, $exponent) ;
+    return (\@sum) ;
+}
+
+sub subtract{
+# Subtracts numbers in my own large number format, with output in the 
+# same format. 
+   my ($xref, $yref) = @_ ;
+   my (@y) = @{$yref} ;
+   my (@z) = (-$y[0], $y[1]) ;
+   my ($difference) = &add($xref, \@z) ;
+   return ($difference) ;
+}
+
+sub window{
+# The energy loss window is held constant at $200\ut{eV}$.  These need to be
+# expressed in femtoJoules, rather than in electron volts, to avoid the prior
+# probability densities over the $\Gamma_i$ and $S_j$ coefficients hitting
+# the limits of my computer's floating point arithmetic capabilities.
+    my ($E) = @_ ;
+    my ($window) = 200*$e*10**15 ;
+    return ($window) ;
+}
+
+sub root {
+# Takes square roots of numbers in my own large number format, with output
+# in the same format.
+    my ($x) = @_ ;
+    my (@x) = @{$x} ;
+    my ($mantissa) = sqrt($x[0]) ;
+    my ($exponent) = $x[1]/2 ;
+    my ($lostbit) = $exponent-int($exponent) ;
+    $mantissa = $mantissa*10**$lostbit ;
+    $exponent = $exponent-$lostbit ;
+    if ($mantissa == 0) {
+	$exponent = 1 ;
+    }
+    else {
+	my ($extraexp) = int(log($mantissa)/log(10)) ;
+	$mantissa = $mantissa/10**$extraexp ;
+	$exponent = $exponent+$extraexp ;
+    }
+    my (@root) = ($mantissa, $exponent) ;
+    return (\@root) ;
+}
