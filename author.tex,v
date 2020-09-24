@@ -1,0 +1,139 @@
+head	21.1;
+access;
+symbols;
+locks
+	dan:21.1; strict;
+comment	@% @;
+
+
+21.1
+date	2003.08.25.21.38.34;	author dan;	state Exp;
+branches;
+next	13.2;
+
+13.2
+date	2003.01.04.15.14.27;	author dan;	state Exp;
+branches;
+next	13.1;
+
+13.1
+date	2002.11.24.22.07.42;	author dan;	state Exp;
+branches;
+next	2.1;
+
+2.1
+date	2002.08.04.19.58.57;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Authors
+@
+
+
+21.1
+log
+@JACB's last-minute presentational amendments made.
+Some typographical errors corrected.
+Board of Graduate Studies statements added.
+History chapter added.
+Makefile adapted to allow compilation of usable transparent copy.
+@
+text
+@\author{\htmladdnormallink{Daniel Christopher Hatton}{http://www.bib.hatton.btinternet.co.uk/dan/}\thanks{\htmladdnormallink{Physics
+and Chemistry of Solids Group}{http://www-pcs.phy.cam.ac.uk/},
+\htmladdnormallink{Department of Physics}{http://www.phy.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Madingley Road, Cambridge, UK.  CB3
+0HE}\latex{\newcounter{pcs}\setcounter{pcs}{\value{footnote}}}
+$^{\pnc{,}}$ \thanks{\htmladdnormallink{Girton
+College}{http://www.girton.cam.ac.uk/}, \htmladdnormallink{University
+of Cambridge}{http://www.cam.ac.uk/}, Huntingdon Road, Cambridge, UK.
+CB3 0JG} $^{\pnc{,}}$ \thanks{\htmailto{dan.hatton@@btinternet.com}}
+$^{\pnc{,}}$ \thanks{This dissertation is submitted for the degree of
+  Doctor of Philosophy.}}
+@
+
+
+13.2
+log
+@PER theory step diagram imported.
+Typographical errors corrected.
+@
+text
+@d10 3
+a12 1
+CB3 0JG} $^{\pnc{,}}$ \thanks{\htmailto{dan.hatton@@btinternet.com}}}
+@
+
+
+13.1
+log
+@Writing of method continued.
+Whole content of Hatton:2002:CFT imported.
+Chapter on Mott polarimetry principles from Hatton:2000:MPC imported.
+@
+text
+@d1 1
+a1 2
+\author{\htmladdnormallink{D.\ {}C.\
+{}Hatton}{http://www.bib.hatton.btinternet.co.uk/dan/}\thanks{\htmladdnormallink{Physics
+@
+
+
+2.1
+log
+@Results of 5th December 2001 experiment added.
+Typogrpahical errors corrected.
+@
+text
+@d11 1
+a11 30
+CB3 0JG} $^{\pnc{,}}$ \thanks{\htmailto{dan.hatton@@btinternet.com}}\
+{},
+K. P. Kopper\latex{\footnotemark[\value{pcs}]}\html{\thanks{\htmladdnormallink{Physics
+and Chemistry of Solids Group}{http://www-pcs.phy.cam.ac.uk/},
+\htmladdnormallink{Department of Physics}{http://www.phy.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Madingley Road, Cambridge, UK.  CB3 0HE}} $^{\pnc{,}}$
+\thanks{\htmladdnormallink{Selwyn College}{http://www.sel.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Grange Road, Cambridge, UK.  CB3 9DQ}\ {}\ {}$^{\pnc{,}}$
+\thanks{\htmailto{kpk21@@cam.ac.uk}}\ {}, T.\
+{}Mitrelias\latex{\footnotemark[\value{pcs}]}\html{\thanks{\htmladdnormallink{Physics
+and Chemistry of Solids Group}{http://www-pcs.phy.cam.ac.uk/},
+\htmladdnormallink{Department of Physics}{http://www.phy.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Madingley Road, Cambridge, UK.  CB3 0HE}} $^{\pnc{,}}$
+\thanks{\htmladdnormallink{Wolfson
+College}{http://www.wolfson.cam.ac.uk/}, \htmladdnormallink{University
+of Cambridge}{http://www.cam.ac.uk/}, Barton Road, Cambridge, UK.  CB3
+9BB} $^{\pnc{,}}$ \thanks{\htmailto{tm10007@@cus.cam.ac.uk}}\ {},\\ and
+\htmladdnormallink{J.\ {}A.\ {}C.\
+{}Bland}{http://homer.phy.cam.ac.uk/Members/Tony_Bland/Home.html}\latex{\footnotemark[\value{pcs}]}\html{\thanks{\htmladdnormallink{Physics
+and Chemistry of Solids Group}{http://www-pcs.phy.cam.ac.uk/},
+\htmladdnormallink{Department of Physics}{http://www.phy.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Madingley Road, Cambridge, UK.  CB3 0HE}} $^{\pnc{,}}$
+\thanks{\htmladdnormallink{Selwyn College}{http://www.sel.cam.ac.uk/},
+\htmladdnormallink{University of Cambridge}{http://www.cam.ac.uk/},
+Grange Road, Cambridge, UK.  CB3 9DQ}\ {}\ {}$^{\pnc{,}}$
+\thanks{\htmailto{jacb1@@phy.cam.ac.uk}}}
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d21 1
+a21 1
+\thanks{\htmailto{kpk21@@cam.ac.uk}}} {}, T.\
+@

@@ -1,0 +1,1058 @@
+head	23.1;
+access;
+symbols;
+locks
+	dan:23.1; strict;
+comment	@% @;
+
+
+23.1
+date	2004.05.16.18.58.28;	author dan;	state Exp;
+branches;
+next	22.1;
+
+22.1
+date	2004.03.25.21.18.46;	author dan;	state Exp;
+branches;
+next	20.1;
+
+20.1
+date	2003.06.29.23.28.56;	author dan;	state Exp;
+branches;
+next	19.1;
+
+19.1
+date	2003.03.15.23.50.57;	author dan;	state Exp;
+branches;
+next	18.1;
+
+18.1
+date	2003.03.15.20.43.24;	author dan;	state Exp;
+branches;
+next	17.1;
+
+17.1
+date	2003.03.14.23.03.53;	author dan;	state Exp;
+branches;
+next	15.2;
+
+15.2
+date	2003.01.04.15.14.27;	author dan;	state Exp;
+branches;
+next	15.1;
+
+15.1
+date	2003.01.03.19.20.58;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Abstract
+@
+
+
+23.1
+log
+@Internal examiner's printed corrections made.
+Some typographical errors corrected.
+@
+text
+@\chapter*{Abstract}
+\markboth{ABSTRACT}{ABSTRACT}
+
+A theory of polarized electron reflection, at the surface of a
+magnetic material, is devised, predicting that the rate of electrons
+leaving the surface will be
+\begin{equation}
+G = \left(\frac{e^2V^2}{16E_b^2\cos^4I}+\frac{e^2\hbar^2B^2}{192m_e^2E_b^2\cos^4I}\right)\frac{F}{e}\pnc{,}
+\end{equation}
+and that the reflected beam's polarization will be
+\begin{equation}
+P =
+-\frac{4e^2\hbar{}m_eVB}{12e^2m_e^2V^2+e^2\hbar^2B^2}\pnc{.}
+\end{equation}
+$V$ represents the electrostatic potential inside the material, $B$
+the Weiss field inside the material, $I$ the angle of incidence of the
+electron beam, $E_b$ each incident electron's kinetic energy, and
+$F/e$ the rate of electron incidence.  The equations represent a
+lowest order Taylor expansion in $\frac{1}{E_b}$, which, for cobalt
+samples, renders them applicable as long as $E_b \gg{}
+\sim{}700\ut{meV}$.  They also involve an assumption that that the
+topmost layer of the sample has a thickness $\gg{} 1\ut{nm}$.
+
+Measurements are presented of spin-correlated electron arrival rates
+at a Mott-polarimeter's two detectors, from the reflected electron beam
+from $Co/Cu(001)$, as a function of cobalt thickness, incident energy,
+and incident intensity.  Example results are displayed graphically in
+chapter \ref{results}.  They are analysed using three distinct
+methodologies.
+\begin{enumerate}
+\item{}Visual inspection of the data is used to make qualitative
+  suggestions about future directions for modelling of electron
+  reflection processes at magnetic surfaces.  A
+  magnetization-dependent systematic error is discovered in electron
+  arrival rates at the polarimeter's detectors, and is tentatively
+  attributed to the deflection of the electron beam by a stray
+  magnetic field, from the sample, or from some part of the sample
+  holder.  This raises the possibility, for the future, of using a
+  reflected electron beam's spatial deflection, rather than its spin
+  polarization, to characterize magnetic samples.
+\item{}A traditional estimator of the Mott asymmetry, associated with
+  the reflected polarization, is calculated for each combination of
+  film thickness, incident energy, and incident intensity.  Results
+  are displayed graphically in section
+  \ref{traditional-estimation-section}.  The polarizations of most
+  reflected beams from cobalt films are clearly non-zero, indicating
+  that the experiment has successfully detected the cobalt's Weiss
+  field.  Quantitative determination of this polarization is, however,
+  rather imprecise, and there is a puzzling non-zero asymmetry from
+  the bare copper surface.
+\item{}It is argued that the accuracy of the traditional estimator may
+  be compromised by its non-linearity in the electron arrival rates;
+  therefore, Bayesian inference is used to estimate the parameters in
+  two adaptive models, based on the above theory, and to estimate
+  relative probabilities for these models, equipped with the data.
+  One model has a non-zero Weiss field in the films, the other does
+  not.  Results of the parameter estimation are displayed graphically
+  in sections \ref{adaptive-models} and \ref{further-conclusions};
+  quantitative estimation of the sample properties is, as for the
+  traditional estimator, rather imprecise.  The data are found to rule
+  out a null hypothesis, in which the cobalt's Weiss field is zero,
+  very strongly, leaving it with a posterior probability of
+  \input{null-posterior}, indicating firmly that the experiment has
+  successfully detected the cobalt's Weiss field.
+\end{enumerate}
+
+These measurements were preceded by a process (sections
+\ref{autumn-2001-experiments}, \ref{july-2002-experiments}) of trial
+and error, in which attempted measurements of the spin polarization of
+reflected electron beams revealed sources of systematic error, which
+were addressed by adaptations to the polarimeter, and to the
+experimental technique.
+@
+
+
+22.1
+log
+@External examiner's printed corrections made.
+@
+text
+@d5 2
+a6 3
+magnetic material, treating the material as a classical
+electro-magnetic field, is devised.  This theory predicts that the
+rate of electrons leaving the surface will be
+d10 1
+a10 1
+and that the reflected beam's polarization will be of magnitude
+d13 1
+a13 1
+-\frac{4e^2\hbar{}m_eVB}{12e^2m_e^2V^2+e^2\hbar^2B^2}\pnc{,}
+d15 8
+a22 12
+in the direction of the effective magnetic flux density inside the
+material.  $V$ represents the electrostatic potential inside the
+material, $B$ the effective magnetic flux density inside the material,
+$I$ the angle of incidence of the electron beam, $E_b$ the kinetic
+energy of the incident electrons, and $F/e$ the rate of electron
+arrival in the incident beam.  The equations above represent a lowest
+order Taylor expansion in $\frac{1}{E_b}$, which, for cobalt samples,
+renders them applicable as long as $E_b \gg{} \sim{}700\ut{meV}$.
+They also involve an assumption that there is no significant
+contribution from reflections at interfaces inside the sample,
+i.e.~that the topmost layer of the sample has a thickness that is
+large compared with $1\ut{nm}$.
+d24 6
+a29 6
+Measurements are presented of the spin-correlated electron arrival
+rates at the two detectors of a Mott polarimeter, from the reflected
+electron beam from $Co/Cu(001)$, as a function of cobalt thickness,
+incident energy, and incident intensity.  Examples of these results
+are displayed graphically in chapter \ref{results}.  They are analysed
+using three distinct methodologies.
+d32 1
+a32 1
+  suggestions about future directions for the modelling of electron
+d34 7
+a40 9
+  magnetization-dependent systematic error, not covered by the
+  standard techniques for controlling systematic errors in Mott
+  polarimetry, is discovered in electron arrival rates at the Mott
+  polarimeter's detectors, and is tentatively attributed to the
+  deflection of the electron beam by a stray magnetic field, from the
+  sample, or from some part of the sample holder.  This raises the
+  possibility, for the future, of using a reflected electron beam's
+  spatial deflection, rather than its spin polarization, to
+  characterize magnetic samples.
+d45 1
+a45 2
+  \ref{traditional-estimation-section}.  Despite the presence of the
+  above-mentioned systematic error, the polarizations of most
+d49 16
+a64 13
+  rather imprecise.
+\item{}Bayesian inference is used to estimate the parameters in two
+  adaptive models, based on the above theory, and to estimate relative
+  probabilities for these models, equipped with the data.  One model
+  allows for the possibility of a non-zero effective magnetic flux
+  density in the films, the other does not.  Results are displayed
+  graphically in sections \ref{adaptive-models} and
+  \ref{further-conclusions}.  The data are found to rule out a null
+  hypothesis, in which the cobalt's Weiss field is zero, very
+  strongly, leaving it with a posterior probability of
+  \input{null-posterior}, indicating that the experiment has
+  successfully detected the cobalt's Weiss field.  Quantitative
+  inference of the Weiss field is, however, rather imprecise.
+d67 6
+a72 6
+Before these measurements could be undertaken, there was (sections
+\ref{autumn-2001-experiments}, \ref{july-2002-experiments}) a long
+process of trial and error, in which attempted measurements of the
+spin polarization of reflected electron beams revealed sources of
+systematic error, which were addressed by adaptations to the
+polarimeter, and to the experimental technique.
+@
+
+
+20.1
+log
+@Further (cosmetic) amendments suggested by JACB made,
+Typographical errors corrected.
+@
+text
+@d2 1
+d63 1
+a63 1
+  graphically in appendices \ref{adaptive-models} and
+d72 6
+a77 9
+Before these measurements could be undertaken, there was (part
+\ref{intermediate-experiments}) a long process of trial and error, in
+which attempted measurements of the spin polarization of reflected
+electron beams revealed sources of systematic error, which were
+addressed by adaptations to the polarimeter, and to the experimental
+technique.
+
+Some observations are made (part \ref{statistics-philosophy}) on the
+implications of Bayesian statistics for research projects.
+@
+
+
+19.1
+log
+@Number of graphs cut, as recommended by JACB.
+@
+text
+@d1 1
+a1 1
+\chapter*{Short Abstract}
+d21 13
+a33 7
+order Taylor expansion in $\frac{1}{E_b}$.
+
+Measurements are presented of the spin-correlated electron arrival rates
+at the two detectors of a Mott polarimeter, from the reflected electron
+beam from $Co/Cu(001)$, as a function of cobalt thickness, incident
+energy, and incident intensity.  These results are analysed using three
+distinct methodologies.
+d37 20
+a56 1
+  reflection processes at magnetic surfaces.
+d63 6
+a68 6
+  \ref{further-conclusions}.
+\item{}A traditional estimator of the Mott asymmetry, associated with
+  the reflected polarization, is calculated for each combination of
+  film thickness, incident energy, and incident intensity.  Results
+  are displayed graphically in section
+  \ref{traditional-estimation-section}.
+a79 535
+
+\chapter*{Medium Abstract}
+
+A theory of polarized electron reflection, at the surface of a
+magnetic material, treating the material as a classical
+electro-magnetic field, is (chapter \ref{hatton-2002-cft}) devised.
+This theory predicts that the rate of electrons leaving the surface,
+in the specularly reflected beam, will be
+\begin{equation}
+G = \left(\frac{e^2V^2}{16E_b^2\cos^4I}+\frac{e^2\hbar^2B^2}{192m_e^2E_b^2\cos^4I}\right)\frac{F}{e}\pnc{,}
+\end{equation}
+and that the reflected beam's polarization will be of magnitude
+\begin{equation}
+P =
+-\frac{4e^2\hbar{}m_eVB}{12e^2m_e^2V^2+e^2\hbar^2B^2}\pnc{,}
+\end{equation}
+in the direction of the effective magnetic flux density inside the
+material.  $V$ represents the electrostatic potential inside the
+material, $B$ the effective magnetic flux density inside the material,
+$I$ the angle of incidence of the electron beam, $E_b$ the kinetic
+energy of the incident electrons, and $F/e$ the rate of electron
+arrival in the incident beam.  The equations above represent a lowest
+order Taylor expansion in $\frac{1}{E_b}$.
+
+Measurements are presented (chapter \ref{results}) of the
+spin-correlated electron arrival rates at the two detectors of a Mott
+polarimeter, from the reflected electron beam from $Co/Cu(001)$, as a
+function of cobalt thickness, incident energy, and incident intensity;
+some of the results are displayed in figures % \ref{20020919_Polarimetry_1_2},
+% \ref{20020919_Polarimetry_1_4}, 
+\ref{20020919_Polarimetry_1_6} and % ,
+% \ref{20020920_Polarimetry_1_2}, \ref{20020920_Polarimetry_1_4},
+% \ref{20020920_Polarimetry_1_6}, \ref{20020920_Polarimetry_2_2},
+% \ref{20020920_Polarimetry_2_4}, \ref{20020920_Polarimetry_2_6},
+% \ref{20020921_Polarimetry_1_2}, \ref{20020921_Polarimetry_1_4},
+% \ref{20020921_Polarimetry_1_6}, \ref{20020921_Polarimetry_2_2},
+% \ref{20020921_Polarimetry_2_4}, \ref{20020921_Polarimetry_2_6},
+% \ref{20020922_Polarimetry_1_2}, \ref{20020922_Polarimetry_1_4},
+\ref{20020922_Polarimetry_1_6}.% , \ref{20020923_Polarimetry_1_2},
+% \ref{20020923_Polarimetry_1_4}, \ref{20020923_Polarimetry_1_6},
+% \ref{20020923_Polarimetry_2_2}, \ref{20020923_Polarimetry_2_4}, and
+% \ref{20020923_Polarimetry_2_6}
+
+These results are analysed using three distinct methodologies.
+\begin{enumerate}
+\item{}Visual inspection of the data is (section \ref{visual}) used to
+  make qualitative suggestions about future directions for the
+  modelling of electron reflection processes at magnetic surfaces.
+  The data suggest that effect of magnetization reversal on the
+  electron detection rates at the channeltrons does not proceed solely
+  through reversal of the spin polarization of the reflected electron
+  beam.  This could be explained either by the electrons' spatial
+  deflection picking up (measuring) a stray magnetic field from the
+  sample, or by the detection efficiencies of channeltrons changing,
+  when they are switched off, then on again.
+\item{}Bayesian inference is (appendix \ref{relegated-bayesian-stuff})
+  used to estimate the parameters in two adaptive models, based on the
+  above theory, and to estimate relative probabilities for these
+  models, equipped with the data.  One model allows for the
+  possibility of a non-zero effective magnetic flux density in the
+  films, the other does not.  Estimated parameters are displayed in
+  figures \ref{estatpotnull}, \ref{estatpotmain}, and
+  \ref{magfluxmain}, and in tables \ref{null-compare} and
+  \ref{main-compare}.  In the light of the data, the model with
+  magnetic effects is strongly preferred to that without magnetic
+  effects; the latter's probability of correctness is estimated at
+  \input{null-posterior}.
+\item{}A traditional estimator of the Mott asymmetry, associated with
+  the reflected polarization, is (section
+  \ref{traditional-estimation-section}) calculated for each
+  combination of film thickness, incident energy, and incident
+  intensity.  Results are displayed in figures
+  \ref{20020919_Polarimetry_1_asyms},
+  \ref{20020920_Polarimetry_1_asyms},
+  \ref{20020920_Polarimetry_2_asyms},
+  \ref{20020921_Polarimetry_1_asyms},
+  \ref{20020921_Polarimetry_2_asyms},
+  \ref{20020922_Polarimetry_1_asyms},
+  \ref{20020923_Polarimetry_1_asyms}, and
+  \ref{20020923_Polarimetry_2_asyms}.  The value of the estimator,
+  under most conditions, is clearly non-zero, which is indicative of
+  the successful detection of magnetic effects.
+\end{enumerate}
+
+The experiment reported in the main body of this thesis is the
+culmination of a long process of trial and error, in which a programme
+of adaptations to the polarimeter, and to the experimental technique,
+was alternated with attempted measurements of the spin polarization of
+reflected electron beams, which led to the identification of
+systematic errors to be addressed, by further adaptations.  The
+adaptations that led to the first polarization measurement are
+described in appendix \ref{repeated-adaptation-list}.  The results of
+that first measurement are not present in this thesis; they were
+reported in \emph{Mott Polarimetry at the Cavendish Laboratory}
+\cite{Hatton:2000:MPC}, and are of very low precision, compared with
+later measurements.  The two intermediate series of measurements, and
+the adaptations that were adopted in response to them, are described
+in appendices \ref{autumn-2001-experiments} and
+\ref{july-2002-experiments}.
+
+Some observations, on the implications of Bayesian statistics for
+research projects, follow.
+
+Bayesians perform inference by applying Bayes' theorem
+\begin{equation}
+P(T|E)=\frac{P(E|T)P(T)}{P(E)}\pnc{,}
+\end{equation}
+where the prior probability $P(T)$ represents the degree of belief in
+theory $T$, from a set $S$ of available theories, before the
+occurrence of evidence $E$, the posterior probability $P(T|E)$
+represents the degree of belief in $T$ after the occurrence of $E$,
+the likelihood $P(E|T)$ is the probability that $T$ assigns to the
+occurrence of $E$, and $P(E) = \sum_{T\in{}S}P(E|T)P(T)$.
+
+The Bayesian world-view is found to differ from positivism in four
+ways.  Firstly, the positivist Occam's razor insists that $P(T) =
+P_0\epsilon{}^n$, where $n$ is the number of postulates in $T$, and
+$P_0$ is a normalizing constant to ensure $\sum_{T\in{}S}P(T) = 1$,
+whereas in the Bayesian view, $P(T)$ is a subjective and arbitrary
+choice.  Secondly, positivism prohibits the entry of prescriptive
+ideologies into knowledge, whereas Bayes' theorem allows inferences to
+be drawn about prescriptive ideologies and descriptive theories alike.
+Thirdly, a prohibition on theories $T$, for which one cannot conceive
+of any evidence $E$, for which $P(E|T) = 0$, is sometimes associated
+with positivism, whereas Bayesian analysis can assess many such
+theories.  Fourthly, any positivist prohibition on the consideration
+of evidence obtained with an ideology in mind is another example of
+insistence on the assignment of particular values to prior
+probabilities.  Therefore, Bayesians, like standpoint epistemologists,
+will think such a prohibition inappropriate.
+
+Bayesians view subjectivity as entering, inevitably, into academic
+study by four routes.  Firstly, Bayesian inference cannot be performed
+without the use of a prior probability distribution, mirroring
+standpoint epistemologists' view that previous experience always
+affects the interpretation of evidence.  For a Bayesian, the choice of
+prior probability distribution is arbitrary and subjective, and any
+attempt to achieve objectivity, by claiming that a particular prior
+probability distribution is correct, conceals this subjective choice,
+and renders it immutable.  Bayesians conceptualize objectivity as the
+achievement of similar posterior probability distributions, from a
+range of prior probability distributions, mirroring standpoint
+epistemologists' view that theoretical beliefs need to be grounded by
+combining the conclusions of researchers with diverse previous
+experiences.  If evidence has been noted, for which some theories have
+not produced likelihood values, a prior probability distribution can
+be devised which approximates the posterior probability distribution
+which the previous evidence would have produced, mirroring standpoint
+epistemologists' view that thinking on the basis of evidence, which
+has been obtained in the course of a marginalized lives, can improve
+the ability of researchers to interpret other evidence, whether or not
+they themselves experienced those marginalized lives.
+
+Secondly, the Bayesian statistical decision theory uses the expected
+reduction, which an experiment will bring about, in an uncertainty
+function of the prior or posterior probability distribution, to judge
+the worth of an experiment, and therefore to choose experiments.  It
+can be shown that every uncertainty function is associated with an
+ideology, for which it measures how much an experiment's results can
+improve the making of policy choices to implement that ideology.
+Bayesians may, therefore, suspect that claims that a particular piece
+of research is free of ideology conceal the inevitable influence of
+ideology in the selection of its experiments.  This suspicion is
+shared with standpoint epistemology, and proponents of both traditions
+prefer to be open about the ideological motivation of their research.
+
+Thirdly, ideology may also enter into academic study through attempts
+to produce a posterior probability distribution, in which the policy
+which will minimize the expectation of one's own loss function is the
+same policy which will minimize the expectation of the loss function
+of someone else with decision-making power.  This possibility, against
+which Bayesian thinking can provide some protection, has been noted by
+standpoint epistemologists, as an abuse of science.
+
+Fourthly, the prior probability distribution can affect the posterior
+probability distribution through experiment selection.  In a toy
+problem, it is found that whichever of two theories has the higher
+prior probability is able to make an experiment which confirms it
+appear to be the most interesting experiment to undertake, and thereby
+to enhance its probability.  This may be related to certain recent
+epistemological observations, outside of the standpoint epistemology
+tradition.
+
+Physicists have a tendency to study phenomena at very large and very
+small length scales.  This can be modelled as the result of experiment
+selection, under statistical decision theory, using a greedy top-down
+approximation to the Shannon entropy as the uncertainty function.
+However, the greedy top-down approximation may be less appropriate to
+progress through increasing complication, than to progress through
+increasing size or energy.
+
+\chapter*{Long Abstract}
+\section*{Polarized Electron Reflection: Theory}
+
+A theory of polarized electron reflection, at the surface of a
+magnetic material, treating the material as a classical
+electro-magnetic field, with sudden steps in electrostatic potential
+and magnetic flux density at the surface, is devised (chapter
+\ref{hatton-2002-cft}.)  This theory predicts that the rate of
+electrons leaving the surface, in the specularly reflected beam, will
+be
+\begin{equation}
+G = \left(\frac{e^2V^2}{16E_b^2\cos^4I}+\frac{e^2\hbar^2B^2}{192m_e^2E_b^2\cos^4I}\right)\frac{F}{e}\pnc{,}
+\end{equation}
+and that the reflected beam's polarization will be of magnitude
+\begin{equation}
+P =
+-\frac{4e^2\hbar{}m_eVB}{12e^2m_e^2V^2+e^2\hbar^2B^2}\pnc{,}
+\end{equation}
+in the direction of the effective magnetic flux density inside the
+material.  $V$ represents the electrostatic potential inside the
+material, $B$ the effective magnetic flux density inside the material,
+$I$ the angle of incidence of the electron beam, $E_b$ the kinetic
+energy of the incident electrons, and $F/e$ the rate of electron
+arrival in the incident beam.  Each of these formulae is a Taylor
+expansion, to lowest order in the ratios of $V$ and $B$ to $E_b$.
+
+\section*{Polarized Electron Reflection: Experiment}
+
+Measurements are presented (chapter \ref{results}) of the
+spin-correlated electron arrival rates at the two detectors of a Mott
+polarimeter, from the reflected electron beam from $Co/Cu(001)$, as a
+function of cobalt thickness, incident energy, and incident intensity;
+the results are displayed in figures % \ref{20020919_Polarimetry_1_2},
+% \ref{20020919_Polarimetry_1_4}, 
+\ref{20020919_Polarimetry_1_6} and % ,
+% \ref{20020920_Polarimetry_1_2}, \ref{20020920_Polarimetry_1_4},
+% \ref{20020920_Polarimetry_1_6}, \ref{20020920_Polarimetry_2_2},
+% \ref{20020920_Polarimetry_2_4}, \ref{20020920_Polarimetry_2_6},
+% \ref{20020921_Polarimetry_1_2}, \ref{20020921_Polarimetry_1_4},
+% \ref{20020921_Polarimetry_1_6}, \ref{20020921_Polarimetry_2_2},
+% \ref{20020921_Polarimetry_2_4}, \ref{20020921_Polarimetry_2_6},
+% \ref{20020922_Polarimetry_1_2}, \ref{20020922_Polarimetry_1_4},
+\ref{20020922_Polarimetry_1_6}.% , \ref{20020923_Polarimetry_1_2},
+% \ref{20020923_Polarimetry_1_4}, \ref{20020923_Polarimetry_1_6},
+% \ref{20020923_Polarimetry_2_2}, \ref{20020923_Polarimetry_2_4}, and
+% \ref{20020923_Polarimetry_2_6}.
+
+These results are analysed using three distinct methodologies.
+\begin{enumerate}
+\item{}Visual inspection of the data is (section \ref{visual}) used to
+  make qualitative suggestions about future directions for the
+  modelling of electron reflection processes at magnetic surfaces.
+  The data suggest that effect of magnetization reversal on the
+  electron detection rates at the channeltrons does not proceed solely
+  through reversal of the spin polarization of the reflected electron
+  beam. This leads to the exciting possibility, for further
+  theoretical investigation, that the spatial deflection of the
+  electrons, by the stray magnetic field from the sample, is
+  sufficiently affected by the sample magnetization, that it provides
+  a means of using an electron beam to probe sample magnetic
+  properties, without the necessity of spin polarization measurement,
+  which is technically difficult.  It also raises the alternative
+  possibility that the detection efficiency of a channeltron changes,
+  on switching it off then on again.  The latter is more a matter for
+  change in experimental technique (keeping the channeltrons switched
+  on throughout sets of measurements that are to be directly compared)
+  than for detailed theoretical investigation.
+\item{}Bayesian inference is (appendix \ref{relegated-bayesian-stuff})
+  used to estimate the parameters in two adaptive models, based on the
+  classical-field theory, and to estimate relative probabilities for
+  these models, equipped with the data.  One model allows for the
+  possibility of a non-zero effective magnetic flux density in the
+  cobalt films, the other does not.  The most interesting parameters
+  of the models are the electrostatic potentials, and effective
+  magnetic flux densities in the samples, and the estimates of these,
+  based on the experimental data, are displayed in figures
+  \ref{estatpotnull}, \ref{estatpotmain}, and \ref{magfluxmain}.  The
+  low precision of these estimates is surprising, given the extent of
+  the data set.  Tables \ref{null-compare} and \ref{main-compare} show
+  the estimated values of all the parameters, both with and without
+  taking account of the experimental data, and reveal that the low
+  precision of the estimated characteristics of the samples extends to
+  the characteristics of the instruments.  However, the experimental
+  data are very decisive in supporting the model with the possibility
+  of a non-zero effective magnetic flux density in the cobalt films,
+  over the model without this possibility; the probability of
+  correctness of the non-magnetic model is estimated at
+  \input{null-posterior}.
+\item{}A traditional estimator of the Mott asymmetry, associated with
+  the reflected polarization, is (section
+  \ref{traditional-estimation-section}) calculated for each
+  combination of film thickness and incident energy.  Results are
+  displayed in figures \ref{20020919_Polarimetry_1_asyms},
+  \ref{20020920_Polarimetry_1_asyms},
+  \ref{20020920_Polarimetry_2_asyms},
+  \ref{20020921_Polarimetry_1_asyms},
+  \ref{20020921_Polarimetry_2_asyms},
+  \ref{20020922_Polarimetry_1_asyms},
+  \ref{20020923_Polarimetry_1_asyms}, and
+  \ref{20020923_Polarimetry_2_asyms}.  The value of the estimator,
+  under most conditions, is clearly non-zero, which is indicative of
+  the successful detection of magnetic effects.
+\end{enumerate}
+
+\section*{The Road to the Mott Polarimetry Experiment}
+
+The experiment reported in the main body of this thesis is the
+culmination of a long process of trial and error, in which a programme
+of adaptations to the polarimeter, and to the experimental technique,
+was alternated with attempted measurements of the spin polarization of
+reflected electron beams, which led to the identification of
+systematic errors to be addressed, by further adaptations.  The
+adaptations that led to the first polarization measurement are
+described in appendix \ref{repeated-adaptation-list}.  The results of
+that first measurement are not present in this thesis; they were
+reported in \emph{Mott Polarimetry at the Cavendish Laboratory}
+\cite{Hatton:2000:MPC}, and are of very low precision, compared with
+later measurements.  The two intermediate series of measurements, and
+the adaptations that were adopted in response to them, are described
+in appendices \ref{autumn-2001-experiments} and
+\ref{july-2002-experiments}.
+
+\section*{Introduction: The Bayesian View of Probability and Statistics}
+
+The need to interpret (appendix \ref{relegated-bayesian-stuff}) the
+results of the experiments at the core of this thesis, along with the
+detailed consideration of the motivation for those experiments
+(chapter \ref{motive},) has led the author to give considerable
+thought, during the course of this research project, to the
+implications of Bayesian statistics for physical science research, and
+for research in other disciplines.  The remainder of this abstract
+concerns the resulting observations.
+
+The Bayesian perspective involves using probabilities to represent
+degrees of belief.  It implements both inductive and deductive
+reasoning through Bayes' theorem
+\begin{equation}
+P(T|E)=\frac{P(E|T)P(T)}{P(E)}\pnc{,}
+\end{equation}
+which generates the posterior probability $P(T|E)$, representing the
+degree of belief in a theory $T$, in the light of observational or
+experimental evidence $E$, from the likelihood $P(E|T)$, which is the
+probability that $T$ assigns to the occurrence of $E$, the prior
+probability $P(T)$, representing the degree of belief in $T$, before
+the occurrence of $E$, and the marginal likelihood $P(E)$, which is
+the average $\sum_{T\in{}S}P(E|T)P(T)$, over the set $S$ of available
+theories, of the likelihood.
+
+This thesis aims to use Bayesian methods to provide a mathematical
+re-statement of certain recent epistemological arguments, in
+particular those associated with standpoint epistemology, which have
+previously been expressed in natural-language terms.  It is then hoped
+to apply Bayesian arguments to current directions in the physical
+sciences.
+
+\section*{Orthodox Science: The Principles of Positivism}
+
+To this end, an attempt is made to build a Bayesian mathematical model
+of positivism.  The positivist principle of phenomenalism is found to
+apply only mild constraints to the prior probability distribution,
+such as a Bayesian might use to prevent a situation from arising, in
+which beliefs are incapable of being swayed by evidence.  The form of
+Occam's razor used in positivist philosophy, on the other hand, is
+modelled as a claim that a particular prior probability distribution,
+in which the prior probability of any particular theory $T$ is
+\begin{equation}
+P(T)=P_0\epsilon^n\pnc{,}
+\end{equation}
+where $P_0$ is a normalizing constant, the same for all theories,
+$\epsilon$ is a constant equivalent to the likelihood value at which a
+theory is taken to be falsified, and $n$ is the number of postulates
+in theory $T$, is correct, and that any other assignment of prior
+probabilities is invalid.  This places the positivist Occam's razor in
+a tradition known as logical probability, which is alien to the modern
+Bayesian standpoint.  The positivist prohibition on the entry of
+prescriptive ideologies into knowledge is also found to be a
+restriction which is unnecessary for a Bayesian, who is permitted, but
+not obliged, to assess descriptive theories and prescriptive
+ideologies by the same inference method.  Finally, the positivist
+assertion that knowledge from different academic disciplines must be
+capable of concatenation into a single body of knowledge is found to
+be nothing more than a prohibition on self-contradictory theories.
+
+Various other limitations on the kinds of evidence which can be
+allowed to enter into knowledge, which are sometimes incorporated into
+positivism, are also considered in Bayesian terms.  Firstly,
+deterministic falsificationism, in which only evidence $E$ that
+completely rules out a theory $T$, i.e.~that has $P(T|E) = P(E|T) =
+0$, is allowed to influence belief in that theory, is argued to be an
+unnecessary restriction, since Bayes' theorem can draw inferences
+about the truth of $T$ from a much wider range of evidence.  Secondly,
+a prohibition on evidence obtained with an ideology in mind is found,
+in Bayesian inference, to be equivalent to setting the prior
+probability $P(T)$ to zero for any theory $T$ in which, for a piece of
+evidence $E$ which was obtained with an ideology in mind, $P(E|T)
+\neq{} P(E|\bar{T})$.  Such a prohibition is, therefore, another
+example of logical probability, and is not part of the Bayesian view.
+Thirdly, reductionism, in which it is assumed that the single body of
+knowledge, which positivism predicts will be produced by the
+concatenation of theories from different academic disciplines, will
+take the form of the laws of physics, is found, depending on its
+interpretation, either to add nothing to the core principles of
+positivism described above, or to insist on the assignment of low
+prior probabilities to all theories which are incapable of expression
+in a particular kind of mathematical language, associating
+reductionism with logical probability and dissociating it from
+Bayesian statistics.
+
+\section*{The Appearance of Subjectivity in Academic Study}
+
+Having established that Bayesian inference differs from positivist
+inference in important respects, the theme is emphasized that, for a
+Bayesian, it is inevitable that there are subjective influences in
+academic study.  The first route for subjectivity arriving in academic
+study is through the initial prior probability distribution, which
+represents the beliefs that are held, about which theory is true,
+before any evidence is observed, and without which no Bayesian
+inference can be performed.  In the Bayesian perspective, the initial
+prior probability distribution is an arbitrary and subjective choice,
+and the claim, in the tradition of logical probability, that a
+particular prior probability distribution is correct and other choices
+are wrong, is seen as concealing and rendering immutable this
+arbitrary choice.
+
+Instead of claiming objective supremacy for a particular prior
+probability distribution, Bayesians seek to construct objective
+conclusions by gathering enough evidence that similar posterior
+probability distributions can be reached, starting from a wide range
+of different prior probability distributions.  This corresponds to the
+construction of objectivity in standpoint epistemology, where it is
+argued that theory can only be sufficiently grounded by combining the
+conclusions of researchers whose prior beliefs are diverse.
+
+Standpoint epistemologists further argue that the prior beliefs of
+researchers are formed by their previous social experience, and that
+those who have been marginalized in society have experiences, and
+therefore prior beliefs, which can lead to greater insights than are
+available to those who have been privileged.  Bayesians can
+conceptualize this as an example of a common approximation in Bayesian
+inference, which is used when evidence $E$ has been noted, for which
+some theories $T$ have not developed in such a way as to provide
+likelihood values $P(E|T)$, and which cannot, therefore, be used to
+infer posterior probabilities $P(T|E)$, from prior probabilities
+$P_0(T)$, through Bayes' theorem; instead, a prior probability $P(T)$
+is used for future inference which attempts to estimate $P(T|E)$.  It
+is noteworthy that the experiences of the marginalized can be taken
+into account, as standpoint epistemologists argue, by marginalized and
+privileged alike, obviating any need for ``extra votes'' for the
+marginalized.
+
+Subjectivity also enters into academic study through the role of
+ideology in the selection of experiments.  Statistical decision
+theory, which provides for Bayesian experiment selection, assumes
+that, for a set of available theories $S$, there is an uncertainty
+function $U(S)$ of the prior probabilities $P(T)$, $T \in{} S$, which
+represents how much is to be learned about which theory is true.  The
+same uncertainty function, denoted $U(S|E)$, of the posterior
+probabilities $P(T|E)$, then represents how much remains to be learned
+about which theory is true, after an experiment $X$, with a set of
+possible results $R_X$, produces result $E \in{} R_X$.  Before the
+experiment $X$ is performed, one can know the expectation of the
+uncertainty after it is performed,
+\begin{equation}
+U(S|X) = \sum_{E\in{}R_X}P(E)U(S|E)\pnc{,}
+\end{equation}
+and can therefore measure the worth of the experiment by its
+information, defined as the expected reduction in uncertainty
+\begin{equation}
+I(X;S) = U(S)-U(S|X)\pnc{,}
+\end{equation}
+and select experiments by offsetting their information against the
+direct moral and financial costs of performing the experiment.  The
+link with ideology arises through the means, by which the uncertainty
+function is chosen.  The ideology which is to be implemented is
+represented by a loss function $L(y;T)$, which measures how bad the
+state of the universe will be, from the point of view of that
+ideology, if a policy $y$, from a set $Y$ of possible policies, is
+adopted, and theory $T \in{} S$ is true.  The uncertainty, the
+quantity which one seeks to reduce by performing experiments, is then
+the expectation of the loss function, when the policy, which minimizes
+that expectation, is adopted
+\begin{equation}
+U(S) = \min_{y\in{}Y}\sum_{T\in{}S}P(T)L(y;T)\pnc{.}
+\end{equation}
+
+Moreover, \emph{any} continuous uncertainty function, which obeys the
+intuitive principle that no experiment can have a negative
+information, can be associated with an ideology through the above
+equation.  Bayesians may, therefore, suspect that claims that a piece
+of research is free of ideology conceal the inevitable influence of
+ideology in the selection of its experiments.  This suspicion is
+shared with standpoint epistemology, and proponents of both traditions
+prefer to be open about the ideological motivation of their research.
+
+In addition to the mechanisms discussed above, ideology may enter into
+academic study through attempts to produce a posterior probability
+distribution, in which the policy, which will minimize the expectation
+of one's own loss function, is the same policy that will minimize the
+expectation of the loss function of someone else with decision-making
+power, i.e.~through the use of research as a coalition-building tool.
+
+When those associated with standpoint epistemology assert that science
+in Nazi Germany was used to ``depoliticize'' repressive policies, they
+appear to be referring to to an attempt to interpret scientific
+evidence in a manner which induced individuals, who were not
+necessarily Nazis themselves, to tolerate Nazi policies.  In the
+standpoint epistemologists' analysis, this was achieved by making one
+theory, in which the consequences of not following Nazi policies
+appeared almost as bad as those of following Nazi policies, appear to
+be certainly true.  The probabilistic nature of truth, as espoused by
+Bayesians, provides some protection against such a deception.
+However, even with Bayesian thinking, it is possible to rig a prior
+probability distribution, to produce a posterior probability
+distribution which has this de-politicizing property.
+
+The prior probability distribution also has an effect on the posterior
+probability distribution through experiment selection.  A toy problem
+can be constructed, in which there are two known theories, $T_1$ and
+$T_2$, a deterministic, as yet unknown, absolutely true theory $T_0$,
+and two possible experiments, $X$ and $Z$.  $T_1$ predicts results for
+$X$, which agree with those from $T_0$ deterministically, and results
+for $Z$, which disagree with those from $T_0$ with high probability,
+while $T_2$ predicts results for $X$, which disagree with those from
+$T_0$ with high probability, and results for $Z$, which agree with
+those from $T_0$ deterministically.  Using statistical decision
+theory, with the Shannon entropy as uncertainty function, to choose
+one experiment to undertake, it is found that whichever theory is
+assigned the higher prior probability is able to make the experiment
+that confirms it appear to be the most interesting experiment, and
+thereby to enhance its probability.  This may be related to certain
+recent epistemological observations, outside of the standpoint
+epistemology tradition.
+
+\section*{Experiment Selection in Modern Physics: Size, Energy, and
+  Complication}
+
+Physicists have a tendency to study phenomena at very large and very
+small length scales.  This can be modelled as the result of experiment
+selection, under statistical decision theory, using a greedy top-down
+approximation to the Shannon entropy as the uncertainty function.
+However, the greedy top-down approximation may be less appropriate to
+progress through increasing complication, than to progress through
+increasing size or energy.
+
+@
+
+
+18.1
+log
+@More pessimistic assessment of parameter estimates made.
+Typographical errors corrected.
+@
+text
+@d83 14
+a96 13
+the results are displayed in figures \ref{20020919_Polarimetry_1_2},
+\ref{20020919_Polarimetry_1_4}, \ref{20020919_Polarimetry_1_6},
+\ref{20020920_Polarimetry_1_2}, \ref{20020920_Polarimetry_1_4},
+\ref{20020920_Polarimetry_1_6}, \ref{20020920_Polarimetry_2_2},
+\ref{20020920_Polarimetry_2_4}, \ref{20020920_Polarimetry_2_6},
+\ref{20020921_Polarimetry_1_2}, \ref{20020921_Polarimetry_1_4},
+\ref{20020921_Polarimetry_1_6}, \ref{20020921_Polarimetry_2_2},
+\ref{20020921_Polarimetry_2_4}, \ref{20020921_Polarimetry_2_6},
+\ref{20020922_Polarimetry_1_2}, \ref{20020922_Polarimetry_1_4},
+\ref{20020922_Polarimetry_1_6}, \ref{20020923_Polarimetry_1_2},
+\ref{20020923_Polarimetry_1_4}, \ref{20020923_Polarimetry_1_6},
+\ref{20020923_Polarimetry_2_2}, \ref{20020923_Polarimetry_2_4}, and
+\ref{20020923_Polarimetry_2_6}.
+d278 14
+a291 13
+the results are displayed in figures \ref{20020919_Polarimetry_1_2},
+\ref{20020919_Polarimetry_1_4}, \ref{20020919_Polarimetry_1_6},
+\ref{20020920_Polarimetry_1_2}, \ref{20020920_Polarimetry_1_4},
+\ref{20020920_Polarimetry_1_6}, \ref{20020920_Polarimetry_2_2},
+\ref{20020920_Polarimetry_2_4}, \ref{20020920_Polarimetry_2_6},
+\ref{20020921_Polarimetry_1_2}, \ref{20020921_Polarimetry_1_4},
+\ref{20020921_Polarimetry_1_6}, \ref{20020921_Polarimetry_2_2},
+\ref{20020921_Polarimetry_2_4}, \ref{20020921_Polarimetry_2_6},
+\ref{20020922_Polarimetry_1_2}, \ref{20020922_Polarimetry_1_4},
+\ref{20020922_Polarimetry_1_6}, \ref{20020923_Polarimetry_1_2},
+\ref{20020923_Polarimetry_1_4}, \ref{20020923_Polarimetry_1_6},
+\ref{20020923_Polarimetry_2_2}, \ref{20020923_Polarimetry_2_4}, and
+\ref{20020923_Polarimetry_2_6}.
+@
+
+
+17.1
+log
+@JACB's suggested amendments made.
+Typographical errors corrected.
+@
+text
+@d37 1
+a37 1
+  graphically in appendix \ref{adaptive-models} and appendix
+d325 2
+a326 4
+  precision of the estimated characteristics of the samples is a
+  result of most of the information from the experiments going into
+  calibration of the instruments, rather than into characterization of
+  the samples, in this inference process.  However, the experimental
+@
+
+
+15.2
+log
+@PER theory step diagram imported.
+Typographical errors corrected.
+@
+text
+@d5 2
+a6 2
+electro-magnetic field, is devised.  This theory predicts that the rate
+of electrons leaving the surface will be
+d20 2
+a21 1
+arrival in the incident beam.
+d37 2
+a38 2
+  graphically in section \ref{adaptive-models} and chapter
+  \ref{experiment-conclusions}.
+d46 10
+d60 3
+a62 3
+electro-magnetic field, is devised.  This theory predicts that the
+rate of electrons leaving the surface, in the specularly reflected
+beam, will be
+d76 20
+a95 1
+arrival in the incident beam.
+d97 1
+a97 6
+Measurements are presented of the spin-correlated electron arrival
+rates at the two detectors of a Mott polarimeter, from the reflected
+electron beam from $Co/Cu(001)$, as a function of cobalt thickness,
+incident energy, and incident intensity; the results are displayed
+graphically in chapter \ref{results}.  These results are analysed
+using three distinct methodologies.
+d99 22
+a120 10
+\item{}Visual inspection of the data is used to make qualitative
+  suggestions about future directions for the modelling of electron
+  reflection processes at magnetic surfaces.
+\item{}Bayesian inference is used to estimate the parameters in two
+  adaptive models, based on the above theory, and to estimate relative
+  probabilities for these models, equipped with the data.  One model
+  allows for the possibility of a non-zero effective magnetic flux
+  density in the films, the other does not.  Results are displayed
+  graphically in section \ref{adaptive-models} and chapter
+  \ref{experiment-conclusions}.
+d122 14
+a135 4
+  the reflected polarization, is calculated for each combination of
+  film thickness, incident energy, and incident intensity.  Results
+  are displayed graphically in section
+  \ref{traditional-estimation-section}.
+d138 19
+d251 4
+a254 3
+and magnetic flux density at the surface, is devised.  This theory
+predicts that the rate of electrons leaving the surface, in the
+specularly reflected beam, will be
+d273 19
+a291 6
+Measurements are presented of the spin-correlated electron arrival
+rates at the two detectors of a Mott polarimeter, from the reflected
+electron beam from $Co/Cu(001)$, as a function of cobalt thickness,
+incident energy, and incident intensity; the results are displayed
+graphically in chapter \ref{results}.  These results are analysed
+using three distinct methodologies.
+d293 41
+a333 10
+\item{}Visual inspection of the data is used to make qualitative
+  suggestions about future directions for the modelling of electron
+  reflection processes at magnetic surfaces.
+\item{}Bayesian inference is used to estimate the parameters in two
+  adaptive models, based on the above theory, and to estimate relative
+  probabilities for these models, equipped with the data.  One model
+  allows for the possibility of a non-zero effective magnetic flux
+  density in the films, the other does not.  Results are displayed
+  graphically in section \ref{adaptive-models} and chapter
+  \ref{experiment-conclusions}.
+d335 13
+a347 4
+  the reflected polarization, is calculated for each combination of
+  film thickness, incident energy, and incident intensity.  Results
+  are displayed graphically in section
+  \ref{traditional-estimation-section}.
+d350 18
+d369 9
+@
+
+
+15.1
+log
+@Conclusions chapter written.
+Motivation chapter written.
+Discussion of experimental results completed.
+Description of experimental method completed.
+Material on intermediate experiments added.
+Acknowledgements chapter added.
+Entire contents of Hatton:2002:SPI imported.
+Medium and long abstracts added.
+Typographical errors corrected.
+@
+text
+@d37 1
+a37 1
+  \ref{conclusions}.
+d49 3
+a51 2
+electro-magnetic field, is devised.  This theory predicts that the rate
+of electrons leaving the surface will be
+d67 6
+a72 5
+Measurements are presented of the spin-correlated electron arrival rates
+at the two detectors of a Mott polarimeter, from the reflected electron
+beam from $Co/Cu(001)$, as a function of cobalt thickness, incident
+energy, and incident intensity.  These results are analysed using three
+distinct methodologies.
+d83 1
+a83 1
+  \ref{conclusions}.
+d111 1
+a111 1
+of any evidence $E$ for which $P(E|T) = 0$, is sometimes associated
+d125 2
+a126 2
+attempt to achieve objectivity by claiming that a particular prior
+probability distribution is correct conceals this subjective choice,
+d175 3
+d184 4
+a187 2
+electro-magnetic field, is devised.  This theory predicts that the rate
+of electrons leaving the surface will be
+d201 2
+a202 1
+arrival in the incident beam.
+d206 6
+a211 5
+Measurements are presented of the spin-correlated electron arrival rates
+at the two detectors of a Mott polarimeter, from the reflected electron
+beam from $Co/Cu(001)$, as a function of cobalt thickness, incident
+energy, and incident intensity.  These results are analysed using three
+distinct methodologies.
+d222 1
+a222 1
+  \ref{conclusions}.
+d247 1
+a247 1
+This report aims to use Bayesian methods to provide a mathematical
+d285 4
+a288 4
+deterministic falsificationism, in which only evidence $E$ which
+completely rules out a theory $T$, i.e.\ {}which has $P(T|E) = P(E|T)
+= 0$, is allowed to influence belief in that theory, is argued to be
+an unnecessary restriction, since Bayes' theorem can draw inferences
+d314 1
+a314 1
+represents the beliefs which are held, about which theory is true,
+d317 5
+a321 5
+prior probability distribution which is used is an arbitrary and
+subjective choice, and the claim, in the tradition of logical
+probability, that a particular prior probability distribution is
+correct and other choices are wrong, is seen as concealing and
+rendering immutable this arbitrary choice.
+d371 1
+a371 1
+link with ideology arises through the means by which the uncertainty
+d378 2
+a379 2
+the expectation of the loss function, when the policy which minimizes
+that expectation is adopted
+d395 2
+a396 2
+distribution, in which the policy which will minimize the expectation
+of one's own loss function is the same policy which will minimize the
+d398 1
+a398 1
+power, i.e.\ {}of research as a coalition-building tool.
+d439 4
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 429
+@

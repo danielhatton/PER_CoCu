@@ -1,0 +1,83 @@
+head	14.2;
+access;
+symbols;
+locks
+	dan:14.2; strict;
+comment	@# @;
+
+
+14.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	14.1;
+
+14.1
+date	2002.12.01.13.11.45;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Plotter for Mott asymmetry estimator data.
+@
+
+
+14.2
+log
+@Typographical errors corrected.
+@
+text
+@# Copyright 2002 D. C. Hatton
+#
+# D. C. Hatton can be contacted on dan.hatton@@btinternet.com
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (in the file copying.programs;) if not,
+# write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+# 330, Boston, MA 02111-1307 USA
+
+# This plots the second data set from 21st September 2002
+
+set pointsize 2
+set data style xyerrorbars
+set key below
+set size 1, 2
+
+set terminal pslatex color
+set xlabel "$E_b/\\ut{eV}$"
+set ylabel "$SP$"
+
+set output '20020921_Polarimetry_2_asyms.tex'
+plot '20020921_Polarimetry_2_asyms.dat' using 1:3:2:4 notitle
+
+set terminal png color
+set xlabel "Eb/eV"
+set ylabel "SP"
+
+set output '20020921_Polarimetry_2_asyms.png'
+plot '20020921_Polarimetry_2_asyms.dat' using 1:3:2:4 notitle
+@
+
+
+14.1
+log
+@Material on traditional estimation of Mott asymmetries added.
+Typographical errors corrected.
+@
+text
+@d26 1
+a26 1
+set terminal pslatex monochrome
+d33 1
+a33 1
+set terminal png monochrome
+@

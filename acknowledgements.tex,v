@@ -1,0 +1,397 @@
+head	22.1;
+access;
+symbols;
+locks
+	dan:22.1; strict;
+comment	@% @;
+
+
+22.1
+date	2004.03.25.21.18.46;	author dan;	state Exp;
+branches;
+next	17.1;
+
+17.1
+date	2003.03.14.23.03.53;	author dan;	state Exp;
+branches;
+next	16.2;
+
+16.2
+date	2003.01.11.02.12.07;	author dan;	state Exp;
+branches;
+next	16.1;
+
+16.1
+date	2003.01.05.18.37.39;	author dan;	state Exp;
+branches;
+next	15.2;
+
+15.2
+date	2003.01.04.15.14.27;	author dan;	state Exp;
+branches;
+next	15.1;
+
+15.1
+date	2003.01.03.19.20.58;	author dan;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2002.08.04.11.25.43;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Acknowledgements
+@
+
+
+22.1
+log
+@External examiner's printed corrections made.
+@
+text
+@\chapter*{Acknowledgements}
+\markboth{ACKNOWLEDGEMENTS}{ACKNOWLEDGEMENTS}
+
+I'd like to thank the following:
+\begin{itemize}
+\item the \htmladdnormallink{Engineering and Physical Sciences
+    Research Council}{http://www.epsrc.ac.uk}, in the UK, for
+  financial support,
+\item Sally Hatton, for items of help too numerous to mention,
+\item{}Tony Bland, for tuition in the physics of thin magnetic films,
+  for supervising this project with a pleasantly light hand on the
+  rudder, for arranging funds for equipment, for suggesting the
+  eventual possibility of conducting polarized electron measurements
+  on semiconductor-ferromagnet systems (chapter \ref{motive},) to some
+  resistance from me at the time, for providing a copy of ``Electronic
+  Structure Calculations of Low-Dimensional Transition-Metals''
+  \cite{Vega:2002:ESC}, and for other items of help too numerous to
+  mention,
+\item \htmladdnormallink{David
+    MacKay}{http://www.inference.phy.cam.ac.uk/mackay/}, for tuition
+    in Bayesian statistics, and for many helpful discussions,
+\item{}Peter Bode, for tuition in the principles of ultra-high vacuum
+  physics, of molecular beam epitaxy, and of structural and magnetic
+  characterization of surfaces, and for collaboration in the
+  maintenance of the manganese evaporator (section \ref{evaporators},)
+  and in the early experiments described in \emph{Mott Polarimetry at
+  the Cavendish Laboratory} \cite{Hatton:2000:MPC}, which led directly
+  to those described in this thesis (part \ref{main-experiment}) and
+  for other items of help too numerous to mention,
+\item{}Richard Saunders, for providing teaching work,
+\item{}Roger Halls, for assistance in electronics tasks relating to
+  the experiments (part \ref{main-experiment})
+\item{}Tim Goldrein, for safety advice, without which this project
+  might have ended in disaster,
+\item{}Jane Blunt, for safety advice, without which this project might
+  have ended in disaster,
+\item{}Barry Dunning, for suggesting that anomalously low count rates
+  might be the result of saturation of the channeltrons (appendix
+  \ref{repeated-adaptation-list},)
+\item{}Pete Flaxman, for tuition in matters relating to the use of
+  cryogenic fluids and of pressurized gases,
+\item{}Tony Charnley, for tuition in matters relating to the use of
+  vacuum pumps and of pressurized gases,
+\item{}Rik Balsod, for tuition in the principles of ultra-high vacuum
+  physics and of general laboratory maintenance, and for assistance in
+  engineering and manufacturing tasks related to the experiments (part
+  \ref{main-experiment},)
+\item{}Bob Butcher, for providing teaching work,
+\item{}Julia Riley, for providing teaching work, and for involving me
+  a number of interesting projects related to physics education,
+\item{}Geeta Saran, for assistance in the purchase of electrical
+  equipment related to improvements in the safety of the experimental
+  setup,
+\item{}Paola Atkinson, for recommending \emph{Ultrahigh Vacuum
+    Practice} \cite{Weston:1985:UVP},
+\item{}Thanos Mitrelias, for collaboration in the intermediate
+  experiments (sections \ref{autumn-2001-experiments},
+  \ref{july-2002-experiments},) and in associated hardware upgrades,
+  for immense indulgence and patience while I took research time to
+  work on a project of my own \cite{Hatton:2002:BPR}, and for other
+  items of help too numerous to mention,
+\item{}Klaus Peter Kopper, for collaboration in the intermediate
+  experiments (sections \ref{autumn-2001-experiments},
+  \ref{july-2002-experiments},) and in associated hardware upgrades,
+  for immense indulgence and patience while I took research time to
+  work on a project of my own \cite{Hatton:2002:BPR}, for arranging
+  the polishing of the copper crystal (section \ref{igs},) for
+  undertaking MOKE measurements (section \ref{july-2002-experiments})
+  and for other items of help too numerous to mention,
+\item{}Christian G\"urtler, for tuition in the use of Labview
+  software, for the loan of the temporary replacement electron gun
+  (chapter \ref{compact},) and for assistance in the installation of
+  that electron gun,
+\item{}Dave Johnson, for assistance in engineering and manufacturing
+  tasks related to the experiments (part \ref{main-experiment},)
+\item{}Suresh Mistry, for safety advice, without which this project
+  might have ended in disaster,
+\item{}Dave Powell, for tuition in the use of several items of
+  workshop equipment, and for assistance in engineering and
+  manufacturing tasks related to the experiments (part
+  \ref{main-experiment},)
+\item{}Terry Stubbings, for assistance in engineering and
+  manufacturing tasks related to the experiments (part
+  \ref{main-experiment},)
+\item{}Bill Egelhoff, for safety advice, without which this project
+  might have ended in disaster,
+\item{}Mathias Kl\"aui, for valuable advice on the oral presentation
+  of theoretical results,
+\item \htmladdnormallink{Sam
+    Gardiner}{http://homer.phy.cam.ac.uk/Members/Sam_Gardiner/Home.html},
+  for recommending ``Giant magnetoresistance and microstructural
+  characteristics of epitaxial $Fe$-$Ag$ and $Co$-$Ag$ granular thin
+  films,'' \cite{Thangaraj:1994:GMM}, ``Correlation between dynamic
+  magnetic hysteresis loops and nanoscale roughness of ultrathin $Co$
+  films'' \cite{Jiang:1996:CDM}, and ``Correlation between crystalline
+  structure and soft magnetic properties in sputtered sendust films''
+  \cite{Dodd:1997:CCS}, and providing copies thereof,
+\item{}\htmladdnormallink{Ian
+    Farrer}{http://www.sp.phy.cam.ac.uk/SPWeb/home/IF.html}, for
+    suggesting an adaptation to my Makefile for \LaTeX{} documents,
+    which improved the quality of the portable document format output.
+\end{itemize}
+
+I am certain to have forgotten some individuals who deserve an
+acknowledgement here; I hope that they will forgive my omission.
+
+@
+
+
+17.1
+log
+@JACB's suggested amendments made.
+Typographical errors corrected.
+@
+text
+@d2 1
+d9 1
+a9 8
+\item \htmladdnormallink{Sally
+    Hatton}{http://www.srl.cam.ac.uk/epic/people/sally.shtml}, for
+  introducing me to the critiques of positivism and alternative
+  epistemologies in the new social movements, of which standpoint
+  epistemology is one, for many helpful discussions, and for
+  recommending \emph{Social Research} \cite{Hammersley:1993:SRP} and
+  \emph{Principles of Dynamics} \cite{Glauert:1960:PD}, and providing
+  copies thereof, and for other items of help too numerous to mention,
+d21 1
+a21 9
+  in Bayesian statistics, for pointing out a weakness in the
+  definition of ``likelihood'' in this thesis, and for many helpful
+  discussions,
+\item Steve Julian, for suggesting the division of scientific
+  advancement into three paths of increasing size, increasing energy,
+  and increasing complication, and for recommending \emph{Zen and the
+    Art of Motorcycle Maintenance} \cite{Pirsig:1999:ZAM}, \emph{$1+1
+    = 3$?} \cite{Coleman:2000:FSE}, and the works of Anderson
+  \cite{Anderson:1972:MID, Anderson:1991:ICP, Anderson:1992:RTB},
+d27 3
+a29 4
+    the Cavendish Laboratory} \cite{Hatton:2000:MPC}, which led
+  directly to those described in this thesis (parts
+  \ref{main-experiment}, \ref{intermediate-experiments}) and for other
+  items of help too numerous to mention,
+d32 1
+a32 2
+  the experiments (part \ref{main-experiment}, part
+  \ref{intermediate-experiments},)
+d47 1
+a47 1
+  \ref{main-experiment}, part \ref{intermediate-experiments},)
+d57 5
+a61 5
+  experiments (part \ref{intermediate-experiments},) and in associated
+  hardware upgrades, for immense indulgence and patience while I took
+  research time to work on a project of my own (part
+  \ref{statistics-philosophy},) and for other items of help too
+  numerous to mention,
+d63 7
+a69 7
+  experiments (part \ref{intermediate-experiments},) and in associated
+  hardware upgrades, for immense indulgence and patience while I took
+  research time to work on a project of my own (part
+  \ref{statistics-philosophy},) for arranging the polishing of the
+  copper crystal (section \ref{igs},) for undertaking MOKE
+  measurements (appendix \ref{july-2002-experiments}) and for other
+  items of help too numerous to mention,
+d75 1
+a75 2
+  tasks related to the experiments (parts \ref{main-experiment},
+  \ref{intermediate-experiments},)
+d80 2
+a81 2
+  manufacturing tasks related to the experiments (parts
+  \ref{main-experiment}, \ref{intermediate-experiments},)
+d83 2
+a84 2
+  manufacturing tasks related to the experiments (parts
+  \ref{main-experiment}, \ref{intermediate-experiments},)
+a88 16
+\item Jairo Tocancip\'a-Falla, for many helpful discussions, and for
+  recommending \emph{From Physics to Anthropology and Back Again}
+  \cite{Schaffer:1994:PAB},
+\item Suzanne Zeedyk, for giving the lecture \cite{Zeedyk:2001:EPL},
+  in a discussion following which I first heard of the work of Harding
+  \cite{Harding:1986:SQF, Harding:1998:ISM} and of the concept of
+  strong objectivity,
+\item \htmladdnormallink{Nancy
+  Lane}{http://www.zoo.cam.ac.uk/zoostaff/Lane.htm}, for making the
+  aforementioned post-lecture comment concerning strong objectivity,
+\item Marilyn Strathern, for recommending \emph{The Relation}
+  \cite{Strathern:1995:RIC}, and providing a copy thereof,
+\item \htmladdnormallink{Ramin Nakisa}{http://www.ramin.uklinux.net/},
+  for identifying Cournot's \cite{Cournot:1843:ETC} system of
+  hypothesis testing as a frequentist inference method, and for
+  recommending \emph{Scientific Reasoning} \cite{Howson:1989:SRB},
+a97 11
+\item Glenn Richer, for pointing out a need for greater clarity in the
+  remarks, in this thesis, about the ideological associations of the
+  Shannon entropy,
+\item \htmladdnormallink{Claude
+    Demangeat}{http://www-ipcms.u-strasbg.fr/gemm/people/demangeat/demangeat-fr.html},
+  for pointing out that the derivation of statistical properties from
+  quantum mechanics, which can be used as effective postulates, is as
+  much a part of the first-principles tradition as of the
+  emergent-phenomena tradition, and for recommending ``Electronic
+  Structure Calculations of Low-Dimensional Transition-Metals''
+  \cite{Vega:2002:ESC}, and
+d100 2
+a101 2
+  suggesting an adaptation to my Makefile for \LaTeX{} documents,
+  which improved the quality of the portable document format output.
+@
+
+
+16.2
+log
+@Typographical errors corrected.
+@
+text
+@d46 3
+d53 3
+a130 7
+\item \htmladdnormallink{Louise
+    Madden}{http://www.cf.ac.uk/socsi/ict/projectteam.html#madden},
+  for pointing out that many in the new social movements are
+  suspicious of quantitative methods, and therefore alerting me to the
+  need to defend the quantitative nature of Bayesian statistics, as
+  very different from the kind of quantitative methods that created
+  the suspicion,
+@
+
+
+16.1
+log
+@Single layer diagram imported from Hatton:2002:CFT.
+Material on thickness calibration by AES added.
+Material on electron guns added.
+Typographical errors corrected.
+@
+text
+@d61 3
+d77 3
+a79 2
+  copper crystal (section \ref{igs}) and for other items of help too
+  numerous to mention,
+d134 1
+a134 1
+  Shannon entropy, and
+d142 5
+a146 1
+  \cite{Vega:2002:ESC}.
+@
+
+
+15.2
+log
+@PER theory step diagram imported.
+Typographical errors corrected.
+@
+text
+@a15 6
+\item Steve Julian, for suggesting the division of scientific
+  advancement into three paths of increasing size, increasing energy,
+  and increasing complication, and for recommending \emph{Zen and the
+    Art of Motorcycle Maintenance} \cite{Pirsig:1999:ZAM}, \emph{$1+1
+    = 3$?} \cite{Coleman:2000:FSE}, and the works of Anderson
+  \cite{Anderson:1972:MID, Anderson:1991:ICP, Anderson:1992:RTB},
+d21 4
+a24 2
+  resistance from me at the time, and for other items of help too
+  numerous to mention,
+d30 6
+d73 2
+a74 1
+  \ref{statistics-philosophy},) and for other items of help too
+d76 4
+d140 4
+@
+
+
+15.1
+log
+@Conclusions chapter written.
+Motivation chapter written.
+Discussion of experimental results completed.
+Description of experimental method completed.
+Material on intermediate experiments added.
+Acknowledgements chapter added.
+Entire contents of Hatton:2002:SPI imported.
+Medium and long abstracts added.
+Typographical errors corrected.
+@
+text
+@d10 1
+a10 1
+  introducing him to the critiques of positivism and alternative
+d15 1
+a15 1
+  copies thereof,
+d18 1
+a18 1
+  and increasing complexity, and for recommending \emph{Zen and the
+d32 1
+a32 1
+  definition of ``likelihood'' in this report, and for many helpful
+d50 2
+d74 1
+a74 1
+  tasks related to the experiments (part \ref{main-experiment}, part
+d80 5
+a84 5
+  manufacturing tasks related to the experiments (part
+  \ref{main-experiment}, part \ref{intermediate-experiments},)
+\item{}Terry Stubbings, for assistance in engineering and manufacturing
+  tasks related to the experiments (part \ref{main-experiment}, part
+  \ref{intermediate-experiments},)
+d93 3
+a95 3
+  in a discussion following which he first heard of the work of
+  Harding \cite{Harding:1986:SQF, Harding:1998:ISM} and of the concept
+  of strong objectivity,
+d117 4
+a120 4
+  suspicious of quantitative methods, and therefore alerting him to
+  the need to defend the quantitative nature of Bayesian statistics,
+  as very different from the kind of quantitative methods which
+  created the suspicion,
+d122 1
+a122 1
+  remarks, in this report, about the ideological associations of the
+d129 3
+a131 1
+  emergent-phenomena tradition.
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 128
+@

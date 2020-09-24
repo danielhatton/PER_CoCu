@@ -1,0 +1,56 @@
+head	1.1;
+access;
+symbols;
+locks
+	dan:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2004.05.20.20.36.22;	author dan;	state Exp;
+branches;
+next	;
+
+
+desc
+@Data on Angle-Dependences of Electron Arrival Rates at Channeltrons
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@# This contains data on the angle-dependence of the currents arriving at the
+# two channeltrons.
+#
+# Column 1: Angle reading on sample turn control/degrees
+# Column 2: Error in angle reading/degrees
+# Column 3: Current arriving at channeltron 1/pA
+# Column 4: Error in channeltron 1 current/pA
+# Column 5: Current arriving at channeltron 2/pA
+# Column 6: Error in channeltron 2 current/pA
+#
+100.0	0.029	2.0	0.29	1.0	1.0
+105.0	0.029	5.0	0.29	5.0	1.0
+107.0	0.029	8.0	0.29	6.5	0.5
+109.0	0.029	10.0	0.29	9.0	1.0
+111.0	0.029	13.5	0.5	11.0	1.0
+112.0	0.029	15.0	0.29	12.0	1.0
+113.0	0.029	16.0	0.29	13.0	1.0
+114.0	0.029	16.5	0.5	14.0	1.0
+115.0	0.029	17.0	1.0	13.0	1.0
+116.0	0.029	17.0	0.5	13.0	1.0
+117.0	0.029	16.5	0.5	12.0	0.29
+118.0	0.029	16.0	0.5	11.5	0.15 #Not sure about last column
+119.0	0.029	16.0	0.29	10.0	0.29
+120.0	0.029	15.5	0.5	10.0	0.29
+122.0	0.029	15.0	0.29	9.0	0.29
+124.0	0.029	14.5	0.5	8.0	0.29
+126.0	0.029	13.0	0.29	7.0	0.29
+128.0	0.029	12.0	0.29	5.0	0.29
+130.0	0.029	10.5	0.5	4.0	0.29
+132.0	0.029	9.5	0.5	3.0	0.29
+134.0	0.029	8.0	0.29	0.0	0.29
+@
