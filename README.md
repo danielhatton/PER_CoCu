@@ -1,7 +1,7 @@
 # Ph.D. thesis of Daniel C. Hatton
 
 If you just want to read the thesis, then there's a
-pre-compiled copy in PDF format in the file
+pre-compiled copy in PDF format as the "binary"
 `PER_CoCu.pdf`.
 
 If you'd prefer to compile the thesis from source, and
