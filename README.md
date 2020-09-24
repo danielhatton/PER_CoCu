@@ -2,8 +2,7 @@
 
 If you just want to read the thesis, then there's a
 pre-compiled copy in PDF format in the file
-`PER_CoCu.pdf`, and a pre-compiled copy in HTML
-format in the directory `web`
+`PER_CoCu.pdf`.
 
 If you'd prefer to compile the thesis from source, and
 you have a make application and tcsh, then the commands
